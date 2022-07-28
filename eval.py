@@ -10,7 +10,7 @@ from src.models import *
 
 parser = argparse.ArgumentParser(description='training parameters')
 parser.add_argument('--data', type=str, default='isoflow', help='dataset')
-parser.add_argument('--model_path', type=str, default='shallowDecoder', help='dataset')
+parser.add_argument('--model_path', type=str, default='shallowDecoder', help='saved model')
 parser.add_argument('--device', type=str, default=torch.device('cuda' if torch.cuda.is_available() else 'cpu'), help='computing device')
 parser.add_argument('--batch_size', type=int, default=1024, help='batch size')
 
@@ -124,6 +124,25 @@ def validate_MAPE(val1_loader, val2_loader, model):
 
     return error1.item(), error2.item()
 
+def validate_PSNR(val1_loader, val2_loader, model):
+    # load torchmetrics first: conda install -c conda-forge torchmetrics
+    from torchmetrics import PeakSignalNoiseRatio
+    psnr = PeakSignalNoiseRatio().to(args.device)
+    for batch_idx, (data, target) in enumerate(val1_loader):
+        data, target = data.to(args.device).float(), target.to(args.device).float()
+        output = model(data) 
+    
+    error1 = psnr(target, output)
+
+
+    for batch_idx, (data, target) in enumerate(val2_loader):
+        data, target = data.to(args.device).float(), target.to(args.device).float()
+        output = model(data) 
+    
+    error2 = psnr(target, output)
+
+    return error1.item(), error2.item()
+
 
 
 def validate_viz(val1_loader, val2_loader, model):
@@ -178,6 +197,9 @@ print("MSPE --- test1 error: %.5f, test2 error: %.5f" % (error1, error2))
 
 error1, error2 = validate_MAPE(test1_loader, test2_loader, model)
 print("MAPE --- test1 error: %.5f, test2 error: %.5f" % (error1, error2))       
+
+error1, error2 = validate_PSNR(test1_loader, test2_loader, model)
+print("PSNR --- test1 error: %.5f, test2 error: %.5f" % (error1, error2)) 
 
 validate_viz(test1_loader, test2_loader, model)
     
