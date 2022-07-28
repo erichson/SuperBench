@@ -10,7 +10,7 @@ from src.models import *
 
 parser = argparse.ArgumentParser(description='training parameters')
 parser.add_argument('--data', type=str, default='isoflow', help='dataset')
-parser.add_argument('--model', type=str, default='shallowDecoder', help='dataset')
+parser.add_argument('--model', type=str, default='shallowDecoder', help='model')
 parser.add_argument('--epochs', type=int, default=500, help='max epochs')
 parser.add_argument('--device', type=str, default=torch.device('cuda' if torch.cuda.is_available() else 'cpu'), help='computing device')
 parser.add_argument('--batch_size', type=int, default=64, help='batch size')
