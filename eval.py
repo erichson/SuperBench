@@ -230,10 +230,10 @@ error1, error2 = validate_mse(test1_loader, test2_loader, model)
 print("MSE --- test1 error: %.8f, test2 error: %.8f" % (error1, error2))      
             
 error1, error2  = validate_MSPE(test1_loader, test2_loader, model)
-print("MSPE --- test1 error: %.5f, test2 error: %.5f" % (error1*1, error2*1))      
+print("MSPE --- test1 error: %.5f, test2 error: %.5f" % (error1*100, error2*100))      
 
 error1, error2 = validate_MAPE(test1_loader, test2_loader, model)
-print("MAPE --- test1 error: %.5f, test2 error: %.5f" % (error1*1, error2*1))       
+print("MAPE --- test1 error: %.5f, test2 error: %.5f" % (error1*100, error2*100))       
 
 error1, error2 = validate_PSNR(test1_loader, test2_loader, model)
 print("PSNR --- test1 error: %.5f, test2 error: %.5f" % (error1, error2)) 
