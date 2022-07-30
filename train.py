@@ -9,14 +9,17 @@ from src.models import *
 
 
 parser = argparse.ArgumentParser(description='training parameters')
-parser.add_argument('--data', type=str, default='isoflow', help='dataset')
+parser.add_argument('--data', type=str, default='DoubleGyre', help='dataset')
 parser.add_argument('--model', type=str, default='shallowDecoder', help='model')
-parser.add_argument('--epochs', type=int, default=500, help='max epochs')
+parser.add_argument('--epochs', type=int, default=300, help='max epochs')
 parser.add_argument('--device', type=str, default=torch.device('cuda' if torch.cuda.is_available() else 'cpu'), help='computing device')
 parser.add_argument('--batch_size', type=int, default=64, help='batch size')
 parser.add_argument('--lr', type=float, default=0.0001, help='learning rate')
-parser.add_argument('--wd', type=float, default=5e-5, help='weight decay')
+parser.add_argument('--wd', type=float, default=0, help='weight decay')
 parser.add_argument('--seed', type=int, default=5544, help='random seed')
+
+parser.add_argument('--upscale_factor', type=int, default=4, help='upscale factor')
+
 
 args = parser.parse_args()
 print(args)
@@ -53,6 +56,7 @@ elif args.data == 'RBC':
 model_list = {
         'shallowDecoder': shallowDecoder(input_size, output_size),
         'shallowDecoderV2': shallowDecoderV2(input_size, output_size),
+        'subpixelCNN': subpixelCNN(upscale_factor=args.upscale_factor)
 }
 
 model = model_list[args.model].to(args.device)
@@ -63,7 +67,7 @@ model = torch.nn.DataParallel(model)
 #==============================================================================
 print(model)    
 print('**** Setup ****')
-print('Total params Generator: %.2fM' % (sum(p.numel() for p in model.parameters())/1000000.0))
+print('Total params Generator: %.7fM' % (sum(p.numel() for p in model.parameters())/1000000.0))
 print('************')    
 
 
@@ -128,7 +132,7 @@ for epoch in range(args.epochs):
 
     # =============== validate ======================
     mse1, mse2 = validate(val1_loader, val2_loader, model)
-    print("epoch: %s, val1 error: %.8f, val2 error: %.8f" % (epoch, mse1, mse2))      
+    print("epoch: %s, val1 error: %.10f, val2 error: %.10f" % (epoch, mse1, mse2))      
             
 
     if (mse1+mse2) <= best_val:

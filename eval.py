@@ -9,10 +9,10 @@ from src.models import *
 
 
 parser = argparse.ArgumentParser(description='training parameters')
-parser.add_argument('--data', type=str, default='isoflow', help='dataset')
+parser.add_argument('--data', type=str, default='DoubleGyre', help='dataset')
 parser.add_argument('--model_path', type=str, default='shallowDecoder', help='saved model')
 parser.add_argument('--device', type=str, default=torch.device('cuda' if torch.cuda.is_available() else 'cpu'), help='computing device')
-parser.add_argument('--batch_size', type=int, default=1024, help='batch size')
+parser.add_argument('--batch_size', type=int, default=300, help='batch size')
 
 
 args = parser.parse_args()
@@ -48,53 +48,68 @@ model = torch.load(args.model_path).to(args.device)
 #==============================================================================
 # Model summary
 #==============================================================================
-print(model)    
-print('**** Setup ****')
-print('Total params Generator: %.2fM' % (sum(p.numel() for p in model.parameters())/1000000.0))
-print('************')    
+# print(model)    
+# print('**** Setup ****')
+# print('Total params Generator: %.2fM' % (sum(p.numel() for p in model.parameters())/1000000.0))
+# print('************')    
 
 
 #******************************************************************************
 # Validate
 #******************************************************************************
-criterion = nn.MSELoss().to(args.device)
+criterion = nn.MSELoss(reduction='sum').to(args.device)
 
 def validate_mse(val1_loader, val2_loader, model):
+    c = 0
+    error1 = 0
     for batch_idx, (data, target) in enumerate(val1_loader):
         data, target = data.to(args.device).float(), target.to(args.device).float()
         output = model(data) 
-    error1 = criterion(output, target)
+        error1 += criterion(output, target)
+        c += data.shape[0]
+    error1 /= c
 
+    c = 0
+    error2 = 0
     for batch_idx, (data, target) in enumerate(val2_loader):
         data, target = data.to(args.device).float(), target.to(args.device).float()
         output = model(data) 
-    error2 = criterion(output, target)
+        error2 += criterion(output, target)
+        c += data.shape[0]
+    error2 /= c
 
     return error1.item(), error2.item()
 
 
 def validate_MSPE(val1_loader, val2_loader, model):
-    from sklearn.metrics import mean_squared_error
+
+    error1 = 0
+    c = 0    
     for batch_idx, (data, target) in enumerate(val1_loader):
         data, target = data.to(args.device).float(), target.to(args.device).float()
         output = model(data) 
 
-    target = target.data.cpu().numpy().reshape(target.shape[0],-1)
-    output = output.data.cpu().numpy().reshape(output.shape[0],-1)
+        target = target.data.cpu().numpy().reshape(target.shape[0],-1)
+        output = output.data.cpu().numpy().reshape(output.shape[0],-1)
+    
+        errors = [np.linalg.norm(target[i]-output[i])/np.linalg.norm(output[i]) for i in range(target.shape[0])]
+        error1 += np.sum(errors)
+        c += data.shape[0]
+    error1 /= c
 
-    errors = [np.linalg.norm(target[i]-output[i])/np.linalg.norm(output[i]) for i in range(target.shape[0])]
-    error1 = np.mean(errors)
-
-
+    error2 = 0
+    c = 0    
     for batch_idx, (data, target) in enumerate(val2_loader):
         data, target = data.to(args.device).float(), target.to(args.device).float()
         output = model(data) 
 
-    target = target.data.cpu().numpy().reshape(target.shape[0],-1)
-    output = output.data.cpu().numpy().reshape(output.shape[0],-1)
-
-    errors = [np.linalg.norm(target[i]-output[i])/np.linalg.norm(output[i]) for i in range(target.shape[0])]
-    error2 = np.mean(errors)
+        target = target.data.cpu().numpy().reshape(target.shape[0],-1)
+        output = output.data.cpu().numpy().reshape(output.shape[0],-1)
+    
+        errors = [np.linalg.norm(target[i]-output[i])/np.linalg.norm(output[i]) for i in range(target.shape[0])]
+        error2 += np.sum(errors)
+        c += data.shape[0]
+    error2 /= c
     
     return error1.item(), error2.item()
 
@@ -102,44 +117,60 @@ def validate_MSPE(val1_loader, val2_loader, model):
 
 def validate_MAPE(val1_loader, val2_loader, model):
     from sklearn.metrics import mean_absolute_percentage_error
+    
+    error1 = 0
+    c = 0    
     for batch_idx, (data, target) in enumerate(val1_loader):
         data, target = data.to(args.device).float(), target.to(args.device).float()
         output = model(data) 
         
-    target = target.data.cpu().numpy().reshape(target.shape[0],-1)
-    output = output.data.cpu().numpy().reshape(output.shape[0],-1)
-    error1 = mean_absolute_percentage_error(target, output)
+        target = target.data.cpu().numpy().reshape(target.shape[0],-1)
+        output = output.data.cpu().numpy().reshape(output.shape[0],-1)
+        error1 += mean_absolute_percentage_error(target, output) * data.shape[0]
+        c += data.shape[0]
+    error1 /= c
 
-
+    error2 = 0
+    c = 0  
     for batch_idx, (data, target) in enumerate(val2_loader):
         data, target = data.to(args.device).float(), target.to(args.device).float()
         output = model(data) 
         
-    target = target.data.cpu().numpy()
-    output = output.data.cpu().numpy()
+        target = target.data.cpu().numpy()
+        output = output.data.cpu().numpy()
+        
+        target = target.reshape(target.shape[0],-1)
+        output = output.reshape(output.shape[0],-1)
+        error2 += mean_absolute_percentage_error(target, output) * data.shape[0]
+        c += data.shape[0]
+    error2 /= c
     
-    target = target.reshape(target.shape[0],-1)
-    output = output.reshape(output.shape[0],-1)
-    error2 = mean_absolute_percentage_error(target, output)
-
     return error1.item(), error2.item()
 
 def validate_PSNR(val1_loader, val2_loader, model):
     # load torchmetrics first: conda install -c conda-forge torchmetrics
     from torchmetrics import PeakSignalNoiseRatio
     psnr = PeakSignalNoiseRatio().to(args.device)
+    
+    error1 = 0
+    c = 0      
     for batch_idx, (data, target) in enumerate(val1_loader):
         data, target = data.to(args.device).float(), target.to(args.device).float()
         output = model(data) 
     
-    error1 = psnr(target, output)
+        error1 += psnr(target, output) * data.shape[0]
+        c += data.shape[0]
+    error1 /= c
 
-
+    error2 = 0
+    c = 0    
     for batch_idx, (data, target) in enumerate(val2_loader):
         data, target = data.to(args.device).float(), target.to(args.device).float()
         output = model(data) 
     
-    error2 = psnr(target, output)
+        error2 += psnr(target, output)
+        c += data.shape[0]
+    error2 /= c
 
     return error1.item(), error2.item()
 
@@ -163,8 +194,11 @@ def validate_viz(val1_loader, val2_loader, model):
     fig = plt.figure(figsize = (10, 10))
     a = fig.add_subplot(121)
     a.set_axis_off()
+    vmin=target[0].min()
+    vmax=target[0].max()
     a.imshow(target[0].reshape(output_size[0],output_size[1]), cmap=cmocean.cm.balance)
     a = fig.add_subplot(122)
+    a.set_axis_off()
     a.imshow(output[0].reshape(output_size[0],output_size[1]), cmap=cmocean.cm.balance)
     plt.savefig('interplolation.pdf')
 
@@ -182,9 +216,12 @@ def validate_viz(val1_loader, val2_loader, model):
     fig = plt.figure(figsize = (10, 10))
     a = fig.add_subplot(121)
     a.set_axis_off()
-    a.imshow(target[50].reshape(output_size[0],output_size[1]), cmap=cmocean.cm.balance)
+    vmin=target[20].min()
+    vmax=target[20].max()
+    a.imshow(target[20].reshape(output_size[0],output_size[1]), cmap=cmocean.cm.balance)
     a = fig.add_subplot(122)
-    a.imshow(output[50].reshape(output_size[0],output_size[1]), cmap=cmocean.cm.balance)
+    a.set_axis_off()
+    a.imshow(output[20].reshape(output_size[0],output_size[1]), cmap=cmocean.cm.balance)
     plt.savefig('extrapolation.pdf')
 
 
@@ -193,10 +230,10 @@ error1, error2 = validate_mse(test1_loader, test2_loader, model)
 print("MSE --- test1 error: %.8f, test2 error: %.8f" % (error1, error2))      
             
 error1, error2  = validate_MSPE(test1_loader, test2_loader, model)
-print("MSPE --- test1 error: %.5f, test2 error: %.5f" % (error1, error2))      
+print("MSPE --- test1 error: %.5f, test2 error: %.5f" % (error1*1, error2*1))      
 
 error1, error2 = validate_MAPE(test1_loader, test2_loader, model)
-print("MAPE --- test1 error: %.5f, test2 error: %.5f" % (error1, error2))       
+print("MAPE --- test1 error: %.5f, test2 error: %.5f" % (error1*1, error2*1))       
 
 error1, error2 = validate_PSNR(test1_loader, test2_loader, model)
 print("PSNR --- test1 error: %.5f, test2 error: %.5f" % (error1, error2)) 
