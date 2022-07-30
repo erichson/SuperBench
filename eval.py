@@ -168,7 +168,7 @@ def validate_PSNR(val1_loader, val2_loader, model):
         data, target = data.to(args.device).float(), target.to(args.device).float()
         output = model(data) 
     
-        error2 += psnr(target, output)
+        error2 += psnr(target, output) * data.shape[0]
         c += data.shape[0]
     error2 /= c
 
