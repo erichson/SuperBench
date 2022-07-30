@@ -148,7 +148,7 @@ def validate_MAPE(val1_loader, val2_loader, model):
     return error1.item(), error2.item()
 
 def validate_PSNR(val1_loader, val2_loader, model):
-    # load torchmetrics first: conda install -c conda-forge torchmetrics
+    # install torchmetrics first: conda install -c conda-forge torchmetrics
     from torchmetrics import PeakSignalNoiseRatio
     psnr = PeakSignalNoiseRatio().to(args.device)
     
