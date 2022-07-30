@@ -36,19 +36,29 @@ torch.cuda.manual_seed(args.seed)
 #******************************************************************************
 train_loader, _, val1_loader, _, val2_loader = getData(args.data, train_bs=args.batch_size)
 
-for inp, label in val1_loader:
+for inp, label in train_loader:
     print('{}:{}'.format(inp.shape, label.shape,))
     break
+
+
 
 #==============================================================================
 # Get model
 #==============================================================================
-if args.data == 'isoflow':
+if args.data == 'isoflow4':
+    input_size = [64, 64] 
+    output_size = [256, 256]
+elif args.data == 'isoflow8':
     input_size = [32, 32] 
     output_size = [256, 256]
-elif args.data == 'doublegyre':
+    
+elif args.data == 'doublegyre4':
     input_size = [112, 48] 
     output_size = [448, 192]
+elif args.data == 'doublegyre8':
+    input_size = [56, 24] 
+    output_size = [448, 192]
+    
 elif args.data == 'rbc4':
     input_size = [64, 64] 
     output_size = [256, 256]        
