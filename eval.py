@@ -35,12 +35,15 @@ _, test1_loader, _, test2_loader, _ = getData(args.data, test_bs=args.batch_size
 if args.data == 'isoflow':
     input_size = [32, 32] 
     output_size = [256, 256]
-elif args.data == 'DoubleGyre':
+elif args.data == 'doublegyre':
     input_size = [112, 48] 
     output_size = [448, 192]
-elif args.data == 'RBC':
-    input_size = [32, 32] 
+elif args.data == 'rbc4':
+    input_size = [64, 64] 
     output_size = [256, 256]        
+elif args.data == 'rbc8':
+    input_size = [32, 32] 
+    output_size = [256, 256]    
     
 
 model = torch.load(args.model_path).to(args.device)
