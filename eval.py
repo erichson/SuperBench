@@ -33,7 +33,7 @@ _, test1_loader, _, test2_loader, _ = getData(args.data, test_bs=args.batch_size
 # Get model
 #==============================================================================
 if args.data == 'isoflow':
-    input_size = [64, 64] 
+    input_size = [32, 32] 
     output_size = [256, 256]
 elif args.data == 'DoubleGyre':
     input_size = [112, 48] 
