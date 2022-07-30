@@ -6,6 +6,5 @@ Created on Tue Jul  5 16:47:27 2022
 @author: ben
 """
 
-from .shallowDecoder import shallowDecoder 
-from .shallowDecoder import shallowDecoderV2
+from .shallowDecoder import shallowDecoder
 from .subpixelCNN import subpixelCNN

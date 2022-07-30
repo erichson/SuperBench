@@ -9,7 +9,7 @@ from src.models import *
 
 
 parser = argparse.ArgumentParser(description='training parameters')
-parser.add_argument('--data', type=str, default='DoubleGyre', help='dataset')
+parser.add_argument('--data', type=str, default='doublegyre4', help='dataset')
 parser.add_argument('--model', type=str, default='shallowDecoder', help='model')
 parser.add_argument('--epochs', type=int, default=300, help='max epochs')
 parser.add_argument('--device', type=str, default=torch.device('cuda' if torch.cuda.is_available() else 'cpu'), help='computing device')
@@ -67,8 +67,7 @@ elif args.data == 'rbc8':
     output_size = [256, 256]    
     
 model_list = {
-        'shallowDecoder': shallowDecoder(input_size, output_size),
-        'shallowDecoderV2': shallowDecoderV2(input_size, output_size),
+        'shallowDecoder': shallowDecoder(output_size, upscale_factor=args.upscale_factor),
         'subpixelCNN': subpixelCNN(upscale_factor=args.upscale_factor)
 }
 
