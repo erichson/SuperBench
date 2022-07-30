@@ -66,7 +66,7 @@ model = torch.nn.DataParallel(model)
 #==============================================================================
 print(model)    
 print('**** Setup ****')
-print('Total params Generator: %.7fM' % (sum(p.numel() for p in model.parameters())/1000000.0))
+print('Total params Generator: %.3fM' % (sum(p.numel() for p in model.parameters())/1000000.0))
 print('************')    
 
 
