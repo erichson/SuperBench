@@ -179,7 +179,7 @@ def validate_viz(val1_loader, val2_loader, model):
     for batch_idx, (data, target) in enumerate(val1_loader):
         data, target = data.to(args.device).float(), target.to(args.device).float()
         output = model(data) 
-        
+        break
       
     target = target.data.cpu().numpy()
     output = output.data.cpu().numpy()

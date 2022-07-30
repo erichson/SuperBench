@@ -55,6 +55,7 @@ elif args.data == 'RBC':
     
 model_list = {
         'shallowDecoder': shallowDecoder(input_size, output_size),
+        'shallowDecoderV2': shallowDecoderV2(input_size, output_size),
         'subpixelCNN': subpixelCNN(upscale_factor=args.upscale_factor)
 }
 
