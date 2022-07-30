@@ -23,11 +23,11 @@ print(args)
 #******************************************************************************
 # Get data
 #******************************************************************************
-train_loader, test1_loader, val1_loader, test2_loader, val2_loader = getData(args.data, test_bs=args.batch_size)
+_, test1_loader, _, test2_loader, _ = getData(args.data, test_bs=args.batch_size)
 
-for inp, label in test2_loader:
-    print('{}:{}'.format(inp.shape, label.shape,))
-    break
+# for inp, label in test2_loader:
+#     print('{}:{}'.format(inp.shape, label.shape,))
+#     break
 
 #==============================================================================
 # Get model

@@ -34,9 +34,9 @@ torch.cuda.manual_seed(args.seed)
 #******************************************************************************
 # Get data
 #******************************************************************************
-train_loader, test1_loader, val1_loader, test2_loader, val2_loader = getData(args.data, train_bs=args.batch_size)
+train_loader, _, val1_loader, _, val2_loader = getData(args.data, train_bs=args.batch_size)
 
-for inp, label in test2_loader:
+for inp, label in val1_loader:
     print('{}:{}'.format(inp.shape, label.shape,))
     break
 

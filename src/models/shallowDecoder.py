@@ -51,7 +51,7 @@ class shallowDecoder(nn.Module):
         self.l1 = nn.ConvTranspose2d(in_channels=1, out_channels=128, kernel_size=5, stride=2, padding=1)
         self.l2 = nn.ConvTranspose2d(in_channels=128, out_channels=128, kernel_size=3, stride=2, padding=1)
         self.l3 = nn.ConvTranspose2d(in_channels=128, out_channels=64, kernel_size=1, stride=1, dilation=1)
-        self.l4 = nn.ConvTranspose2d(in_channels=64, out_channels=1, kernel_size=3, stride=1, dilation=1)
+        self.l4 = nn.ConvTranspose2d(in_channels=64, out_channels=1, kernel_size=2, stride=1, dilation=1)
 
         #(input_n - 1)*stride + dilation*(kernelsize -1) + 1
         #(512-1) * 150  + 1*(5-1) +1
