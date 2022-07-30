@@ -193,12 +193,11 @@ def validate_viz(val1_loader, val2_loader, model):
     fig = plt.figure(figsize = (10, 10))
     a = fig.add_subplot(121)
     a.set_axis_off()
-    vmin=target[0].min()
-    vmax=target[0].max()
-    a.imshow(target[0].reshape(output_size[0],output_size[1]), cmap=cmocean.cm.balance)
+
+    a.imshow(target[3].reshape(output_size[0],output_size[1]), cmap=cmocean.cm.balance)
     a = fig.add_subplot(122)
     a.set_axis_off()
-    a.imshow(output[0].reshape(output_size[0],output_size[1]), cmap=cmocean.cm.balance)
+    a.imshow(output[3].reshape(output_size[0],output_size[1]), cmap=cmocean.cm.balance)
     plt.savefig('interplolation.pdf')
 
 
@@ -216,12 +215,10 @@ def validate_viz(val1_loader, val2_loader, model):
     fig = plt.figure(figsize = (10, 10))
     a = fig.add_subplot(121)
     a.set_axis_off()
-    vmin=target[20].min()
-    vmax=target[20].max()
-    a.imshow(target[20].reshape(output_size[0],output_size[1]), cmap=cmocean.cm.balance)
+    a.imshow(target[3].reshape(output_size[0],output_size[1]), cmap=cmocean.cm.balance)
     a = fig.add_subplot(122)
     a.set_axis_off()
-    a.imshow(output[20].reshape(output_size[0],output_size[1]), cmap=cmocean.cm.balance)
+    a.imshow(output[3].reshape(output_size[0],output_size[1]), cmap=cmocean.cm.balance)
     plt.savefig('extrapolation.pdf')
 
 
