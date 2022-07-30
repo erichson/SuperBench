@@ -49,9 +49,9 @@ model = torch.load(args.model_path).to(args.device)
 # Model summary
 #==============================================================================
 # print(model)    
-# print('**** Setup ****')
-# print('Total params Generator: %.2fM' % (sum(p.numel() for p in model.parameters())/1000000.0))
-# print('************')    
+print('**** Setup ****')
+print('Total params Generator: %.3fM' % (sum(p.numel() for p in model.parameters())/1000000.0))
+print('************')    
 
 
 #******************************************************************************
