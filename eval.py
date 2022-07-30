@@ -158,19 +158,18 @@ def validate_PSNR(val1_loader, val2_loader, model):
         data, target = data.to(args.device).float(), target.to(args.device).float()
         output = model(data) 
     
-        error1 += psnr(target, output) * data.shape[0]
-        c += data.shape[0]
-    error1 /= c
+        error1 = psnr(target, output)
+    error1 = psnr.compute()
 
+    psnr = PeakSignalNoiseRatio().to(args.device)
     error2 = 0
     c = 0    
     for batch_idx, (data, target) in enumerate(val2_loader):
         data, target = data.to(args.device).float(), target.to(args.device).float()
         output = model(data) 
     
-        error2 += psnr(target, output) * data.shape[0]
-        c += data.shape[0]
-    error2 /= c
+        error2 += psnr(target, output)
+    error2 = psnr.compute()
 
     return error1.item(), error2.item()
 
