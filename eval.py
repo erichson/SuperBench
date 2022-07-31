@@ -51,7 +51,14 @@ elif args.data == 'rbc4':
     output_size = [512, 512]        
 elif args.data == 'rbc8':
     input_size = [64, 64] 
-    output_size = [512, 512]   
+    output_size = [512, 512]    
+    
+elif args.data == 'sst4':
+    input_size = [64, 128] 
+    output_size = [256, 512]        
+elif args.data == 'sst8':
+    input_size = [32, 64] 
+    output_size = [256, 512]    
     
 
 model = torch.load(args.model_path).to(args.device)

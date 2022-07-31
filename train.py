@@ -40,6 +40,14 @@ for inp, label in train_loader:
     print('{}:{}'.format(inp.shape, label.shape,))
     break
 
+for inp, label in val1_loader:
+    print('{}:{}'.format(inp.shape, label.shape,))
+    break
+
+for inp, label in val2_loader:
+    print('{}:{}'.format(inp.shape, label.shape,))
+    break
+
 
 
 #==============================================================================
@@ -60,11 +68,18 @@ elif args.data == 'doublegyre8':
     output_size = [448, 192]
     
 elif args.data == 'rbc4':
-    input_size = [64, 64] 
-    output_size = [256, 256]        
+    input_size = [128, 128] 
+    output_size = [512, 512]        
 elif args.data == 'rbc8':
-    input_size = [32, 32] 
-    output_size = [256, 256]    
+    input_size = [64, 64] 
+    output_size = [512, 512]    
+    
+elif args.data == 'sst4':
+    input_size = [64, 128] 
+    output_size = [256, 512]        
+elif args.data == 'sst8':
+    input_size = [32, 64] 
+    output_size = [256, 512]      
     
 model_list = {
         'shallowDecoder': shallowDecoder(output_size, upscale_factor=args.upscale_factor),
