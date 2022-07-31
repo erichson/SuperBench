@@ -47,11 +47,11 @@ elif args.data == 'doublegyre8':
     output_size = [448, 192]
     
 elif args.data == 'rbc4':
-    input_size = [64, 64] 
-    output_size = [256, 256]        
+    input_size = [128, 128] 
+    output_size = [512, 512]        
 elif args.data == 'rbc8':
-    input_size = [32, 32] 
-    output_size = [256, 256]   
+    input_size = [64, 64] 
+    output_size = [512, 512]   
     
 
 model = torch.load(args.model_path).to(args.device)
@@ -127,7 +127,6 @@ def validate_MSPE(val1_loader, val2_loader, model):
 
 
 def validate_MAPE(val1_loader, val2_loader, model):
-    from sklearn.metrics import mean_absolute_percentage_error
     
     error1 = 0
     c = 0    
@@ -137,7 +136,8 @@ def validate_MAPE(val1_loader, val2_loader, model):
         
         target = target.data.cpu().numpy().reshape(target.shape[0],-1)
         output = output.data.cpu().numpy().reshape(output.shape[0],-1)
-        error1 += mean_absolute_percentage_error(target, output) * data.shape[0]
+        errors = [np.linalg.norm(target[i]-output[i], ord=np.inf)/np.linalg.norm(output[i], ord=np.inf) for i in range(target.shape[0])]
+        error1 += np.sum(errors)
         c += data.shape[0]
     error1 /= c
 
@@ -152,7 +152,8 @@ def validate_MAPE(val1_loader, val2_loader, model):
         
         target = target.reshape(target.shape[0],-1)
         output = output.reshape(output.shape[0],-1)
-        error2 += mean_absolute_percentage_error(target, output) * data.shape[0]
+        errors = [np.linalg.norm(target[i]-output[i], ord=np.inf)/np.linalg.norm(output[i], ord=np.inf) for i in range(target.shape[0])]
+        error2 += np.sum(errors)
         c += data.shape[0]
     error2 /= c
     
