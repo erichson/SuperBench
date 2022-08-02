@@ -12,13 +12,12 @@ parser = argparse.ArgumentParser(description='training parameters')
 parser.add_argument('--data', type=str, default='DoubleGyre', help='dataset')
 parser.add_argument('--model_path', type=str, default='shallowDecoder', help='saved model')
 parser.add_argument('--device', type=str, default=torch.device('cuda' if torch.cuda.is_available() else 'cpu'), help='computing device')
-parser.add_argument('--batch_size', type=int, default=300, help='batch size')
-
+parser.add_argument('--batch_size', type=int, default=32, help='batch size')
 
 args = parser.parse_args()
 print(args)
 
-
+print(args.device)
 
 #******************************************************************************
 # Get data
@@ -52,6 +51,13 @@ elif args.data == 'rbc4':
 elif args.data == 'rbc8':
     input_size = [64, 64] 
     output_size = [512, 512]    
+
+elif args.data == 'rbcsc4':
+    input_size = [128, 128] 
+    output_size = [512, 512]        
+elif args.data == 'rbcsc8':
+    input_size = [64, 64] 
+    output_size = [512, 512] 
     
 elif args.data == 'sst4':
     input_size = [64, 128] 
@@ -62,6 +68,10 @@ elif args.data == 'sst8':
     
 
 model = torch.load(args.model_path).to(args.device)
+#model = torch.nn.DataParallel(model)
+model.eval()
+
+
 
 #==============================================================================
 # Model summary
@@ -75,7 +85,7 @@ print('************')
 #******************************************************************************
 # Validate
 #******************************************************************************
-criterion = nn.MSELoss(reduction='sum').to(args.device)
+criterion = nn.MSELoss().to(args.device)
 
 def validate_mse(val1_loader, val2_loader, model):
     c = 0
@@ -83,7 +93,7 @@ def validate_mse(val1_loader, val2_loader, model):
     for batch_idx, (data, target) in enumerate(val1_loader):
         data, target = data.to(args.device).float(), target.to(args.device).float()
         output = model(data) 
-        error1 += criterion(output, target)
+        error1 += criterion(output, target) * data.shape[0]
         c += data.shape[0]
     error1 /= c
 
@@ -92,7 +102,7 @@ def validate_mse(val1_loader, val2_loader, model):
     for batch_idx, (data, target) in enumerate(val2_loader):
         data, target = data.to(args.device).float(), target.to(args.device).float()
         output = model(data) 
-        error2 += criterion(output, target)
+        error2 += criterion(output, target) * data.shape[0]
         c += data.shape[0]
     error2 /= c
 

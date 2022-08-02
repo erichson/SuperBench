@@ -9,7 +9,7 @@ from src.models import *
 
 
 parser = argparse.ArgumentParser(description='training parameters')
-parser.add_argument('--data', type=str, default='doublegyre4', help='dataset')
+parser.add_argument('--data', type=str, default='sst4', help='dataset')
 parser.add_argument('--model', type=str, default='shallowDecoder', help='model')
 parser.add_argument('--epochs', type=int, default=300, help='max epochs')
 parser.add_argument('--device', type=str, default=torch.device('cuda' if torch.cuda.is_available() else 'cpu'), help='computing device')
@@ -74,6 +74,13 @@ elif args.data == 'rbc8':
     input_size = [64, 64] 
     output_size = [512, 512]    
     
+elif args.data == 'rbcsc4':
+    input_size = [128, 128] 
+    output_size = [512, 512]        
+elif args.data == 'rbcsc8':
+    input_size = [64, 64] 
+    output_size = [512, 512]     
+    
 elif args.data == 'sst4':
     input_size = [64, 128] 
     output_size = [256, 512]        
@@ -87,7 +94,7 @@ model_list = {
 }
 
 model = model_list[args.model].to(args.device)
-model = torch.nn.DataParallel(model)
+#model = torch.nn.DataParallel(model)
 
 #==============================================================================
 # Model summary
@@ -121,15 +128,23 @@ scheduler = torch.optim.lr_scheduler.LambdaLR(
 #******************************************************************************
 
 def validate(val1_loader, val2_loader, model):
+    mse1 = 0
+    mse2 = 0
+    c = 0
     for batch_idx, (data, target) in enumerate(val1_loader):
         data, target = data.to(args.device).float(), target.to(args.device).float()
         output = model(data) 
-        mse1 = criterion(output, target)
+        mse1 += criterion(output, target) * data.shape[0]
+        c += data.shape[0]
+    mse1 /= c
 
+    c = 0
     for batch_idx, (data, target) in enumerate(val2_loader):
         data, target = data.to(args.device).float(), target.to(args.device).float()
         output = model(data) 
-        mse2 = criterion(output, target)
+        mse2 = criterion(output, target) * data.shape[0]
+        c += data.shape[0]
+    mse2 /= c
 
 
     return mse1.item(), mse2.item()
