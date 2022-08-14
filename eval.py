@@ -109,8 +109,8 @@ def validate_mse(val1_loader, val2_loader, model):
     return error1.item(), error2.item()
 
 
-def validate_MSPE(val1_loader, val2_loader, model):
-
+def validate_RFNE(val1_loader, val2_loader, model):
+    '''Relative Frobenius norm error (RFNE)'''
     error1 = 0
     c = 0    
     for batch_idx, (data, target) in enumerate(val1_loader):
@@ -143,8 +143,8 @@ def validate_MSPE(val1_loader, val2_loader, model):
 
 
 
-def validate_MAPE(val1_loader, val2_loader, model):
-    
+def validate_RINE(val1_loader, val2_loader, model):
+    '''Relative infinity norm error (RINE)'''
     error1 = 0
     c = 0    
     for batch_idx, (data, target) in enumerate(val1_loader):
@@ -177,6 +177,7 @@ def validate_MAPE(val1_loader, val2_loader, model):
     return error1.item(), error2.item()
 
 def validate_PSNR(val1_loader, val2_loader, model):
+    '''Peak signal-to-noise ratio (PSNR)'''
     # install torchmetrics first: conda install -c conda-forge torchmetrics
     from torchmetrics import PeakSignalNoiseRatio
     psnr = PeakSignalNoiseRatio().to(args.device)
@@ -202,6 +203,59 @@ def validate_PSNR(val1_loader, val2_loader, model):
 
     return error1.item(), error2.item()
 
+
+def validate_SSIM(val1_loader, val2_loader, model):
+    '''Structual Similarity Index Measure (SSIM)'''
+    from torchmetrics import StructuralSimilarityIndexMeasure
+    ssim = StructuralSimilarityIndexMeasure().to(args.device)
+    
+    error1 = 0
+    c = 0      
+    for batch_idx, (data, target) in enumerate(val1_loader):
+        data, target = data.to(args.device).float(), target.to(args.device).float()
+        output = model(data) 
+    
+        error1 = ssim(target, output)
+    error1 = ssim.compute()
+
+    ssim = StructuralSimilarityIndexMeasure().to(args.device)
+    error2 = 0
+    c = 0    
+    for batch_idx, (data, target) in enumerate(val2_loader):
+        data, target = data.to(args.device).float(), target.to(args.device).float()
+        output = model(data) 
+    
+        error2 += ssim(target, output)
+    error2 = ssim.compute()
+
+    return error1.item(), error2.item()
+
+
+def validate_multi_scale_SSIM(val1_loader, val2_loader, model):
+    '''Multi-Scale Structual Similarity Index Measure (multi-scale SSIM)'''
+    from torchmetrics import MultiScaleStructuralSimilarityIndexMeasure
+    ms_ssim = MultiScaleStructuralSimilarityIndexMeasure().to(args.device)
+    
+    error1 = 0
+    c = 0      
+    for batch_idx, (data, target) in enumerate(val1_loader):
+        data, target = data.to(args.device).float(), target.to(args.device).float()
+        output = model(data) 
+    
+        error1 = ms_ssim(target, output)
+    error1 = ms_ssim.compute()
+
+    ms_ssim = MultiScaleStructuralSimilarityIndexMeasure().to(args.device)
+    error2 = 0
+    c = 0    
+    for batch_idx, (data, target) in enumerate(val2_loader):
+        data, target = data.to(args.device).float(), target.to(args.device).float()
+        output = model(data) 
+    
+        error2 += ms_ssim(target, output)
+    error2 = ms_ssim.compute()
+
+    return error1.item(), error2.item()
 
 
 def validate_viz(val1_loader, val2_loader, model):
@@ -255,16 +309,19 @@ def validate_viz(val1_loader, val2_loader, model):
 error1, error2 = validate_mse(test1_loader, test2_loader, model)
 print("MSE --- test1 error: %.8f, test2 error: %.8f" % (error1, error2))      
             
-error1, error2  = validate_MSPE(test1_loader, test2_loader, model)
-print("MSPE --- test1 error: %.5f, test2 error: %.5f" % (error1*100, error2*100))      
+error1, error2  = validate_RFNE(test1_loader, test2_loader, model)
+print("RFNE --- test1 error: %.5f, test2 error: %.5f" % (error1*100, error2*100))      
 
-error1, error2 = validate_MAPE(test1_loader, test2_loader, model)
-print("MAPE --- test1 error: %.5f, test2 error: %.5f" % (error1*100, error2*100))       
+error1, error2 = validate_RINE(test1_loader, test2_loader, model)
+print("RINE --- test1 error: %.5f, test2 error: %.5f" % (error1*100, error2*100))       
 
 error1, error2 = validate_PSNR(test1_loader, test2_loader, model)
 print("PSNR --- test1 error: %.5f, test2 error: %.5f" % (error1, error2)) 
 
+error1, error2 = validate_SSIM(test1_loader, test2_loader, model)
+print("SSIM --- test1 error: %.5f, test2 error: %.5f" % (error1, error2)) 
+
+error1, error2 = validate_multi_scale_SSIM(test1_loader, test2_loader, model)
+print("Multi-scale SSIM --- test1 error: %.5f, test2 error: %.5f" % (error1, error2)) 
+
 validate_viz(test1_loader, test2_loader, model)
-    
-
-
