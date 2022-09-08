@@ -46,5 +46,8 @@
 * python train.py --data sst4 --model subpixelCNN --upscale_factor 4 --lr 0.0005 --batch_size 32 --epochs 300
 * python eval.py --data sst4 --model_path results/model_subpixelCNN_sst4_0.0005_5544.npy 
 
-* python train.py --data rbc8 --model subpixelCNN --upscale_factor 8 --lr 0.0005 --batch_size 4 --epochs 300
-* python eval.py --data rbc8 --model_path results/model_subpixelCNN_rbc8_0.0005_5544.npy 
+* python train.py --data sst8 --model subpixelCNN --upscale_factor 8 --lr 0.0005 --batch_size 4 --epochs 300
+* python eval.py --data sst8 --model_path results/model_subpixelCNN_sst8_0.0005_5544.npy 
+
+
+

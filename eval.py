@@ -202,9 +202,43 @@ def validate_PSNR(val1_loader, val2_loader, model):
 
     return error1.item(), error2.item()
 
+def plot_nice_viz(img, data, save_as):
+    
+    
+    from matplotlib import cm
+    from matplotlib.colors import ListedColormap,LinearSegmentedColormap
+    
+    if data == 'isoflow':
+    
+        top = cm.get_cmap('Oranges_r', 128) # r means reversed version
+        bottom = cm.get_cmap('Blues', 128)# combine it all
+        newcolors = np.vstack((top(np.linspace(0, 1, 128)),
+                               bottom(np.linspace(0, 1, 128))))# create a new colormaps with a name of OrangeBlue
+        orange_blue = ListedColormap(newcolors, name='OrangeBlue')   
+        cmap_new =   orange_blue     
+        img = img[3]
+    
+    
+    from matplotlib import pyplot as plt
+    import cmocean
+    vmin = img.min()
+    vmax = img.max()        
+    plt.figure(figsize=(5,5))
+    plt.imshow(img, cmap=orange_blue, alpha=1, vmin=vmin, vmax=vmax)    
+    plt.xticks([])
+    plt.yticks([])
+    plt.tight_layout()
+
+    sub_axes = plt.axes([.04, .67, .3, .3]) 
+    sub_axes.imshow(img[50:110,50:110], cmap=orange_blue, alpha=1, vmin=vmin, vmax=vmax)  
+    sub_axes.axes.xaxis.set_visible(False)
+    sub_axes.axes.yaxis.set_visible(False)    
+
+    plt.savefig(save_as + '_' + str(data) + '.pdf')
+       
 
 
-def validate_viz(val1_loader, val2_loader, model):
+def validate_viz(val1_loader, val2_loader, model, data):
     for batch_idx, (data, target) in enumerate(val1_loader):
         data, target = data.to(args.device).float(), target.to(args.device).float()
         output = model(data) 
@@ -230,6 +264,10 @@ def validate_viz(val1_loader, val2_loader, model):
     plt.savefig('interplolation.pdf')
 
 
+    plot_nice_viz(target, data, save_as='groundtruth')
+    plot_nice_viz(target, data, save_as='reconstructed')
+
+
     for batch_idx, (data, target) in enumerate(val2_loader):
         data, target = data.to(args.device).float(), target.to(args.device).float()
         output = model(data) 
@@ -251,6 +289,8 @@ def validate_viz(val1_loader, val2_loader, model):
     plt.savefig('extrapolation.pdf')
 
 
+
+
 # =============== validate ======================
 error1, error2 = validate_mse(test1_loader, test2_loader, model)
 print("MSE --- test1 error: %.8f, test2 error: %.8f" % (error1, error2))      
@@ -261,7 +301,7 @@ print("MSPE --- test1 error: %.5f, test2 error: %.5f" % (error1*100, error2*100)
 error1, error2 = validate_MAPE(test1_loader, test2_loader, model)
 print("MAPE --- test1 error: %.5f, test2 error: %.5f" % (error1*100, error2*100))       
 
-error1, error2 = validate_PSNR(test1_loader, test2_loader, model)
+error1, error2 = validate_PSNR(test1_loader, test2_loader, model, data=args.data)
 print("PSNR --- test1 error: %.5f, test2 error: %.5f" % (error1, error2)) 
 
 validate_viz(test1_loader, test2_loader, model)
