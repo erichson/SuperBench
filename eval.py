@@ -323,10 +323,10 @@ print("RINE --- test1 error: %.5f, test2 error: %.5f" % (error1*100, error2*100)
 error1, error2 = validate_PSNR(test1_loader, test2_loader, model)
 print("PSNR --- test1 error: %.5f, test2 error: %.5f" % (error1, error2)) 
 
-error1, error2 = validate_SSIM(test1_loader, test2_loader, model)
-print("SSIM --- test1 error: %.5f, test2 error: %.5f" % (error1, error2)) 
+#error1, error2 = validate_SSIM(test1_loader, test2_loader, model)
+#print("SSIM --- test1 error: %.5f, test2 error: %.5f" % (error1, error2)) 
 
-error1, error2 = validate_multi_scale_SSIM(test1_loader, test2_loader, model)
-print("Multi-scale SSIM --- test1 error: %.5f, test2 error: %.5f" % (error1, error2)) 
+# error1, error2 = validate_multi_scale_SSIM(test1_loader, test2_loader, model)
+# print("Multi-scale SSIM --- test1 error: %.5f, test2 error: %.5f" % (error1, error2)) 
 
 validate_viz(test1_loader, test2_loader, model)
