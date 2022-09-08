@@ -320,7 +320,7 @@ print("RFNE --- test1 error: %.5f, test2 error: %.5f" % (error1*100, error2*100)
 error1, error2 = validate_RINE(test1_loader, test2_loader, model)
 print("RINE --- test1 error: %.5f, test2 error: %.5f" % (error1*100, error2*100))       
 
-error1, error2 = validate_PSNR(test1_loader, test2_loader, model, data=args.data)
+error1, error2 = validate_PSNR(test1_loader, test2_loader, model)
 print("PSNR --- test1 error: %.5f, test2 error: %.5f" % (error1, error2)) 
 
 error1, error2 = validate_SSIM(test1_loader, test2_loader, model)
