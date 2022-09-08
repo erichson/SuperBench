@@ -109,8 +109,8 @@ def validate_mse(val1_loader, val2_loader, model):
     return error1.item(), error2.item()
 
 
-def validate_MSPE(val1_loader, val2_loader, model):
-
+def validate_RFNE(val1_loader, val2_loader, model):
+    '''Relative Frobenius norm error (RFNE)'''
     error1 = 0
     c = 0    
     for batch_idx, (data, target) in enumerate(val1_loader):
@@ -143,8 +143,8 @@ def validate_MSPE(val1_loader, val2_loader, model):
 
 
 
-def validate_MAPE(val1_loader, val2_loader, model):
-    
+def validate_RINE(val1_loader, val2_loader, model):
+    '''Relative infinity norm error (RINE)'''
     error1 = 0
     c = 0    
     for batch_idx, (data, target) in enumerate(val1_loader):
@@ -177,6 +177,7 @@ def validate_MAPE(val1_loader, val2_loader, model):
     return error1.item(), error2.item()
 
 def validate_PSNR(val1_loader, val2_loader, model):
+    '''Peak signal-to-noise ratio (PSNR)'''
     # install torchmetrics first: conda install -c conda-forge torchmetrics
     from torchmetrics import PeakSignalNoiseRatio
     psnr = PeakSignalNoiseRatio().to(args.device)
@@ -202,43 +203,61 @@ def validate_PSNR(val1_loader, val2_loader, model):
 
     return error1.item(), error2.item()
 
-def plot_nice_viz(img, data, save_as):
+def validate_SSIM(val1_loader, val2_loader, model):
+    '''Structual Similarity Index Measure (SSIM)'''
+    from torchmetrics import StructuralSimilarityIndexMeasure
+    ssim = StructuralSimilarityIndexMeasure().to(args.device)
     
+    error1 = 0
+    c = 0      
+    for batch_idx, (data, target) in enumerate(val1_loader):
+        data, target = data.to(args.device).float(), target.to(args.device).float()
+        output = model(data) 
     
-    from matplotlib import cm
-    from matplotlib.colors import ListedColormap,LinearSegmentedColormap
-    
-    if data == 'isoflow':
-    
-        top = cm.get_cmap('Oranges_r', 128) # r means reversed version
-        bottom = cm.get_cmap('Blues', 128)# combine it all
-        newcolors = np.vstack((top(np.linspace(0, 1, 128)),
-                               bottom(np.linspace(0, 1, 128))))# create a new colormaps with a name of OrangeBlue
-        orange_blue = ListedColormap(newcolors, name='OrangeBlue')   
-        cmap_new =   orange_blue     
-        img = img[3]
-    
-    
-    from matplotlib import pyplot as plt
-    import cmocean
-    vmin = img.min()
-    vmax = img.max()        
-    plt.figure(figsize=(5,5))
-    plt.imshow(img, cmap=orange_blue, alpha=1, vmin=vmin, vmax=vmax)    
-    plt.xticks([])
-    plt.yticks([])
-    plt.tight_layout()
+        error1 = ssim(target, output)
+    error1 = ssim.compute()
 
-    sub_axes = plt.axes([.04, .67, .3, .3]) 
-    sub_axes.imshow(img[50:110,50:110], cmap=orange_blue, alpha=1, vmin=vmin, vmax=vmax)  
-    sub_axes.axes.xaxis.set_visible(False)
-    sub_axes.axes.yaxis.set_visible(False)    
+    ssim = StructuralSimilarityIndexMeasure().to(args.device)
+    error2 = 0
+    c = 0    
+    for batch_idx, (data, target) in enumerate(val2_loader):
+        data, target = data.to(args.device).float(), target.to(args.device).float()
+        output = model(data) 
+    
+        error2 += ssim(target, output)
+    error2 = ssim.compute()
 
-    plt.savefig(save_as + '_' + str(data) + '.pdf')
-       
+    return error1.item(), error2.item()
 
 
-def validate_viz(val1_loader, val2_loader, model, data):
+def validate_multi_scale_SSIM(val1_loader, val2_loader, model):
+    '''Multi-Scale Structual Similarity Index Measure (multi-scale SSIM)'''
+    from torchmetrics import MultiScaleStructuralSimilarityIndexMeasure
+    ms_ssim = MultiScaleStructuralSimilarityIndexMeasure().to(args.device)
+    
+    error1 = 0
+    c = 0      
+    for batch_idx, (data, target) in enumerate(val1_loader):
+        data, target = data.to(args.device).float(), target.to(args.device).float()
+        output = model(data) 
+    
+        error1 = ms_ssim(target, output)
+    error1 = ms_ssim.compute()
+
+    ms_ssim = MultiScaleStructuralSimilarityIndexMeasure().to(args.device)
+    error2 = 0
+    c = 0    
+    for batch_idx, (data, target) in enumerate(val2_loader):
+        data, target = data.to(args.device).float(), target.to(args.device).float()
+        output = model(data) 
+    
+        error2 += ms_ssim(target, output)
+    error2 = ms_ssim.compute()
+
+    return error1.item(), error2.item()
+
+
+def validate_viz(val1_loader, val2_loader, model):
     for batch_idx, (data, target) in enumerate(val1_loader):
         data, target = data.to(args.device).float(), target.to(args.device).float()
         output = model(data) 
@@ -295,16 +314,19 @@ def validate_viz(val1_loader, val2_loader, model, data):
 error1, error2 = validate_mse(test1_loader, test2_loader, model)
 print("MSE --- test1 error: %.8f, test2 error: %.8f" % (error1, error2))      
             
-error1, error2  = validate_MSPE(test1_loader, test2_loader, model)
-print("MSPE --- test1 error: %.5f, test2 error: %.5f" % (error1*100, error2*100))      
+error1, error2  = validate_RFNE(test1_loader, test2_loader, model)
+print("RFNE --- test1 error: %.5f, test2 error: %.5f" % (error1*100, error2*100))      
 
-error1, error2 = validate_MAPE(test1_loader, test2_loader, model)
-print("MAPE --- test1 error: %.5f, test2 error: %.5f" % (error1*100, error2*100))       
+error1, error2 = validate_RINE(test1_loader, test2_loader, model)
+print("RINE --- test1 error: %.5f, test2 error: %.5f" % (error1*100, error2*100))       
 
 error1, error2 = validate_PSNR(test1_loader, test2_loader, model, data=args.data)
 print("PSNR --- test1 error: %.5f, test2 error: %.5f" % (error1, error2)) 
 
+error1, error2 = validate_SSIM(test1_loader, test2_loader, model)
+print("SSIM --- test1 error: %.5f, test2 error: %.5f" % (error1, error2)) 
+
+error1, error2 = validate_multi_scale_SSIM(test1_loader, test2_loader, model)
+print("Multi-scale SSIM --- test1 error: %.5f, test2 error: %.5f" % (error1, error2)) 
+
 validate_viz(test1_loader, test2_loader, model)
-    
-
-
