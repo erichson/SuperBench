@@ -137,7 +137,33 @@ def getData(name, train_bs=128, test_bs=256):
        test2_loader = DataLoader(TensorDataset(D[0], D[2]), batch_size=train_bs, shuffle=False)
        D = torch.load('datasets/sst/sst_val_2.npy') 
        val2_loader = DataLoader(TensorDataset(D[0], D[2]), batch_size=train_bs, shuffle=False)
-       return train_loader, test1_loader, val1_loader, test2_loader, val2_loader                  
+       return train_loader, test1_loader, val1_loader, test2_loader, val2_loader   
+
+    elif name == 'sst4d':
+       D = torch.load('datasets/sst/sst_train.npy') 
+       train_loader = DataLoader(TensorDataset(D[1], D[2]), batch_size=train_bs, shuffle=True)
+       D = torch.load('datasets/sstd/sst_test_1d.npy') 
+       test1_loader = DataLoader(TensorDataset(D[1], D[2]), batch_size=train_bs, shuffle=False)
+       D = torch.load('datasets/sstd/sst_val_1d.npy') 
+       val1_loader = DataLoader(TensorDataset(D[1], D[2]), batch_size=train_bs, shuffle=False)
+       D = torch.load('datasets/sstd/sst_test_2d.npy') 
+       test2_loader = DataLoader(TensorDataset(D[1], D[2]), batch_size=train_bs, shuffle=False)
+       D = torch.load('datasets/sstd/sst_val_2d.npy') 
+       val2_loader = DataLoader(TensorDataset(D[1], D[2]), batch_size=train_bs, shuffle=False)
+       return train_loader, test1_loader, val1_loader, test2_loader, val2_loader   
+
+    elif name == 'sst8d':
+       D = torch.load('datasets/sst/sst_train.npy') 
+       train_loader = DataLoader(TensorDataset(D[0], D[2]), batch_size=train_bs, shuffle=True)
+       D = torch.load('datasets/sstd/sst_test_1d.npy') 
+       test1_loader = DataLoader(TensorDataset(D[0], D[2]), batch_size=train_bs, shuffle=False)
+       D = torch.load('datasets/sstd/sst_val_1d.npy') 
+       val1_loader = DataLoader(TensorDataset(D[0], D[2]), batch_size=train_bs, shuffle=False)
+       D = torch.load('datasets/sstd/sst_test_2d.npy') 
+       test2_loader = DataLoader(TensorDataset(D[0], D[2]), batch_size=train_bs, shuffle=False)
+       D = torch.load('datasets/sstd/sst_val_2d.npy') 
+       val2_loader = DataLoader(TensorDataset(D[0], D[2]), batch_size=train_bs, shuffle=False)
+       return train_loader, test1_loader, val1_loader, test2_loader, val2_loader                 
 
     else:
         raise ValueError('dataset {} not recognized'.format(name))

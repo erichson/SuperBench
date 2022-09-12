@@ -13,14 +13,14 @@ import torch.nn.init as init
 
 
 class subpixelCNN(nn.Module):
-    def __init__(self, upscale_factor=4):
+    def __init__(self, upscale_factor=4, width=1):
         super(subpixelCNN, self).__init__()
 
         self.relu = nn.ReLU()
-        self.conv1 = nn.Conv2d(1, 128, (5, 5), (1, 1), (2, 2))
-        self.conv2 = nn.Conv2d(128, 128, (3, 3), (1, 1), (1, 1))
-        self.conv3 = nn.Conv2d(128, 64, (3, 3), (1, 1), (1, 1))
-        self.conv4 = nn.Conv2d(64, upscale_factor ** 2, (3, 3), (1, 1), (1, 1))
+        self.conv1 = nn.Conv2d(1, 128*width, (5, 5), (1, 1), (2, 2))
+        self.conv2 = nn.Conv2d(128*width, 128*width, (3, 3), (1, 1), (1, 1))
+        self.conv3 = nn.Conv2d(128*width, 64*width, (3, 3), (1, 1), (1, 1))
+        self.conv4 = nn.Conv2d(64*width, upscale_factor ** 2, (3, 3), (1, 1), (1, 1))
         self.pixel_shuffle = nn.PixelShuffle(upscale_factor)
 
         self._initialize_weights()

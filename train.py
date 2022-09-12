@@ -11,6 +11,7 @@ from src.models import *
 parser = argparse.ArgumentParser(description='training parameters')
 parser.add_argument('--data', type=str, default='sst4', help='dataset')
 parser.add_argument('--model', type=str, default='shallowDecoder', help='model')
+parser.add_argument('--width', type=int, default=1, help='multiply number of channels')
 parser.add_argument('--epochs', type=int, default=300, help='max epochs')
 parser.add_argument('--device', type=str, default=torch.device('cuda' if torch.cuda.is_available() else 'cpu'), help='computing device')
 parser.add_argument('--batch_size', type=int, default=64, help='batch size')
@@ -90,7 +91,7 @@ elif args.data == 'sst8':
     
 model_list = {
         'shallowDecoder': shallowDecoder(output_size, upscale_factor=args.upscale_factor),
-        'subpixelCNN': subpixelCNN(upscale_factor=args.upscale_factor)
+        'subpixelCNN': subpixelCNN(upscale_factor=args.upscale_factor, width=args.width)
 }
 
 model = model_list[args.model].to(args.device)
