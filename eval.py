@@ -92,7 +92,7 @@ print('************')
 #******************************************************************************
 # Validate
 #******************************************************************************
-criterion = nn.MSELoss().to(args.device)
+criterion = nn.MSELoss()
 
 def validate_mse(val1_loader, val2_loader, model):
     c = 0
@@ -100,6 +100,10 @@ def validate_mse(val1_loader, val2_loader, model):
     for batch_idx, (data, target) in enumerate(val1_loader):
         data, target = data.to(args.device).float(), target.to(args.device).float()
         output = model(data) 
+
+        target = target.data.cpu()
+        output = output.data.cpu()
+
         error1 += criterion(output, target) * data.shape[0]
         c += data.shape[0]
     error1 /= c
@@ -109,8 +113,13 @@ def validate_mse(val1_loader, val2_loader, model):
     for batch_idx, (data, target) in enumerate(val2_loader):
         data, target = data.to(args.device).float(), target.to(args.device).float()
         output = model(data) 
+
+        target = target.data.cpu()
+        output = output.data.cpu()
+        
         error2 += criterion(output, target) * data.shape[0]
         c += data.shape[0]
+
     error2 /= c
 
     return error1.item(), error2.item()
@@ -187,24 +196,30 @@ def validate_PSNR(val1_loader, val2_loader, model):
     '''Peak signal-to-noise ratio (PSNR)'''
     # install torchmetrics first: conda install -c conda-forge torchmetrics
     from torchmetrics import PeakSignalNoiseRatio
-    psnr = PeakSignalNoiseRatio().to(args.device)
+    psnr = PeakSignalNoiseRatio()
     
     error1 = 0
     c = 0      
     for batch_idx, (data, target) in enumerate(val1_loader):
         data, target = data.to(args.device).float(), target.to(args.device).float()
         output = model(data) 
-    
+        
+        target = target.data.cpu()
+        output = output.data.cpu()
+        
         error1 = psnr(target, output)
     error1 = psnr.compute()
 
-    psnr = PeakSignalNoiseRatio().to(args.device)
+    psnr = PeakSignalNoiseRatio()
     error2 = 0
     c = 0    
     for batch_idx, (data, target) in enumerate(val2_loader):
         data, target = data.to(args.device).float(), target.to(args.device).float()
         output = model(data) 
-    
+        
+        target = target.data.cpu()
+        output = output.data.cpu()    
+        
         error2 += psnr(target, output)
     error2 = psnr.compute()
 
@@ -213,24 +228,30 @@ def validate_PSNR(val1_loader, val2_loader, model):
 def validate_SSIM(val1_loader, val2_loader, model):
     '''Structual Similarity Index Measure (SSIM)'''
     from torchmetrics import StructuralSimilarityIndexMeasure
-    ssim = StructuralSimilarityIndexMeasure().to(args.device)
+    ssim = StructuralSimilarityIndexMeasure()
     
     error1 = 0
     c = 0      
     for batch_idx, (data, target) in enumerate(val1_loader):
         data, target = data.to(args.device).float(), target.to(args.device).float()
         output = model(data) 
-    
+        
+        target = target.data.cpu()
+        output = output.data.cpu()    
+        
         error1 = ssim(target, output)
     error1 = ssim.compute()
 
-    ssim = StructuralSimilarityIndexMeasure().to(args.device)
+    ssim = StructuralSimilarityIndexMeasure()
     error2 = 0
     c = 0    
     for batch_idx, (data, target) in enumerate(val2_loader):
         data, target = data.to(args.device).float(), target.to(args.device).float()
         output = model(data) 
-    
+        
+        target = target.data.cpu()
+        output = output.data.cpu()
+        
         error2 += ssim(target, output)
     error2 = ssim.compute()
 
@@ -240,24 +261,30 @@ def validate_SSIM(val1_loader, val2_loader, model):
 def validate_multi_scale_SSIM(val1_loader, val2_loader, model):
     '''Multi-Scale Structual Similarity Index Measure (multi-scale SSIM)'''
     from torchmetrics import MultiScaleStructuralSimilarityIndexMeasure
-    ms_ssim = MultiScaleStructuralSimilarityIndexMeasure().to(args.device)
+    ms_ssim = MultiScaleStructuralSimilarityIndexMeasure()
     
     error1 = 0
     c = 0      
     for batch_idx, (data, target) in enumerate(val1_loader):
         data, target = data.to(args.device).float(), target.to(args.device).float()
         output = model(data) 
-    
+        
+        target = target.data.cpu()
+        output = output.data.cpu()    
+        
         error1 = ms_ssim(target, output)
     error1 = ms_ssim.compute()
 
-    ms_ssim = MultiScaleStructuralSimilarityIndexMeasure().to(args.device)
+    ms_ssim = MultiScaleStructuralSimilarityIndexMeasure()
     error2 = 0
     c = 0    
     for batch_idx, (data, target) in enumerate(val2_loader):
         data, target = data.to(args.device).float(), target.to(args.device).float()
         output = model(data) 
-    
+        
+        target = target.data.cpu()
+        output = output.data.cpu()    
+        
         error2 += ms_ssim(target, output)
     error2 = ms_ssim.compute()
 
@@ -330,10 +357,10 @@ print("RINE --- test1 error: %.5f, test2 error: %.5f" % (error1*100, error2*100)
 error1, error2 = validate_PSNR(test1_loader, test2_loader, model)
 print("PSNR --- test1 error: %.5f, test2 error: %.5f" % (error1, error2)) 
 
-#error1, error2 = validate_SSIM(test1_loader, test2_loader, model)
-#print("SSIM --- test1 error: %.5f, test2 error: %.5f" % (error1, error2)) 
+error1, error2 = validate_SSIM(test1_loader, test2_loader, model)
+print("SSIM --- test1 error: %.5f, test2 error: %.5f" % (error1, error2)) 
 
-# error1, error2 = validate_multi_scale_SSIM(test1_loader, test2_loader, model)
-# print("Multi-scale SSIM --- test1 error: %.5f, test2 error: %.5f" % (error1, error2)) 
+error1, error2 = validate_multi_scale_SSIM(test1_loader, test2_loader, model)
+print("Multi-scale SSIM --- test1 error: %.5f, test2 error: %.5f" % (error1, error2)) 
 
-#validate_viz(test1_loader, test2_loader, model)
+validate_viz(test1_loader, test2_loader, model)
