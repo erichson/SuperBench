@@ -1,5 +1,6 @@
 import torch
 from torch.utils.data import Dataset, DataLoader, TensorDataset
+from src.data_loader import get_data_loader
 
 #******************************************************************************
 # Read in data
@@ -165,13 +166,22 @@ def getData(name, train_bs=128, test_bs=256):
        val2_loader = DataLoader(TensorDataset(D[0], D[2]), batch_size=train_bs, shuffle=False)
        return train_loader, test1_loader, val1_loader, test2_loader, val2_loader                 
 
+    elif name == 'era5':
+        train_path = '/global/cfs/cdirs/m4134/www/regional/superbench/train'
+        train_loader = get_data_loader(train_path, batch_size=train_bs, train=True)
+        val_path = '/global/cfs/cdirs/m4134/www/regional/superbench/valid'
+        val1_loader = get_data_loader(val_path, batch_size=train_bs, train=False)
+        test_path = '/global/cfs/cdirs/m4134/www/regional/superbench/test'
+        test1_loader = get_data_loader(test_path, batch_size=train_bs, train=False)
+        val_path = '/global/cfs/cdirs/m4134/www/regional/superbench/valid'
+        val2_loader = get_data_loader(val_path, batch_size=train_bs, train=False)
+        test_path = '/global/cfs/cdirs/m4134/www/regional/superbench/test'
+        test2_loader = get_data_loader(test_path, batch_size=train_bs, train=False)
+        return train_loader, test1_loader, val1_loader, test2_loader, val2_loader                 
+
+
     else:
         raise ValueError('dataset {} not recognized'.format(name))
 
 
 
-
-
-
-    
-    
