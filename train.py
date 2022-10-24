@@ -20,6 +20,8 @@ parser.add_argument('--wd', type=float, default=0, help='weight decay')
 parser.add_argument('--seed', type=int, default=5544, help='random seed')
 
 parser.add_argument('--upscale_factor', type=int, default=4, help='upscale factor')
+parser.add_argument('--in_channels', type=int, default=3, help='num of input channels')
+parser.add_argument('--out_channels', type=int, default=3, help='num of output channels')
 
 
 args = parser.parse_args()
@@ -88,9 +90,14 @@ elif args.data == 'sst4':
 elif args.data == 'sst8':
     input_size = [32, 64] 
     output_size = [256, 512]      
+
+elif args.data == 'era5':
+    input_size = [360, 360]
+    output_size = [360, 360]
     
 model_list = {
         'shallowDecoder': shallowDecoder(output_size, upscale_factor=args.upscale_factor),
+        'shallowDecoderMultiChan': shallowDecoder(output_size, upscale_factor=args.upscale_factor, in_channels=args.in_channels, out_channels=args.out_channels),
         'subpixelCNN': subpixelCNN(upscale_factor=args.upscale_factor, width=args.width)
 }
 
@@ -132,21 +139,21 @@ def validate(val1_loader, val2_loader, model):
     mse1 = 0
     mse2 = 0
     c = 0
-    for batch_idx, (data, target) in enumerate(val1_loader):
-        data, target = data.to(args.device).float(), target.to(args.device).float()
-        output = model(data) 
-        mse1 += criterion(output, target) * data.shape[0]
-        c += data.shape[0]
+    with torch.no_grad():
+        for batch_idx, (data, target) in enumerate(val1_loader):
+            data, target = data.to(args.device).float(), target.to(args.device).float()
+            output = model(data) 
+            mse1 += criterion(output, target) * data.shape[0]
+            c += data.shape[0]
     mse1 /= c
-
     c = 0
-    for batch_idx, (data, target) in enumerate(val2_loader):
-        data, target = data.to(args.device).float(), target.to(args.device).float()
-        output = model(data) 
-        mse2 = criterion(output, target) * data.shape[0]
-        c += data.shape[0]
+    with torch.no_grad():
+        for batch_idx, (data, target) in enumerate(val2_loader):
+            data, target = data.to(args.device).float(), target.to(args.device).float()
+            output = model(data) 
+            mse2 += criterion(output, target) * data.shape[0]
+            c += data.shape[0]
     mse2 /= c
-
 
     return mse1.item(), mse2.item()
 
@@ -178,8 +185,8 @@ for epoch in range(args.epochs):
     print("epoch: %s, val1 error: %.10f, val2 error: %.10f" % (epoch, mse1, mse2))      
             
 
-    if (mse1+mse2) <= best_val:
-        best_val = mse1+mse2
-        torch.save(model, 'results/model_' + str(args.model) + '_' + str(args.data) + '_' + str(args.lr) + '_' + str(args.seed) + '.npy' )
+#    if (mse1+mse2) <= best_val:
+#        best_val = mse1+mse2
+#        torch.save(model, 'results/model_' + str(args.model) + '_' + str(args.data) + '_' + str(args.lr) + '_' + str(args.seed) + '.npy' )
 
 
