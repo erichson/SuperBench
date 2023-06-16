@@ -4,20 +4,28 @@
 
 SuperBench is a benchmark dataset and evaluation framework for super-resolution (SR) tasks in scientific domains. It provides high-quality datasets and baseline models for evaluating and comparing SR methods in various scientific applications.
 
-<figure style="width: 75%;" align='center'>
+<!-- <figure style="width: 70%;">
   <img src="images/overview.png" alt="Figure Description">
   <figcaption style="text-align: center;">An overview of super-resolution for weather data</figcaption>
-</figure>
+</figure> -->
+
+<p align="center">
+    <img width=90%" src="images/overview.png">
+</p>
+<!-- <p style="text-align: center;">An overview of super-resolution for weather data</p> -->
+
+<center>An overview of super-resolution for weather data</center>
 
 ## Features
 
 - Diverse datasets: SuperBench includes high-resolution fluid flow (left), cosmology (right), and weather datasets (middle) with dimensions up to $2048\times2048$. 
 
-<div align='center'>
-    <img src="images/nskt_snapshot_intro.png" alt="Image 1" width="150" style="display:inline-block;">
-    <img src="images/climate_snapshot_intro.png" alt="Image 2" width="300" style="display:inline-block;">
-    <img src="images/cosmo_snapshot_intro.png" alt="Image 3" width="150" style="display:inline-block;">
-</div>
+
+<p align="center" width="100%">
+    <img width="22%" src="images/nskt_snapshot_intro.png">
+    <img width="44%" src="images/climate_snapshot_intro.png">
+    <img width="22%" src="images/cosmo_snapshot_intro.png">
+</p>
 
 - Evaluation metrics: The framework provides comprehensive evaluation metrics for assessing SR performance, including: 
     - Pixel-level difference
@@ -32,17 +40,32 @@ We have evaluated several state-of-the-art SR models on the SuperBench dataset a
 
 ### Baseline Performance
 
-We present the baseline performance of various SR models on weather data with bicubi-downsampling degradation. Figure 1 shows visual comparisons of the baseline model reconstructions against the ground truth high-resolution images. Table 1 provides quantitative evaluation results in terms of RFNE, IN, PSNR and SSIM metrics.
+We present the baseline performance of various SR models on weather data with bicubi-downsampling degradation. The snapshot below shows visual comparisons of the baseline model reconstructions against the ground truth high-resolution images. (a) and (b) are x8 and x16 up-sampling tasks, respectively. The table below provides quantitative evaluation results for weather data in terms of RFNE, IN, PSNR and SSIM metrics.
 
-<figure style="width: 85%;" align='center'>
-  <img src="images/comp_weather_bicubic_snapshot.png" alt="Figure Description">
-  <figcaption style="text-align: left;">Figure 1: An example snasphot of SR results on weather data. (a) and (b) are x8 and x16 up-sampling tasks, respectively.</figcaption>
-</figure>
+<!-- <figure style="width: 85%;">
+    <img src="images/comp_weather_bicubic_snapshot.png" alt="Figure Description">
+    <figcaption style="text-align: center;">Figure 1: An example snapshot of baseline performance on weather data.</figcaption>
+</figure> -->
 
-<figure style="width: 80%;" align='center'>
+<p align="center">
+    <img width=95%" src="images/comp_weather_bicubic_snapshot.png">
+</p>
+
+<!-- <p style="text-align: center;">Figure 1: An example snapshot of baseline performance on weather data.</p> -->
+
+
+<!-- <figure style="width: 75%;">
     <figcaption style="text-align: center;">Table 1: Results for weather data with bicubic down-sampling.</figcaption>
     <img src="images/weather_bicubic.png" alt="Figure Description">
-</figure>
+</figure> -->
+
+<center>Table 1: Results for weather data with bicubic down-sampling.</center> 
+
+<!-- <p style="text-align: center;">Table 1: Results for weather data with bicubic down-sampling.</p> -->
+<p align="center">
+    <img width=85%" src="images/weather_bicubic.png">
+</p>
+
 
 ### Additional Results
 
