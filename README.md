@@ -1,55 +1,91 @@
-# SuperBench
-SuperBench: A Super-Resolution Benchmark Dataset for Scientific Machine Learning
+# SuperBench: A Super-Resolution Benchmark Dataset for Scientific Machine Learning
 
-# Training and Evaluation Details
+SuperBench is a benchmark dataset and evaluation framework for super-resolution (SR) tasks in scientific domains. It provides high-quality datasets and baseline models for evaluating and comparing SR methods in various scientific applications.
 
-## Train ShallowDecoder
+## Features
 
-* python train.py --data doublegyre4 --model shallowDecoder --upscale_factor 4  --lr 0.001 --batch_size 4 --epochs 500
-* python eval.py --data doublegyre4 --model_path results/model_shallowDecoder_doublegyre4_0.001_5544.npy 
+- Diverse datasets: SuperBench includes fluid flow, cosmology, and weather datasets with dimensions up to $2048\times2048$.
+- Evaluation metrics: The framework provides comprehensive evaluation metrics for assessing SR performance, including: 
+    - Pixel-level difference
+    - Human-level perception
+    - Domain-motivated error metrics
+- Baseline models: Pre-trained baseline models are provided to facilitate comparison with state-of-the-art methods.
+- Extensible framework: SuperBench is designed to be easily extendable, allowing the inclusion of new datasets and baseline models.
 
-* python train.py --data doublegyre8 --model shallowDecoder --upscale_factor 8 --lr 0.0005 --batch_size 4 --epochs 500
-* python eval.py --data doublegyre8 --model_path results/model_shallowDecoder_doublegyre8_0.0005_5544.npy 
+## Getting Started
+
+### Installation
+
+To use SuperBench, follow these steps:
+
+1. Clone the repository:
+
+```shell
+git clone https://github.com/erichson/SuperBench.git
+```
+
+2. Install the required dependencies:
+```shell
+pip install -r requirements.txt
+```
+
+### Usage
+
+1. Download the [SuperBench](https://portal.nersc.gov/project/dasrepo/superbench/superbench_v1.tar) datasets:
+```shell
+wget https://portal.nersc.gov/project/dasrepo/superbench/superbench_v1.tar
+```
+
+2. Run the baseline models on the datasets:
+```shell
+train.py
+```
+
+3. Evaluate the model performance (details below):
+
+    - Pixel-level difference: 
+        - relative Forbenius norm error (RFNE)
+        - infinity norm (IN)
+        - peak signal-to-noise ratio (PSNR)
+    - Human-level perception: 
+        - structural similarity index measure (SSIM)
+    - Domain-motivated error metrics:
+        - physics errors (e.g., continuity loss)
+        - Anomaly Correlation Coefficient (ACC)
+        - ...
+
+```shell
+# evaluate RFNE, IN, PSNR, SSIM
+eval.py 
+
+# evaluate physics loss
+eval_phy.py 
+```
+
+4. Visualize the SR results
+```shell
+# for bicubic down-sampling
+viz.py  
+
+# for uniform down-sampling and noise
+viz_noise.py
+
+# for low-res simulation data
+viz_lres_sim.py  
+```
+
+For detailed model configurations, please refer to the the folder ```config```.
 
 
-* python train.py --data isoflow4 --model shallowDecoder --upscale_factor 4 --lr 0.001 --batch_size 4 --epochs 500
-* python eval.py --data isoflow4 --model_path results/model_shallowDecoder_isoflow4_0.001_5544.npy 
+### Contribution
 
-* python train.py --data isoflow8 --model shallowDecoder --upscale_factor 8 --lr 0.0001 --batch_size 4 --epochs 500
-* python eval.py --data isoflow8 --model_path results/model_shallowDecoder_isoflow8_0.0001_5544.npy 
+We welcome contributions from the scientific machine learning community. If you would like to contribute to SuperBench, please follow the guidelines in
 
+### Issues and Support
 
-
-## Train Sub-pixel CNN 
-
-* python train.py --data doublegyre4 --model subpixelCNN --upscale_factor 4 --lr 0.001 --batch_size 4 --epochs 300
-* python eval.py --data doublegyre4 --model_path results/model_subpixelCNN_doublegyre4_0.001_5544.npy 
-
-* python train.py --data doublegyre8 --model subpixelCNN --upscale_factor 8 --lr 0.0005 --batch_size 4 --epochs 300
-* python eval.py --data doublegyre8 --model_path results/model_subpixelCNN_doublegyre8_0.0005_5544.npy 
+If you encounter any issues or have any questions, please open an issue on the <u>**GitHub repository**</u>.
 
 
-* python train.py --data isoflow4 --model subpixelCNN --upscale_factor 4 --lr 0.0001 --batch_size 4 --epochs 500 --width 2
-* python eval.py --data isoflow4 --model_path results/model_subpixelCNN_isoflow4_0.0005_5544.npy 
+### License
 
-* python train.py --data isoflow8 --model subpixelCNN --upscale_factor 8 --lr 0.0001 --batch_size 4 --epochs 500 --width 2
-* python eval.py --data isoflow8 --model_path results/model_subpixelCNN_isoflow8_0.0001_5544.npy 
-
-
-* python train.py --data rbc4 --model subpixelCNN --upscale_factor 4 --lr 0.0001 --batch_size 4 --epochs 300
-* python eval.py --data rbc4 --model_path results/model_subpixelCNN_rbc4_0.0001_5544.npy 
-
-* python train.py --data rbc8 --model subpixelCNN --upscale_factor 8 --lr 0.0001 --batch_size 4 --epochs 300
-* python eval.py --data rbc8 --model_path results/model_subpixelCNN_rbc8_0.0001_5544.npy 
-
-
-* python train.py --data sst4 --model subpixelCNN --upscale_factor 4 --lr 0.0004 --batch_size 8 --epochs 300
-* python eval.py --data sst4 --model_path results/model_subpixelCNN_sst4_0.0005_5544.npy 
-
-* python train.py --data sst8 --model subpixelCNN --upscale_factor 8 --lr 0.0004 --batch_size 8 --epochs 300
-* python eval.py --data sst8 --model_path results/model_subpixelCNN_sst8_0.0005_5544.npy 
-
-
-
-export CUDA_VISIBLE_DEVICES=4; python train.py --data sst4 --model subpixelCNN --upscale_factor 4 --lr 0.0006 --batch_size 64 --epochs 300
-
+SuperBench is released under the <u>**MIT License**</u>.
