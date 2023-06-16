@@ -1,5 +1,5 @@
 # SuperBench
-
+SuperBench: A Super-Resolution Benchmark Dataset for Scientific Machine Learning
 
 # Training and Evaluation Details
 
