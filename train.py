@@ -6,7 +6,6 @@ from tqdm import tqdm
 import time
 import matplotlib.pyplot as plt
 from src.models import *
-# from src.data_loader import getData
 from src.data_loader_crop import getData
 from utils import *
 

@@ -9,15 +9,7 @@ import math
 from src.data_loader_crop import getData
 from utils import *
 from src.models import *
-# from src.models.Bicubic import Bicubic
-# from src.models.subpixelCNN import subpixelCNN
-# from src.models.WDSR import WDSR
-# from src.models.SRCNN import SRCNN
-# from src.models.EDSR import EDSR
-# from src.models.SwinIR import SwinIR
-# from src.models.SwinIR_new import SwinIR_new
-# from src.models.SRCNN_new import SRCNN_new
-# from src.models.subpixelCNN_new import subpixelCNN_new
+
 # % --- %
 # Evaluate models
 # % --- %
