@@ -1,5 +1,7 @@
 <img src="images/SuperBench.png" width="550">
 
+---
+
 SuperBench is a benchmark dataset and evaluation framework for super-resolution (SR) tasks in scientific domains. It provides high-quality datasets and baseline models for evaluating and comparing SR methods in various scientific applications.
 
 <figure style="width: 90%;" style="text-align: center;">
