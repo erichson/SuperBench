@@ -1,6 +1,5 @@
 <img src="https://github.com/erichson/SuperBench/blob/main/SuperBench.png" width="550">
 
-# SuperBench: A Super-Resolution Benchmark Dataset for Scientific Machine Learning
 
 SuperBench is a benchmark dataset and evaluation framework for super-resolution (SR) tasks in scientific domains. It provides high-quality datasets and baseline models for evaluating and comparing SR methods in various scientific applications.
 
