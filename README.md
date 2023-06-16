@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/erichson/SuperBench/master/SuperBench.png" width="550">
+<img src="https://github.com/erichson/SuperBench/blob/main/SuperBench.png" width="550">
 
 # SuperBench: A Super-Resolution Benchmark Dataset for Scientific Machine Learning
 
