@@ -4,7 +4,7 @@
 
 SuperBench is a benchmark dataset and evaluation framework for super-resolution (SR) tasks in scientific domains. It provides high-quality datasets and baseline models for evaluating and comparing SR methods in various scientific applications.
 
-<figure style="width: 90%;" style="text-align: center;">
+<figure style="width: 80%;" style="text-align: center;">
   <img src="images/overview.png" alt="Figure Description">
   <figcaption style="text-align: center;">An overview of super-resolution for weather data</figcaption>
 </figure>
@@ -34,7 +34,7 @@ We have evaluated several state-of-the-art SR models on the SuperBench dataset a
 
 We present the baseline performance of various SR models on SuperBench. Figure 1 shows visual comparisons of the baseline model reconstructions against the ground truth high-resolution images. Table 1 provides quantitative evaluation results in terms of PSNR and SSIM metrics.
 
-<figure style="width: 85%;">
+<figure style="width: 75%;">
     <figcaption style="text-align: center;">Results for weather data with bicubic down-sampling.</figcaption>
     <img src="images/weather_bicubic.png" alt="Figure Description">
 </figure>
