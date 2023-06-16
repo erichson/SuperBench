@@ -1,5 +1,5 @@
 Python~=3.9.15
-torch~=1.8.1+cu101
+torch>=1.8.1+cu101
 numpy~=1.23.5
 matplotlib~=3.6.2
 tqdm~=4.64.1
