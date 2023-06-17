@@ -11,6 +11,4 @@ from .WDSR import WDSR
 from .SRCNN import SRCNN
 from .EDSR import EDSR
 from .SwinIR import SwinIR
-from .SwinIR import SwinIR
-from .SRCNN import SRCNN
-from .subpixelCNN import subpixelCNN
+from .Bicubic import Bicubic

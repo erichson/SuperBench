@@ -1,3 +1,5 @@
+'''Evaluation function'''
+
 import numpy as np
 import torch
 from torch import nn
@@ -5,7 +7,6 @@ import argparse
 import matplotlib.pyplot as plt
 import cmocean  
 import math
-# from src.data_loader import getData
 from src.data_loader_crop import getData
 from utils import *
 from src.models import *
@@ -13,8 +14,6 @@ from src.models import *
 # % --- %
 # Evaluate models
 # % --- %
-
-
 class Conv2dDerivative(nn.Module):
     def __init__(self, DerFilter, resol, kernel_size=3, name=''):
         super(Conv2dDerivative, self).__init__()

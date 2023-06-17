@@ -1,3 +1,9 @@
+'''
+Visualization function for super-resolution with low-res simulation data as inputs:
+    - This part may need users to manually modify the model load path. 
+    - Users can customize their figures.
+'''
+
 import numpy as np
 import torch
 from torch import nn
@@ -7,20 +13,9 @@ import cmocean
 import matplotlib as mpl
 from decimal import Decimal
 import matplotlib.transforms as transforms
-
-# from src.data_loader import getData
 from src.data_loader_crop import getData
 from utils import *
 from src.models import *
-# from src.models.Bicubic import Bicubic
-# from src.models.subpixelCNN import subpixelCNN
-# from src.models.WDSR import WDSR
-# from src.models.SRCNN import SRCNN
-# from src.models.EDSR import EDSR
-# from src.models.SwinIR import SwinIR
-# from src.models.SwinIR_new import SwinIR_new
-# from src.models.subpixelCNN_new import subpixelCNN_new
-# from src.models.SRCNN_new import SRCNN_new
 from mpl_toolkits.axes_grid1.inset_locator import zoomed_inset_axes
 from mpl_toolkits.axes_grid1.inset_locator import mark_inset
 
@@ -29,7 +24,7 @@ def load_testloader(data_name, upscale_factor):
     if data_name == "cosmo_lres_sim":
         in_channels = 2
         out_channels = 2
-        data_path = '/home/raocp/Desktop/superbench/datasets/cosmo_lres_sim_2048'
+        data_path = './datasets/cosmo_lres_sim_2048'
     else: 
         raise ValueError('dataset {} not recognized'.format(data_name))
 
@@ -41,10 +36,10 @@ def load_testloader(data_name, upscale_factor):
                                         data_path = data_path, 
                                         upscale_factor = upscale_factor,
                                         noise_ratio = 0.0, 
-                                        crop_size = 128, 
-                                        method = 'bicubic', 
+                                        crop_size = 128, # dummy setting here
+                                        method = 'bicubic', # dummy setting here
                                         batch_size = 1,
-                                        n_patches =8 , 
+                                        n_patches =8, # dummy setting here
                                         std = std) 
                                         # manually set batch_size = 1 for easy locate snapshot_num
 
@@ -56,7 +51,7 @@ def load_models(data_name, model_name, upscale_factor):
     if data_name == "cosmo_lres_sim":
         in_channels = 2
         out_channels = 2
-        data_path = '/home/raocp/Desktop/superbench/datasets/cosmo_lres_sim_2048'
+        data_path = './datasets/cosmo_lres_sim_2048'
     else: 
         raise ValueError('dataset {} not recognized'.format(data_name))
 
@@ -80,8 +75,8 @@ def load_models(data_name, model_name, upscale_factor):
     if model_name == 'bicubic':
         print('Using bicubic interpolation...')
     else: 
-        lr = 0.001 if model_name == "SRCNN_new" or model_name == "subpixelCNN_new" else 0.0001
-        if model_name == "SwinIR_new" or model_name == "SRCNN_new" or model_name == "subpixelCNN_new" or model_name == "EDSR" or model_name == "WDSR":
+        lr = 0.001 if model_name == "SRCNN" or model_name == "subpixelCNN" else 0.0001
+        if model_name == "SwinIR" or model_name == "SRCNN" or model_name == "subpixelCNN" or model_name == "EDSR" or model_name == "WDSR":
             #TODO: bicubic could be replace with uniform_downsample
             model_path = 'results/model_' + str(model_name) + '_' + str(data_name) + '_' + str(upscale_factor) + '_' + str(lr) + '_' + 'bicubic' +'_' + str(0.0) + '_' + str(5544) + '.pt'
         else: 
@@ -107,6 +102,9 @@ def get_one_image(model, testloader, snapshot_num, channel_num):
 
 
 def get_lim(data_name, model_name_list, upcale_factor, snapshot_num, channel_num):
+    '''
+    Get the min and max of all the snapshots. The goal is to make the plotted snapshots have the same colorbar range. 
+    '''
 
     i = 2
     data_list = [] # 8 elements with each shape of [h,w]
@@ -152,7 +150,6 @@ def get_lim(data_name, model_name_list, upcale_factor, snapshot_num, channel_num
     return lim, data_list # [min_lim, max_lim]
 
 
-# The method below is useless, need to tune each datasets specifically 
 def plot_all_image(
     data_name = "nskt_16k",
     upcale_factor=8, 
@@ -163,8 +160,8 @@ def plot_all_image(
     figsize=(12,6),
     cmap=cmocean.cm.balance):
 
-    model_name_list = ['bicubic', 'SRCNN_new', 'subpixelCNN_new', 'EDSR', 'WDSR', 'SwinIR_new']
-    title_list = ['LR','HR','Bicubic', 'SRCNN', 'subpixelCNN', 'EDSR', 'WDSR', 'SwinIR']
+    model_name_list = ['bicubic', 'SRCNN', 'subpixelCNN', 'EDSR', 'WDSR', 'SwinIR']
+    title_list = ['LR', 'HR', 'Bicubic', 'SRCNN', 'subpixelCNN', 'EDSR', 'WDSR', 'SwinIR']
 
     # get data and data range
     [vmin, vmax], data_list = get_lim(data_name, model_name_list, upcale_factor, snapshot_num, channel_num)
@@ -210,8 +207,8 @@ def plot_all_image(
             plt.xticks(visible=False)
             plt.yticks(visible=False)
             _patch, pp1, pp2 = mark_inset(axs[0,0], axins, loc1=2, loc2=4, fc=fc, ec=ec, lw=1.0, color=box_color) 
-            pp1.loc1, pp1.loc2 = 2, 3  # inset corner 1 to origin corner 4 (would expect 1)
-            pp2.loc1, pp2.loc2 = 4, 1  # inset corner 3 to origin corner 2 (would expect 3)
+            pp1.loc1, pp1.loc2 = 2, 3  
+            pp2.loc1, pp2.loc2 = 4, 1 
             plt.draw()
         else:
             im = axs[i//4,i%4].imshow(data_list[i], vmin=vmin, vmax=vmax, cmap=cmap)
@@ -225,8 +222,8 @@ def plot_all_image(
             plt.xticks(visible=False)
             plt.yticks(visible=False)
             _patch, pp1, pp2 = mark_inset(axs[i//4,i%4], axins, loc1=2, loc2=4, fc=fc, ec=ec, lw=1.0, color=box_color)
-            pp1.loc1, pp1.loc2 = 2, 3  # inset corner 1 to origin corner 4 (would expect 1)
-            pp2.loc1, pp2.loc2 = 4, 1  # inset corner 3 to origin corner 2 (would expect 3)
+            pp1.loc1, pp1.loc2 = 2, 3  
+            pp2.loc1, pp2.loc2 = 4, 1 
             plt.draw()
 
     # draw colorbar
@@ -234,10 +231,6 @@ def plot_all_image(
     cbar.ax.tick_params(labelsize=label_size)
     cbar = fig.colorbar(im, cax=axs[1,4], fraction=0.046, pad=0.04, extend='both')
     cbar.ax.tick_params(labelsize=label_size)
-
-    # cbar = fig.colorbar(im, ax=axs, ticks=[vmin, vmean, vmax], fraction=0.046, 
-    #                     pad=0.04, extend='both')
-    # cbar.ax.tick_params(labelsize=label_size)
 
     fig.tight_layout()
     
@@ -260,14 +253,5 @@ if __name__ == "__main__":
                     zoom_loc_y = zoom_loc_y, 
                     figsize = (10,5.5),
                     cmap = cmocean.cm.thermal)
-
-    # plot_all_image(data_name = "cosmo_lres_sim",
-    #                 upcale_factor = 16, 
-    #                 snapshot_num = 55,
-    #                 channel_num = 0,
-    #                 zoom_loc_x = zoom_loc_x,
-    #                 zoom_loc_y = zoom_loc_y, 
-    #                 figsize = (10,5.5),
-    #                 cmap = cmocean.cm.thermal)
 
 

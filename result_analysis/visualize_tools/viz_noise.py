@@ -1,3 +1,9 @@
+'''
+Visualization function for uniform downsampling and noise:
+    - This part may need users to manually modify the model load path. 
+    - Users can customize their figures.
+'''
+
 import numpy as np
 import torch
 from torch import nn
@@ -7,20 +13,9 @@ import cmocean
 import matplotlib as mpl
 from decimal import Decimal
 import matplotlib.transforms as transforms
-
-# from src.data_loader import getData
 from src.data_loader_crop import getData
 from utils import *
 from src.models import *
-# from src.models.Bicubic import Bicubic
-# from src.models.subpixelCNN import subpixelCNN
-# from src.models.WDSR import WDSR
-# from src.models.SRCNN import SRCNN
-# from src.models.EDSR import EDSR
-# from src.models.SwinIR import SwinIR
-# from src.models.SwinIR_new import SwinIR_new
-# from src.models.subpixelCNN_new import subpixelCNN_new
-# from src.models.SRCNN_new import SRCNN_new
 from mpl_toolkits.axes_grid1.inset_locator import zoomed_inset_axes
 from mpl_toolkits.axes_grid1.inset_locator import mark_inset
 
@@ -29,19 +24,19 @@ def load_testloader(data_name, upscale_factor, noise_ratio):
     if data_name == "cosmo":
         in_channels = 2
         out_channels = 2
-        data_path = '/home/raocp/Desktop/superbench/datasets/cosmo_2048'
+        data_path = './datasets/cosmo_2048'
     elif data_name == "nskt_16k":
         in_channels = 3
         out_channels = 3
-        data_path = '/home/raocp/Desktop/superbench/datasets/nskt16000_1024'
+        data_path = './datasets/nskt16000_1024'
     elif data_name == "nskt_32k":
         in_channels = 3
         out_channels = 3
-        data_path = '/home/raocp/Desktop/superbench/datasets/nskt32000_1024'
+        data_path = './datasets/nskt32000_1024'
     elif data_name == "era5":
         in_channels = 3
         out_channels = 3
-        data_path = '/home/raocp/Desktop/superbench/datasets/era5'
+        data_path = './datasets/era5'
     else: 
         raise ValueError('dataset {} not recognized'.format(data_name))
 
@@ -62,25 +57,26 @@ def load_testloader(data_name, upscale_factor, noise_ratio):
 
     return test2_loader
 
+
 def load_models(data_name, model_name, upscale_factor, noise_ratio):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
     if data_name == "cosmo":
         in_channels = 2
         out_channels = 2
-        data_path = '/home/raocp/Desktop/superbench/datasets/cosmo_2048'
+        data_path = './datasets/cosmo_2048'
     elif data_name == "nskt_16k":
         in_channels = 3
         out_channels = 3
-        data_path = '/home/raocp/Desktop/superbench/datasets/nskt16000_1024'
+        data_path = './datasets/nskt16000_1024'
     elif data_name == "nskt_32k":
         in_channels = 3
         out_channels = 3
-        data_path = '/home/raocp/Desktop/superbench/datasets/nskt32000_1024'
+        data_path = './datasets/nskt32000_1024'
     elif data_name == "era5":
         in_channels = 3
         out_channels = 3
-        data_path = '/home/raocp/Desktop/superbench/datasets/era5'
+        data_path = './datasets/era5'
     else: 
         raise ValueError('dataset {} not recognized'.format(data_name))
 
@@ -127,6 +123,9 @@ def get_one_image(model, testloader, snapshot_num, channel_num):
 
 
 def get_lim(data_name, model_name_list, upcale_factor, noise_ratio, snapshot_num, channel_num):
+    '''
+    Get the min and max of all the snapshots. The goal is to make the plotted snapshots have the same colorbar range. 
+    '''
 
     i = 2
     data_list = [] # 8 elements with each shape of [h,w]
@@ -179,7 +178,6 @@ def get_lim(data_name, model_name_list, upcale_factor, noise_ratio, snapshot_num
     return lim, data_list # [min_lim, max_lim]
 
 
-# The method below is useless, need to tune each datasets specifically 
 def plot_all_image(
     data_name = "SwinIR",
     upcale_factor=8, 
@@ -238,8 +236,8 @@ def plot_all_image(
             plt.xticks(visible=False)
             plt.yticks(visible=False)
             _patch, pp1, pp2 = mark_inset(axs[0], axins, loc1=2, loc2=4, fc=fc, ec=ec, lw=1.0, color=box_color) 
-            pp1.loc1, pp1.loc2 = 2, 3  # inset corner 1 to origin corner 4 (would expect 1)
-            pp2.loc1, pp2.loc2 = 4, 1  # inset corner 3 to origin corner 2 (would expect 3)
+            pp1.loc1, pp1.loc2 = 2, 3  # inset corner 2 to origin corner 3 (would expect 2)
+            pp2.loc1, pp2.loc2 = 4, 1  # inset corner 4 to origin corner 1 (would expect 4)
             plt.draw()
         else:
             im = axs[i].imshow(data_list[i], vmin=vmin, vmax=vmax, cmap=cmap)
