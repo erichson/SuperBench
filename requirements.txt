@@ -8,3 +8,4 @@ cmocean~=2.0
 decimal~=1.70
 h5py~=3.7.0
 torchvision~=0.9.1+cu101
+pandas~=1.4.4
