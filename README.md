@@ -149,14 +149,32 @@ wget https://portal.nersc.gov/project/dasrepo/superbench/superbench_v1.tar
 ```
 
 2. Run the baseline models on the datasets:
-```shell
-run_train.sh
-```
+
+    2.1. Generate ```.sh``` code in the ```make_file``` folder
+
+    ```python
+    # if train all baseline models used in SuperBench paper
+    python generate_sh.py --gpus 0 1 2 3 --generate_all
+
+    # if train one specific model on one dataset
+    python generate_sh.py --model SRCNN --data nskt_16k --gpus 0
+    ```
+
+    2.2. Run the ```.sh``` code
+
+    ```shell
+    # if train all baseline models used in SuperBench paper
+    sh run_train_all.sh
+
+    # if train one specific model on one dataset
+    sh run_train_SRCNN_nskt_16k.sh
+    ```
 
 3. Evaluate the model performance:
 
 ```shell
 # evaluate RFNE, IN, PSNR, SSIM and physics loss
+# one sample code is provided
 run_eval.sh 
 ```
 

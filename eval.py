@@ -298,23 +298,21 @@ def main():
     parser = argparse.ArgumentParser(description='training parameters')
     # arguments for data
     parser.add_argument('--data_name', type=str, default='nskt_16k', help='dataset')
-    parser.add_argument('--data_path', type=str, default='../superbench/datasets/nskt16000_1024', help='the folder path of dataset')
+    parser.add_argument('--data_path', type=str, default='./datasets/nskt16000_1024', help='the folder path of dataset')
     parser.add_argument('--method', type=str, default="bicubic", help='downsample method')
     parser.add_argument('--crop_size', type=int, default=128, help='crop size for high-resolution snapshots')
     parser.add_argument('--n_patches', type=int, default=8, help='number of patches')
 
     # arguments for evaluation
     parser.add_argument('--model', type=str, default='shallowDecoder', help='model')
-    parser.add_argument('--model_path', type=str, default='results/model_SwinIR_nskt_16k_4_0.0001_bicubic_0.0_5544.pt', help='saved model')
+    # parser.add_argument('--model_path', type=str, default='results/model_SwinIR_nskt_16k_4_0.0001_bicubic_0.0_5544.pt', help='saved model')
     parser.add_argument('--device', type=str, default=torch.device('cuda' if torch.cuda.is_available() else 'cpu'), help='computing device')
     parser.add_argument('--batch_size', type=int, default=32, help='batch size')
     parser.add_argument('--seed', type=int, default=5544, help='random seed')
     parser.add_argument('--noise_ratio', type=float, default=0.0, help='noise ratio')
-    parser.add_argument('--pretrained', default=False, type=lambda x: (str(x).lower() == 'true'), help='load the pretrained model')
     
     # arguments for training
     parser.add_argument('--epochs', type=int, default=300, help='max epochs')
-    parser.add_argument('--iterations_per_epoch', type=int, default=1000, help='iterations per epoch')
     parser.add_argument('--lr', type=float, default=0.0001, help='learning rate')
     parser.add_argument('--wd', type=float, default=1e-6, help='weight decay')
     parser.add_argument('--step_size', type=int, default=100, help='step size for scheduler')
@@ -366,14 +364,16 @@ def main():
     model = model_list[args.model]
     model = torch.nn.DataParallel(model)
     
+    model_path = 'results/model_' + str(args.model) + '_' + str(args.data_name) + '_' + str(args.upscale_factor) + '_' + str(args.lr) + '_' + str(args.method) +'_' + str(args.noise_ratio) + '_' + str(args.seed) + '.pt'
+
     if args.model != 'bicubic':
-        model = load_checkpoint(model, args.model_path)
+        model = load_checkpoint(model, model_path)
         model = model.to(args.device)
 
         # Model summary   
-        # print('**** Setup ****')
-        # print('Total params Generator: %.3fM' % (sum(p.numel() for p in model.parameters())/1000000.0))
-        # print('************')    
+        print('**** Setup ****')
+        print('Total params Generator: %.3fM' % (sum(p.numel() for p in model.parameters())/1000000.0))
+        print('************')    
 
     else: 
         print('Using bicubic interpolation...')  
