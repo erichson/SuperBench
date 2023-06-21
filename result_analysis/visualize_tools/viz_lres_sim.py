@@ -13,7 +13,7 @@ import cmocean
 import matplotlib as mpl
 from decimal import Decimal
 import matplotlib.transforms as transforms
-from src.data_loader_crop import getData
+from src.data_loader_crop_visual import getData
 from utils import *
 from src.models import *
 from mpl_toolkits.axes_grid1.inset_locator import zoomed_inset_axes
