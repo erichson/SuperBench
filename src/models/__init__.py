@@ -12,3 +12,4 @@ from .SRCNN import SRCNN
 from .EDSR import EDSR
 from .SwinIR import SwinIR
 from .Bicubic import Bicubic
+from .FNO2D import FNO2D

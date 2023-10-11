@@ -18,7 +18,7 @@ run = neptune.init_run(
     tags = [str(id.item())],
 )
 # train the model with the given parameters and save the model with the best validation error
-def train(args, train_loader, val1_loader, val2_loader, model, optimizer, criterion):
+def train(args, train_loader, val1_loader, val2_loader, model, optimizer,scheduler ,criterion):
     best_val = np.inf
     train_loss_list, val_error_list = [], []
     start2 = time.time()
@@ -35,19 +35,20 @@ def train(args, train_loader, val1_loader, val2_loader, model, optimizer, criter
             output = model(data) 
             loss = criterion(output, target)
             train_loss_total += loss.item()
-            
             # backward
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
-            # scheduler.step()
-
+        scheduler.step()
+        run["train/lr"].log(scheduler.get_last_lr()[0])
         # record train loss
         train_loss_mean = train_loss_total / len(train_loader)
         train_loss_list.append(train_loss_mean)
-
+        run["train/loss"].log(train_loss_mean)
         # validate
         mse1, mse2 = validate(args, val1_loader, val2_loader, model, criterion)
+        run["val/val1_error"].log(mse1)
+        run["val/val2_error"].log(mse2)
         print("epoch: %s, val1 error (interp): %.10f, val2 error (extrap): %.10f" % (epoch, mse1, mse2))      
         val_error_list.append(mse1+mse2)
 
@@ -97,7 +98,7 @@ def main():
     parser.add_argument('--pretrained', default=False, type=lambda x: (str(x).lower() == 'true'), help='load the pretrained model')
     
     # arguments for training
-    parser.add_argument('--model', type=str, default='subpixelCNN', help='model')
+    parser.add_argument('--model', type=str, default='FNO2D', help='model')
     parser.add_argument('--epochs', type=int, default=300, help='max epochs')
     parser.add_argument('--device', type=str, default=torch.device('cuda' if torch.cuda.is_available() else 'cpu'), help='computing device')
     parser.add_argument('--batch_size', type=int, default=64, help='batch size')
@@ -111,9 +112,7 @@ def main():
     # arguments for model
     parser.add_argument('--upscale_factor', type=int, default=4, help='upscale factor')
     parser.add_argument('--in_channels', type=int, default=2, help='num of input channels')
-    parser.add_argument('--hidden_channels', type=int, default=32, help='num of hidden channels')
     parser.add_argument('--out_channels', type=int, default=2, help='num of output channels')
-    parser.add_argument('--n_res_blocks', type=int, default=18, help='num of resdiual blocks')
     parser.add_argument('--loss_type', type=str, default='l1', help='L1 or L2 loss')
     parser.add_argument('--optimizer_type', type=str, default='Adam', help='type of optimizer')
     parser.add_argument('--scheduler_type', type=str, default='ExponentialLR', help='type of scheduler')
@@ -141,27 +140,21 @@ def main():
     # % --- %
     # some hyper-parameters for SwinIR
     upscale = args.upscale_factor
-    window_size = 8
-    height = (resol[0] // upscale // window_size + 1) * window_size
-    width = (resol[1] // upscale // window_size + 1) * window_size
-
-    model_list = {
-            'subpixelCNN': subpixelCNN(args.in_channels, upscale_factor=args.upscale_factor, width=1, mean = mean,std = std),
-            'SRCNN': SRCNN(args.in_channels, args.upscale_factor,mean,std),
-            'EDSR': EDSR(args.in_channels, args.hidden_channels, args.n_res_blocks, args.upscale_factor, mean, std),
-            'WDSR': WDSR(args.in_channels, args.out_channels, args.hidden_channels, args.n_res_blocks, args.upscale_factor, mean, std),
-            'SwinIR': SwinIR(upscale=args.upscale_factor, in_chans=args.in_channels, img_size=(height, width),
-                    window_size=window_size, img_range=1., depths=[6, 6, 6, 6, 6, 6],
-                    embed_dim=180, num_heads=[6, 6, 6, 6, 6, 6], mlp_ratio=2, upsampler='pixelshuffle', resi_connection='1conv',mean =mean,std=std),
+    model_list = {  
+        "FNO2D":FNO2D(layers=[64, 64, 64, 64, 64],modes1=[20, 20, 20, 20],modes2=[20, 20, 20, 20],fc_dim=128,in_dim=args.in_channels,out_dim=args.out_channels,mean= mean,std=std,upscale_factor=upscale),
     }
 
-    model = model_list[args.model].to(args.device)
-    model = torch.nn.DataParallel(model)
-    
+    model = model_list[args.model].to(args.device)    
     # if pretrain and posttune
     if args.pretrained == True:
-        model = load_checkpoint(model, args.model_path)
+        optimizer = set_optimizer(args, model)
+        model,optimizer = load_checkpoint(model,optimizer, args.model_path)
         model = model.to(args.device)
+        scheduler = set_scheduler(args, optimizer, train_loader)
+    else:
+        optimizer = set_optimizer(args, model)
+        scheduler = set_scheduler(args, optimizer, train_loader)
+        criterion = loss_function(args)
 
     # Model summary
     print(model)    
@@ -172,14 +165,11 @@ def main():
     # % --- %
     # Set optimizer, loss function and Learning Rate Scheduler
     # % --- %
-    optimizer = set_optimizer(args, model)
-    scheduler = set_scheduler(args, optimizer, train_loader)
-    criterion = loss_function(args)
 
     # % --- %
     # Training and validation
     # % --- %
-    train_loss_list, val_error_list = train(args, train_loader, val1_loader, val2_loader, model, optimizer, criterion)
+    train_loss_list, val_error_list = train(args, train_loader, val1_loader, val2_loader, model, optimizer, scheduler,criterion)
 
     # % --- %
     # Post-process: plot train loss and val error
