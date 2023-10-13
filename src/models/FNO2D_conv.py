@@ -19,14 +19,14 @@ class ShiftMean(nn.Module):
         else:
             raise NotImplementedError
 
-class FNO2D(nn.Module):
+class FNO2D_conv(nn.Module):
     def __init__(self, modes1, modes2,
                  width=64, fc_dim=128,
                  layers=None,
                  in_dim=3, out_dim=3,
                  act='relu', 
                  pad_ratio=[0., 0.], mean =[0],std=[1],scale_factor = 8):
-        super(FNO2D, self).__init__()
+        super(FNO2D_conv, self).__init__()
         """
         Args:s
             - modes1: list of int, number of modes in first dimension in each layer
@@ -61,9 +61,12 @@ class FNO2D(nn.Module):
         self.ws = nn.ModuleList([nn.Conv1d(in_size, out_size, 1)
                                  for in_size, out_size in zip(self.layers, self.layers[1:])])
 
-        self.fc1 = nn.Linear(layers[-1], fc_dim)
-        self.fc2 = nn.Linear(fc_dim, layers[-1])
-        self.fc3 = nn.Linear(layers[-1], out_dim)
+        # self.fc1 = nn.Linear(layers[-1], fc_dim)
+        self.conv1 = nn.Conv2d(layers[-1],fc_dim,9,1,4)
+        # self.fc2 = nn.Linear(fc_dim, layers[-1])
+        self.conv2 = nn.Conv2d(fc_dim,layers[-1],5,1,2)
+        # self.fc3 = nn.Linear(layers[-1], out_dim)
+        self.conv3 = nn.Conv2d(layers[-1],out_dim,5,1,2)
         self.act = _get_act(act)
         self.shiftmean = ShiftMean(torch.Tensor(mean), torch.Tensor(std))
         self.scale_factor = scale_factor
@@ -98,12 +101,12 @@ class FNO2D(nn.Module):
             if i != length - 1:
                 x = self.act(x)
         # x = remove_padding2(x, num_pad1, num_pad2)
-        x = x.permute(0, 2, 3, 1)
-        x = self.fc1(x)
+        # x = x.permute(0, 2, 3, 1)
+        x = self.conv1(x)
         x = self.act(x)
-        x = self.fc2(x)
+        x = self.conv2(x)
         x = self.act(x)
-        x = self.fc3(x)
-        x = x.permute(0, 3, 1, 2) # B,X,Y,C to B,C,X,Y
+        x = self.conv3(x)
+        # x = x.permute(0, 3, 1, 2) # B,X,Y,C to B,C,X,Y
         x = self.shiftmean(x, 'add')
         return x

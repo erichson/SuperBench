@@ -1,0 +1,21 @@
+ modelFNO2D data: nskt_16k  method: bicubic scale factor 8 noise ratio: 0.0
+ modelFNO2D data: nskt_16k  method: bicubic scale factor 8 noise ratio: 0.0
+Infinity norm --- test1 error: 4.83201694, test2 error: 6.62457037
+RFNE --- test1 error: 198.54244 %, test2 error: 230.67756 %
+PSNR --- test1 error: 6.83016, test2 error: 4.97714
+SSIM --- test1 error: 0.07117, test2 error: 0.08818
+Physics loss --- test1 error: 103.70456223, test2 error: 243.58274250
+ modelFNO2D data: nskt_16k  method: bicubic scale factor 8 noise ratio: 0.0
+Infinity norm --- test1 error: 4.83201599, test2 error: 6.62456989
+RFNE --- test1 error: 198.54244 %, test2 error: 230.67753 %
+PSNR --- test1 error: 6.83016, test2 error: 4.97714
+SSIM --- test1 error: 0.07117, test2 error: 0.08818
+Physics loss --- test1 error: 103.70454720, test2 error: 243.58270515
+ modelFNO2D data: nskt_16k  method: bicubic scale factor 8 noise ratio: 0.0
+ modelFNO2D data: nskt_16k  method: bicubic scale factor 8 noise ratio: 0.0
+ modelFNO2D data: nskt_16k  method: bicubic scale factor 8 noise ratio: 0.0
+Infinity norm --- test1 error: 18.46509933, test2 error: 26.35642242
+RFNE --- test1 error: 197.95120 %, test2 error: 230.92284 %
+PSNR --- test1 error: 6.84734, test2 error: 4.99435
+SSIM --- test1 error: 0.05970, test2 error: 0.07903
+Physics loss --- test1 error: 103.70456223, test2 error: 243.58274250

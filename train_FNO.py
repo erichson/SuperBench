@@ -18,7 +18,7 @@ run = neptune.init_run(
     tags = [str(id.item())],
 )
 # train the model with the given parameters and save the model with the best validation error
-def train(args, train_loader, val1_loader, val2_loader, model, optimizer,scheduler ,criterion):
+def train(args, train_loader, val1_loader, val2_loader, model, optimizer ,scheduler,criterion):
     best_val = np.inf
     train_loss_list, val_error_list = [], []
     start2 = time.time()
@@ -29,7 +29,6 @@ def train(args, train_loader, val1_loader, val2_loader, model, optimizer,schedul
         for batch_idx, (data, target) in enumerate(train_loader):
             # [b,c,h,w]
             data, target = data.to(args.device).float(), target.to(args.device).float()
-
             # forward
             model.train()
             output = model(data) 
@@ -57,6 +56,11 @@ def train(args, train_loader, val1_loader, val2_loader, model, optimizer,schedul
             save_checkpoint(model, optimizer,'results/model_' + str(args.model) + '_' + str(args.data_name) + '_' + str(args.upscale_factor) + '_' + str(args.lr) + '_' + str(args.method) +'_' + str(args.noise_ratio) + '_' + str(args.seed) +'_' +str(id.item()) + '.pt')
         end = time.time()
         print('The epoch time is: ', (end - start))
+        # if epoch % 50 ==0:
+        #     RFNE1,RFNE2 = quick_RFNE(args,val1_loader,val2_loader,model)
+        #     run["val/RFNE1"].log(RFNE1)
+        #     run["val/RFNE2"].log(RFNE2)
+        #     print("epoch: %s, val1 RFNE (interp): %.10f, val2 RFNE (extrap): %.10f" % (epoch, RFNE1, RFNE2))
     end2 = time.time()
     print('The training time is: ', (end2 - start2))
 
@@ -85,6 +89,20 @@ def validate(args, val1_loader, val2_loader, model, criterion):
 
     return mse1.item(), mse2.item()
 
+def quick_RFNE(args,test1_loader,test2_loader,model,mean,std):
+    model.eval()
+    with torch.no_grad():
+        for batch_idx, (data, target) in enumerate(test1_loader):
+            data, target = data.to(args.device).float(), target.to(args.device).float()
+            output = model(data) 
+            RFNE1 = torch.norm(output- target, p =2,dim =(-1,-2))/torch.norm(target, p =2,dim =(-1,-2))
+            err1 += RFNE1.mean().item()
+    with torch.no_grad():
+        for batch_idx, (data, target) in enumerate(test2_loader):
+            data, target = data.to(args.device).float(), target.to(args.device).float()
+            output = model(data) 
+            RFNE2 = torch.norm(output- target, p =2,dim =(-1,-2))/torch.norm(target, p =2,dim =(-1,-2))
+    return RFNE1.mean().item(),RFNE2.mean().item()
 
 def main():
     parser = argparse.ArgumentParser(description='training parameters')
@@ -94,31 +112,34 @@ def main():
     parser.add_argument('--crop_size', type=int, default=128, help='crop size for high-resolution snapshots')
     parser.add_argument('--n_patches', type=int, default=8, help='number of patches')    
     parser.add_argument('--method', type=str, default="bicubic", help='downsample method')
-    parser.add_argument('--model_path', type=str, default='results/model_EDSR_sst4_0.0001_5544.pt', help='saved model')
+    parser.add_argument('--model_path', type=str, default=None)
     parser.add_argument('--pretrained', default=False, type=lambda x: (str(x).lower() == 'true'), help='load the pretrained model')
     
     # arguments for training
     parser.add_argument('--model', type=str, default='FNO2D', help='model')
-    parser.add_argument('--epochs', type=int, default=300, help='max epochs')
+    parser.add_argument('--epochs', type=int, default=500, help='max epochs')
     parser.add_argument('--device', type=str, default=torch.device('cuda' if torch.cuda.is_available() else 'cpu'), help='computing device')
-    parser.add_argument('--batch_size', type=int, default=64, help='batch size')
-    parser.add_argument('--lr', type=float, default=0.0001, help='learning rate')
-    parser.add_argument('--wd', type=float, default=1e-6, help='weight decay')
+    parser.add_argument('--batch_size', type=int, default=256, help='batch size')
+    parser.add_argument('--lr', type=float, default=0.005, help='learning rate')
+    parser.add_argument('--wd', type=float, default=0, help='weight decay')
     parser.add_argument('--seed', type=int, default=5544, help='random seed')
-    parser.add_argument('--step_size', type=int, default=100, help='step size for scheduler')
-    parser.add_argument('--gamma', type=float, default=0.97, help='coefficient for scheduler')
+    parser.add_argument('--step_size', type=int, default=50, help='step size for scheduler')
+    parser.add_argument('--gamma', type=float, default=0.5, help='coefficient for scheduler')
     parser.add_argument('--noise_ratio', type=float, default=0.0, help='noise ratio')
 
     # arguments for model
-    parser.add_argument('--upscale_factor', type=int, default=4, help='upscale factor')
-    parser.add_argument('--in_channels', type=int, default=2, help='num of input channels')
-    parser.add_argument('--out_channels', type=int, default=2, help='num of output channels')
-    parser.add_argument('--loss_type', type=str, default='l1', help='L1 or L2 loss')
+    parser.add_argument('--upscale_factor', type=int, default=8, help='upscale factor')
+    parser.add_argument('--in_channels', type=int, default=3, help='num of input channels')
+    parser.add_argument('--out_channels', type=int, default=3, help='num of output channels')
+    parser.add_argument('--hidden_channels', type=int, default=64, help='num of output channels')
+    parser.add_argument('--modes', type=int, default=20, help='num of modes in first dimension')
+    parser.add_argument('--loss_type', type=str, default='l2', help='L1 or L2 loss')
     parser.add_argument('--optimizer_type', type=str, default='Adam', help='type of optimizer')
-    parser.add_argument('--scheduler_type', type=str, default='ExponentialLR', help='type of scheduler')
+    parser.add_argument('--scheduler_type', type=str, default='StepLR', help='type of scheduler')
 
     args = parser.parse_args()
     print(args)
+    run['config'] = vars(args)
 
     # % --- %
     # Set random seed to reproduce the work
@@ -130,7 +151,7 @@ def main():
     # Load data
     # % --- %
     resol, n_fields, n_train_samples, mean, std = get_data_info(args.data_name) # 
-    train_loader, val1_loader, val2_loader, _, _ = getData(args, args.n_patches, std=std)
+    train_loader, val1_loader, val2_loader,TEST1, TEST2= getData(args, args.n_patches, std=std)
     print('The data resolution is: ', resol)
     print("mean is: ",mean)
     print("std is: ",std)
@@ -140,19 +161,24 @@ def main():
     # % --- %
     # some hyper-parameters for SwinIR
     upscale = args.upscale_factor
+    hidden = args.hidden_channels
+    modes = args.modes
     model_list = {  
-        "FNO2D":FNO2D(layers=[64, 64, 64, 64, 64],modes1=[20, 20, 20, 20],modes2=[20, 20, 20, 20],fc_dim=128,in_dim=args.in_channels,out_dim=args.out_channels,mean= mean,std=std,upscale_factor=upscale),
+        "FNO2D":FNO2D(layers=[hidden, hidden, hidden, hidden, hidden],modes1=[modes, modes, modes, modes],modes2=[modes, modes, modes, modes],fc_dim=128,in_dim=args.in_channels,out_dim=args.out_channels,mean= mean,std=std,scale_factor=upscale),
+        "FNO2D_conv":FNO2D_conv(layers=[hidden, hidden, hidden, hidden, hidden],modes1=[modes, modes, modes, modes],modes2=[modes, modes, modes, modes],fc_dim=128,in_dim=args.in_channels,out_dim=args.out_channels,mean= mean,std=std,scale_factor=upscale),
     }
 
     model = model_list[args.model].to(args.device)    
     # if pretrain and posttune
     if args.pretrained == True:
+        print('Loading pretrained model...')
         optimizer = set_optimizer(args, model)
         model,optimizer = load_checkpoint(model,optimizer, args.model_path)
         model = model.to(args.device)
+        criterion = loss_function(args)
         scheduler = set_scheduler(args, optimizer, train_loader)
     else:
-        optimizer = set_optimizer(args, model)
+        optimizer = set_optimizer(args, model) # weight decay for adam must be 0, idk why 
         scheduler = set_scheduler(args, optimizer, train_loader)
         criterion = loss_function(args)
 
@@ -169,7 +195,8 @@ def main():
     # % --- %
     # Training and validation
     # % --- %
-    train_loss_list, val_error_list = train(args, train_loader, val1_loader, val2_loader, model, optimizer, scheduler,criterion)
+
+    train_loss_list, val_error_list = train(args, train_loader, val1_loader, val2_loader, model, optimizer,scheduler,criterion)
 
     # % --- %
     # Post-process: plot train loss and val error

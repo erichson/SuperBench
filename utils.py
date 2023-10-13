@@ -2,7 +2,6 @@ import numpy as np
 import torch
 from torch import nn
 
-
 def get_data_info(data_name):
     if data_name == 'nskt_16k':
         resol = [1024, 1024] 
@@ -89,10 +88,11 @@ def loss_function(args):
         raise ValueError('Loss type {} not recognized'.format(args.loss_type))
     return criterion
 
-def save_checkpoint(model, save_path):
+def save_checkpoint(model, optimizer,save_path):
     '''save model and optimizer'''
     torch.save({
-        'model_state_dict': model.state_dict()
+        'model_state_dict': model.state_dict(),
+        'optimizer_state_dict': optimizer.state_dict()
         }, save_path)
 
 
