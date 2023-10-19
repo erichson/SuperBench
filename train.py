@@ -11,11 +11,12 @@ from src.models import *
 from src.data_loader_crop import getData
 from utils import *
 import neptune
-id = torch.randint(1000,(1,1))
+import random
+id = random.randint(0,10000)
 run = neptune.init_run(
     project="junyiICSI/superbenchRebuttal",
     api_token="eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiI2NGIxYjI4YS0yNDljLTQwOWMtOWY4YS0wOGNhM2Q5Y2RlYzQifQ==",
-    tags = [str(id.item())],
+    tags = [str(id)],
 )
 # train the model with the given parameters and save the model with the best validation error
 def train(args, train_loader, val1_loader, val2_loader, model, optimizer, criterion):
@@ -53,7 +54,7 @@ def train(args, train_loader, val1_loader, val2_loader, model, optimizer, criter
 
         if (mse1+mse2) <= best_val:
             best_val = mse1+mse2
-            save_checkpoint(model, optimizer,'results/model_' + str(args.model) + '_' + str(args.data_name) + '_' + str(args.upscale_factor) + '_' + str(args.lr) + '_' + str(args.method) +'_' + str(args.noise_ratio) + '_' + str(args.seed) +'_' +str(id.item()) + '.pt')
+            save_checkpoint(model, optimizer,'results/model_' + str(args.model) + '_' + str(args.data_name) + '_' + str(args.upscale_factor) + '_' + str(args.lr) + '_' + str(args.method) +'_' + str(args.noise_ratio) + '_' + str(args.seed) +'_' +str(id) + '.pt')
         end = time.time()
         print('The epoch time is: ', (end - start))
     end2 = time.time()
@@ -104,7 +105,7 @@ def main():
     parser.add_argument('--lr', type=float, default=0.0001, help='learning rate')
     parser.add_argument('--wd', type=float, default=1e-6, help='weight decay')
     parser.add_argument('--seed', type=int, default=5544, help='random seed')
-    parser.add_argument('--step_size', type=int, default=100, help='step size for scheduler')
+    parser.add_argument('--step_size', type=int, default=1000, help='step size for scheduler')
     parser.add_argument('--gamma', type=float, default=0.97, help='coefficient for scheduler')
     parser.add_argument('--noise_ratio', type=float, default=0.0, help='noise ratio')
 

@@ -354,39 +354,69 @@ def main():
 
     
     # =============== validate ======================
-    with open("result.txt", "a") as f:
-        print(" model" + str(args.model) + " data: " + str(args.data_name)+ "  method: " + str(args.method) +" scale factor " + str(args.upscale_factor) + " noise ratio: " + str(args.noise_ratio),file = f)
-        ine1, ine2 = validate_RINE(args, test1_loader, test2_loader, model,mean,std)
-        print("Infinity norm --- test1 error: %.8f, test2 error: %.8f" % (ine1, ine2),file = f) 
-
-        error1, error2 = validate_RFNE(args, test1_loader, test2_loader, model,mean,std)
-        print("RFNE --- test1 error: %.5f %%, test2 error: %.5f %%" % (error1*100.0, error2*100.0),file = f)          
-
-        error1, error2 = validate_PSNR(args, test1_loader, test2_loader, model,mean,std)
-        print("PSNR --- test1 error: %.5f, test2 error: %.5f" % (error1, error2),file = f) 
-
-        error1, error2 = validate_SSIM(args, test1_loader, test2_loader, model,mean,std)
-        print("SSIM --- test1 error: %.5f, test2 error: %.5f" % (error1, error2),file = f) 
-
-        if args.data_name == "nskt_16k" or args.data_name == "nskt_32k":
-            phy_err1, phy_err2 = validate_phyLoss(args, test1_loader, test2_loader, model)
-            print("Physics loss --- test1 error: %.8f, test2 error: %.8f" % (phy_err1, phy_err2),file=f) 
-    # with open('validation.txt', "a") as f:
+    # with open("result.txt", "a") as f:
     #     print(" model" + str(args.model) + " data: " + str(args.data_name)+ "  method: " + str(args.method) +" scale factor " + str(args.upscale_factor) + " noise ratio: " + str(args.noise_ratio),file = f)
-    #     ine1, ine2 = validate_RINE(args, val1_loader, val2_loader, model,mean,std)
+    #     ine1, ine2 = validate_RINE(args, test1_loader, test2_loader, model,mean,std)
     #     print("Infinity norm --- test1 error: %.8f, test2 error: %.8f" % (ine1, ine2),file = f) 
 
-    #     error1, error2 = validate_RFNE(args, val1_loader, val2_loader, model,mean,std)
+    #     error1, error2 = validate_RFNE(args, test1_loader, test2_loader, model,mean,std)
     #     print("RFNE --- test1 error: %.5f %%, test2 error: %.5f %%" % (error1*100.0, error2*100.0),file = f)          
 
-    #     error1, error2 = validate_PSNR(args, val1_loader, val2_loader, model,mean,std)
+    #     error1, error2 = validate_PSNR(args, test1_loader, test2_loader, model,mean,std)
     #     print("PSNR --- test1 error: %.5f, test2 error: %.5f" % (error1, error2),file = f) 
 
-    #     error1, error2 = validate_SSIM(args, val1_loader, val2_loader, model,mean,std)
+    #     error1, error2 = validate_SSIM(args, test1_loader, test2_loader, model,mean,std)
     #     print("SSIM --- test1 error: %.5f, test2 error: %.5f" % (error1, error2),file = f) 
 
     #     if args.data_name == "nskt_16k" or args.data_name == "nskt_32k":
-    #         phy_err1, phy_err2 = validate_phyLoss(args, val1_loader, val2_loader, model)
+    #         phy_err1, phy_err2 = validate_phyLoss(args, test1_loader, test2_loader, model)
     #         print("Physics loss --- test1 error: %.8f, test2 error: %.8f" % (phy_err1, phy_err2),file=f) 
+    import json
+
+    # Check if the results file already exists and load it, otherwise initialize an empty list
+    try:
+        with open("normed_eval.json", "r") as f:
+            all_results = json.load(f)
+    except FileNotFoundError:
+        all_results = []
+
+    # Initialize a dictionary for the current results
+    current_result = {
+        "model": args.model,
+        "dataset": args.data_name,
+        "method": args.method,
+        "scale factor": args.upscale_factor,
+        "noise ratio": args.noise_ratio,
+        "metrics": {}
+    }
+
+    # Validate and store Infinity norm results
+    ine1, ine2 = validate_RINE(args, test1_loader, test2_loader, model, mean, std)
+    current_result["metrics"]["Infinity"] = {'test1 error': ine1, 'test2 error': ine2}
+
+    # Validate and store RFNE results
+    error1, error2 = validate_RFNE(args, test1_loader, test2_loader, model, mean, std)
+    current_result["metrics"]["RFNE"] = {'test1 error': error1, 'test2 error': error2}
+
+    # Validate and store PSNR results
+    error1, error2 = validate_PSNR(args, test1_loader, test2_loader, model, mean, std)
+    current_result["metrics"]["PSNR"] = {'test1 error': error1, 'test2 error': error2}
+
+    # Validate and store SSIM results
+    error1, error2 = validate_SSIM(args, test1_loader, test2_loader, model, mean, std)
+    current_result["metrics"]["SSIM"] = {'test1 error': error1, 'test2 error': error2}
+
+    # Validate and store Physics loss results for specific data names
+    if args.data_name in ["nskt_16k", "nskt_32k"]:
+        phy_err1, phy_err2 = validate_phyLoss(args, test1_loader, test2_loader, model)
+        current_result["metrics"]["Physics"] = {'test1 error': phy_err1, 'test2 error': phy_err2}
+
+    # Add the current results to the main list
+    all_results.append(current_result)
+
+    # Serialize the updated results list to the JSON file
+    with open("normed_eval.json", "w") as f:
+        json.dump(all_results, f, indent=4)
+
 if __name__ =='__main__':
     main()

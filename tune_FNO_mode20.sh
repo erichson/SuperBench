@@ -18,7 +18,8 @@ module load pytorch/2.0.1
 
 env=/global/homes/j/juny012/.local/perlmutter/pytorch2.0.1
 
-cmd1="srun --exact -n 1 -G1 -c125 --gpu-bind=map_gpu:0 python train_FNO.py --data_path /pscratch/sd/j/junyi012/superbench_v1/nskt16000_1024 --data_name nskt_16k --epochs 500"
+cmd1="srun --exact -n 1 -G1 -c125 --gpu-bind=map_gpu:0 python train_FNO.py --data_path /pscratch/sd/j/junyi012/superbench_v1/nskt16000_1024 --data_name nskt_16k --epochs 500 --batch_size 64"
+
 
 set -x
     bash -c "
