@@ -180,7 +180,6 @@ def validate_RINE(args, test1_loader, test2_loader, model,mean,std):
 
 def validate_RFNE(args, test1_loader, test2_loader, model,mean,std):
     '''Relative Frobenius norm error (RFNE)'''
-    rfne1 = []   
     with torch.no_grad():
         for batch_idx, (data, target) in enumerate((test1_loader)):
             data, target = data.to(args.device).float(), target.to(args.device).float()
@@ -188,13 +187,7 @@ def validate_RFNE(args, test1_loader, test2_loader, model,mean,std):
             # output = normalize(args,output,mean,std)
             # target = normalize(args,target,mean,std)
             # calculate frobenius norm of each snapshot of each channel
-            for i in range(target.shape[0]):
-                for j in range (target.shape[1]):
-                    err_rfne = torch.norm((target[i,j,...]-output[i,j,...])) / torch.norm(target[i,j,...])
-                    rfne1.append(err_rfne)
-    rfne1 = torch.mean(torch.tensor(rfne1)).item()
-
-    rfne2 = []
+            rfne1 = torch.norm((target-output), dim=(-2,-1),p=2) / torch.norm(target, dim=(-2,-1),p=2)
     with torch.no_grad():
         for batch_idx, (data, target) in enumerate((test2_loader)):
             data, target = data.to(args.device).float(), target.to(args.device).float()
@@ -202,15 +195,13 @@ def validate_RFNE(args, test1_loader, test2_loader, model,mean,std):
             # output = normalize(args,output,mean,std)
             # target = normalize(args,target,mean,std)
             # calculate frobenius norm of each snapshot
-            for i in range(target.shape[0]):
-                for j in range(target.shape[1]):
-                    err_rfne = torch.norm((target[i,j,...]-output[i,j,...])) / torch.norm(target[i,j,...])
-                #fne2.append(err_fne)
-                    rfne2.append(err_rfne)
-    #fne2 = np.array(fne2).mean()
-    rfne2 = torch.mean(torch.tensor(rfne2)).item()
-
-    return rfne1, rfne2
+            rfne2 = torch.norm((target-output), dim=(-2,-1),p=2) / torch.norm(target, dim=(-2,-1),p=2)
+    fig,ax = plt.subplots(1,3)
+    ax[0].imshow(target[0,-1,:,:].cpu().detach().numpy())
+    ax[1].imshow(output[0,-1,:,:].cpu().detach().numpy())
+    ax[2].imshow(np.abs(output[0,-1,:,:].cpu().detach().numpy()-target[0,-1,:,:].cpu().detach().numpy()))
+    fig.savefig("test.png")
+    return rfne1.mean().item(), rfne2.mean().item()
 
 
 
@@ -309,7 +300,7 @@ def main():
     parser.add_argument('--model', type=str, default='FNO2D', help='model')
     parser.add_argument('--epochs', type=int, default=500, help='max epochs')
     parser.add_argument('--device', type=str, default=torch.device('cuda' if torch.cuda.is_available() else 'cpu'), help='computing device')
-    parser.add_argument('--batch_size', type=int, default=256, help='batch size')
+    parser.add_argument('--batch_size', type=int, default=1, help='batch size')
     parser.add_argument('--lr', type=float, default=0.005, help='learning rate')
     parser.add_argument('--wd', type=float, default=0, help='weight decay')
     parser.add_argument('--seed', type=int, default=5544, help='random seed')

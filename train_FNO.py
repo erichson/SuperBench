@@ -120,7 +120,7 @@ def main():
     parser.add_argument('--epochs', type=int, default=500, help='max epochs')
     parser.add_argument('--device', type=str, default=torch.device('cuda' if torch.cuda.is_available() else 'cpu'), help='computing device')
     parser.add_argument('--batch_size', type=int, default=256, help='batch size')
-    parser.add_argument('--lr', type=float, default=0.005, help='learning rate')
+    parser.add_argument('--lr', type=float, default=0.001, help='learning rate')
     parser.add_argument('--wd', type=float, default=0, help='weight decay')
     parser.add_argument('--seed', type=int, default=5544, help='random seed')
     parser.add_argument('--step_size', type=int, default=50, help='step size for scheduler')
