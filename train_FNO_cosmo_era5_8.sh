@@ -23,6 +23,7 @@ cmd2="srun --exact -n 1 -G1 -c64 --gpu-bind=map_gpu:1 python train_FNO.py --data
 
 set -x
     bash -c "
-    $cmd1 & $cmd2 &
+    $cmd1 & 
+    $cmd2 &
     wait
     "
