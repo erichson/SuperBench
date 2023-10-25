@@ -153,55 +153,56 @@ def validate_RINE(args, test1_loader, test2_loader, model,mean,std):
         for batch_idx, (data, target) in enumerate((test1_loader)):
             data, target = data.to(args.device).float(), target.to(args.device).float() # [b,c,h,w]
             output = model(data) 
-            # output = normalize(args,output,mean,std)
-            # target = normalize(args,target,mean,std)
+            output = normalize(args,output,mean,std)
+            target = normalize(args,target,mean,std)
             # calculate infinity norm of each snapshot
-            for i in range(target.shape[0]):
-                for j in range(target.shape[1]):
-                    err_ine = torch.norm((target[i,j,...]-output[i,j,...]), p=np.inf)
-                    ine1.append(err_ine)
-    ine1 = torch.mean(torch.tensor(ine1)).item()
-
+            err_ine = torch.norm((target-output), p=np.inf,dim = (-1,-2))
+            ine1.append(err_ine.mean())
+    INE1 = torch.stack(ine1).mean().item()
     ine2 = []
     with torch.no_grad():
         for batch_idx, (data, target) in enumerate((test2_loader)):
             data, target = data.to(args.device).float(), target.to(args.device).float()
             output = model(data)  
             # calculate infinity norm of each snapshot
-            # output = normalize(args,output,mean,std)
-            # target = normalize(args,target,mean,std)
-            for i in range(target.shape[0]):
-                for j in range(target.shape[1]):
-                    err_ine = torch.norm((target[i,j,...]-output[i,j,...]), p=np.inf)
-                    ine2.append(err_ine)
-    ine2 = torch.mean(torch.tensor(ine2)).item()    
-    return ine1, ine2 
+            output = normalize(args,output,mean,std)
+            target = normalize(args,target,mean,std)
+            err_ine = torch.norm((target-output), p=np.inf,dim = (-1,-2))
+            ine2.append(err_ine.mean())
+    INE2 = torch.stack(ine2).mean().item()
+    return INE1, INE2
 
 
 def validate_RFNE(args, test1_loader, test2_loader, model,mean,std):
     '''Relative Frobenius norm error (RFNE)'''
+    err1 = []
+    err2 = []
     with torch.no_grad():
         for batch_idx, (data, target) in enumerate((test1_loader)):
             data, target = data.to(args.device).float(), target.to(args.device).float()
             output = model(data)   
-            # output = normalize(args,output,mean,std)
-            # target = normalize(args,target,mean,std)
+            output = normalize(args,output,mean,std)
+            target = normalize(args,target,mean,std)
             # calculate frobenius norm of each snapshot of each channel
             rfne1 = torch.norm((target-output), dim=(-2,-1),p=2) / torch.norm(target, dim=(-2,-1),p=2)
+            err1.append(rfne1.mean())
+    RFNE1 = torch.stack(err1).mean().item()
     with torch.no_grad():
         for batch_idx, (data, target) in enumerate((test2_loader)):
             data, target = data.to(args.device).float(), target.to(args.device).float()
             output = model(data) 
-            # output = normalize(args,output,mean,std)
-            # target = normalize(args,target,mean,std)
+            output = normalize(args,output,mean,std)
+            target = normalize(args,target,mean,std)
             # calculate frobenius norm of each snapshot
             rfne2 = torch.norm((target-output), dim=(-2,-1),p=2) / torch.norm(target, dim=(-2,-1),p=2)
-    fig,ax = plt.subplots(1,3)
-    ax[0].imshow(target[0,-1,:,:].cpu().detach().numpy())
-    ax[1].imshow(output[0,-1,:,:].cpu().detach().numpy())
-    ax[2].imshow(np.abs(output[0,-1,:,:].cpu().detach().numpy()-target[0,-1,:,:].cpu().detach().numpy()))
-    fig.savefig("test.png")
-    return rfne1.mean().item(), rfne2.mean().item()
+            err2.append(rfne2.mean())
+    RFNE2 = torch.stack(err2).mean().item()
+    # fig,ax = plt.subplots(1,3)
+    # ax[0].imshow(target[0,-1,:,:].cpu().detach().numpy())
+    # ax[1].imshow(output[0,-1,:,:].cpu().detach().numpy())
+    # ax[2].imshow(np.abs(output[0,-1,:,:].cpu().detach().numpy()-target[0,-1,:,:].cpu().detach().numpy()))
+    # fig.savefig("test.png")
+    return RFNE1, RFNE2
 
 
 
@@ -221,8 +222,8 @@ def validate_PSNR(args, test1_loader, test2_loader, model,mean,std):
         for batch_idx, (data, target) in enumerate((test1_loader)):
             data, target = data.to(args.device).float(), target.to(args.device).float()
             output = model(data) 
-            # output = normalize(args,output,mean,std)
-            # target = normalize(args,target,mean,std)
+            output = normalize(args,output,mean,std)
+            target = normalize(args,target,mean,std)
             # calculate PSNR of each snapshot and then average (Change to channel-wise)
             for i in range(target.shape[0]):
                 for j in range(target.shape[1]):
@@ -235,8 +236,8 @@ def validate_PSNR(args, test1_loader, test2_loader, model,mean,std):
         for batch_idx, (data, target) in enumerate((test2_loader)):
             data, target = data.to(args.device).float(), target.to(args.device).float()
             output = model(data) 
-            # output = normalize(args,output,mean,std)
-            # target = normalize(args,target,mean,std)
+            output = normalize(args,output,mean,std)
+            target = normalize(args,target,mean,std)
             # calculate PSNR of each snapshot and then average
             for i in range(target.shape[0]):
                 for j in range(target.shape[1]):
@@ -258,8 +259,8 @@ def validate_SSIM(args, test1_loader, test2_loader, model,mean,std):
                 data, target = data.to(args.device).float(), target.to(args.device).float()
                 output = model(data) 
                 
-                # output = normalize(args,output,mean,std)
-                # target = normalize(args,target,mean,std)
+                output = normalize(args,output,mean,std)
+                target = normalize(args,target,mean,std)
                 for i in range(target.shape[0]):
                     for j in range(target.shape[1]):
                         err_ssim = ssim(target[i:(i+1),j:(j+1),...], output[i:(i+1),j:(j+1),...])
@@ -273,8 +274,8 @@ def validate_SSIM(args, test1_loader, test2_loader, model,mean,std):
             for batch_idx, (data, target) in enumerate((test2_loader)):
                 data, target = data.to(args.device).float(), target.to(args.device).float()
                 output = model(data) 
-                # output = normalize(args,output,mean,std)
-                # target = normalize(args,target,mean,std)                
+                output = normalize(args,output,mean,std)
+                target = normalize(args,target,mean,std)                
                 for i in range(target.shape[0]):
                     for j in range(target.shape[1]):
                         err_ssim = ssim(target[i:(i+1),j:(j+1),...], output[i:(i+1),j:(j+1),...])
@@ -377,8 +378,9 @@ def main():
     try:
         with open("normed_eval.json", "r") as f:
             all_results = json.load(f)
-    except FileNotFoundError:
-        all_results = []
+    except (FileNotFoundError, json.JSONDecodeError):
+        all_results = {}
+
 
     # Initialize a dictionary for the current results
     current_result = {

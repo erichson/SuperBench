@@ -370,7 +370,7 @@ def main():
     try:
         with open("normed_eval.json", "r") as f:
             all_results = json.load(f)
-    except FileNotFoundError:
+    except (FileNotFoundError, json.JSONDecodeError):
         all_results = {}
 
     # Initialize a dictionary for the current results

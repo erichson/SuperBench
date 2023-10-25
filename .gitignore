@@ -5,3 +5,4 @@ figures/*
 *.pyc
 *.ipynb_checkpoints
 *.out
+results/*/*.pt
