@@ -289,9 +289,9 @@ def main():
 
     # arguments for evaluation
     parser.add_argument('--model', type=str, default='shallowDecoder', help='model')
-    parser.add_argument('--model_path', type=str, default='results/model_SwinIR_nskt_16k_4_0.0001_bicubic_0.0_5544.pt', help='saved model')
+    parser.add_argument('--model_path', type=str, default=None, help='saved model')
     parser.add_argument('--device', type=str, default=torch.device('cuda' if torch.cuda.is_available() else 'cpu'), help='computing device')
-    parser.add_argument('--batch_size', type=int, default=32, help='batch size')
+    parser.add_argument('--batch_size', type=int, default=4, help='batch size')
     parser.add_argument('--seed', type=int, default=5544, help='random seed')
     parser.add_argument('--noise_ratio', type=float, default=0.0, help='noise ratio')
     
@@ -339,10 +339,11 @@ def main():
             'subpixelCNN': subpixelCNN(args.in_channels, upscale_factor=args.upscale_factor, width=1, mean = mean,std = std),
             'SRCNN': SRCNN(args.in_channels, args.upscale_factor,mean,std),
             'EDSR': EDSR(args.in_channels, 64, 16, args.upscale_factor, mean, std),
-            'WDSR': WDSR(args.in_channels, args.out_channels, 32,18, args.upscale_factor, mean, std),
+            'WDSR': WDSR(args.in_channels,args.in_channels, 32,18, args.upscale_factor, mean, std),
             'SwinIR': SwinIR(upscale=args.upscale_factor, in_chans=args.in_channels, img_size=(height, width),
                     window_size=window_size, img_range=1., depths=[6, 6, 6, 6, 6, 6],
                     embed_dim=180, num_heads=[6, 6, 6, 6, 6, 6], mlp_ratio=2, upsampler='pixelshuffle', resi_connection='1conv',mean =mean,std=std),
+            'Bicubic': Bicubic(args.upscale_factor),
     }
 
     model = model_list[args.model]
@@ -351,7 +352,7 @@ def main():
         model_path = 'results/model_' + str(args.model) + '_' + str(args.data_name) + '_' + str(args.upscale_factor) + '_' + str(args.lr) + '_' + str(args.method) +'_' + str(args.noise_ratio) + '_' + str(args.seed) + '.pt'
     else:
         model_path = args.model_path
-    if args.model != 'bicubic':
+    if args.model != 'Bicubic':
         model = load_checkpoint(model, model_path)
         model = model.to(args.device)
 
@@ -364,50 +365,52 @@ def main():
         print('Using bicubic interpolation...')  
 
     import json
-
+    
     # Check if the results file already exists and load it, otherwise initialize an empty list
     try:
         with open("normed_eval.json", "r") as f:
             all_results = json.load(f)
     except (FileNotFoundError, json.JSONDecodeError):
         all_results = {}
+        print("No results file found, initializing a new one.")
+    # Create a unique key based on your parameters
+    key = f"{args.model}_{args.data_name}_{args.method}_{args.upscale_factor}_{args.noise_ratio}"
 
-    # Initialize a dictionary for the current results
-    current_result = {
-        "model": args.model,
-        "dataset": args.data_name,
-        "method": args.method,
-        "scale factor": args.upscale_factor,
-        "noise ratio": args.noise_ratio,
-        "metrics": {}
-    }
+# Check if the key already exists in the dictionary
+    if key not in all_results:
+        all_results[key] = {
+            "model": args.model,
+            "dataset": args.data_name,
+            "method": args.method,
+            "scale factor": args.upscale_factor,
+            "noise ratio": args.noise_ratio,
+            "parameters": (sum(p.numel() for p in model.parameters())/1000000.0),
+            "metrics": {}
+        }
 
     # Validate and store Infinity norm results
     ine1, ine2 = validate_RINE(args, test1_loader, test2_loader, model, mean, std)
-    current_result["metrics"]["Infinity"] = {'test1 error': ine1, 'test2 error': ine2}
+    all_results[key]["metrics"]["Infinity"] = {'test1 error': ine1, 'test2 error': ine2}
 
     # Validate and store RFNE results
     error1, error2 = validate_RFNE(args, test1_loader, test2_loader, model, mean, std)
-    current_result["metrics"]["RFNE"] = {'test1 error': error1, 'test2 error': error2}
+    all_results[key]["metrics"]["RFNE"] = {'test1 error': error1, 'test2 error': error2}
 
     # Validate and store PSNR results
     error1, error2 = validate_PSNR(args, test1_loader, test2_loader, model, mean, std)
-    current_result["metrics"]["PSNR"] = {'test1 error': error1, 'test2 error': error2}
+    all_results[key]["metrics"]["PSNR"] = {'test1 error': error1, 'test2 error': error2}
 
     # Validate and store SSIM results
     error1, error2 = validate_SSIM(args, test1_loader, test2_loader, model, mean, std)
-    current_result["metrics"]["SSIM"] = {'test1 error': error1, 'test2 error': error2}
+    all_results[key]["metrics"]["SSIM"] = {'test1 error': error1, 'test2 error': error2}
 
     # Validate and store Physics loss results for specific data names
     if args.data_name in ["nskt_16k", "nskt_32k","nskt_16k_sim","nskt_32k_sim"]:
         phy_err1, phy_err2 = validate_phyLoss(args, test1_loader, test2_loader, model)
-        current_result["metrics"]["Physics"] = {'test1 error': phy_err1, 'test2 error': phy_err2}
-
-    # Add the current results to the main list
-    all_results.append(current_result)
+        all_results[key]["metrics"]["Physics"] = {'test1 error': phy_err1, 'test2 error': phy_err2}
 
     # Serialize the updated results list to the JSON file
-    with open("normed_eval.json", "w") as f:
+    with open("normed_eval.json", "a") as f:
         json.dump(all_results, f, indent=4)
 
     # =============== validate ======================

@@ -1,1 +1,0 @@
-python eval.py --data_name era5 --data_path /pscratch/sd/j/junyi012/superbench_v2/era5 --
