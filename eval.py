@@ -172,7 +172,6 @@ def validate_RINE(args, test1_loader, test2_loader, model,mean,std):
 
 def validate_RFNE(args, test1_loader, test2_loader, model,mean,std):
     '''Relative Frobenius norm error (RFNE)'''
-    rfne1 = []   
     with torch.no_grad():
         for batch_idx, (data, target) in enumerate((test1_loader)):
             data, target = data.to(args.device).float(), target.to(args.device).float()
@@ -183,7 +182,6 @@ def validate_RFNE(args, test1_loader, test2_loader, model,mean,std):
             err_rfne = torch.norm((target-output),p =2,dim=(-1,-2)) / torch.norm(target,p =2,dim=(-1,-2))
     rfne1 =err_rfne.mean().item()
 
-    rfne2 = []
     with torch.no_grad():
         for batch_idx, (data, target) in enumerate((test2_loader)):
             data, target = data.to(args.device).float(), target.to(args.device).float()
@@ -291,7 +289,7 @@ def main():
 
     # arguments for evaluation
     parser.add_argument('--model', type=str, default='shallowDecoder', help='model')
-    # parser.add_argument('--model_path', type=str, default='results/model_SwinIR_nskt_16k_4_0.0001_bicubic_0.0_5544.pt', help='saved model')
+    parser.add_argument('--model_path', type=str, default='results/model_SwinIR_nskt_16k_4_0.0001_bicubic_0.0_5544.pt', help='saved model')
     parser.add_argument('--device', type=str, default=torch.device('cuda' if torch.cuda.is_available() else 'cpu'), help='computing device')
     parser.add_argument('--batch_size', type=int, default=32, help='batch size')
     parser.add_argument('--seed', type=int, default=5544, help='random seed')
@@ -340,8 +338,8 @@ def main():
     model_list = {
             'subpixelCNN': subpixelCNN(args.in_channels, upscale_factor=args.upscale_factor, width=1, mean = mean,std = std),
             'SRCNN': SRCNN(args.in_channels, args.upscale_factor,mean,std),
-            'EDSR': EDSR(args.in_channels, args.hidden_channels, args.n_res_blocks, args.upscale_factor, mean, std),
-            'WDSR': WDSR(args.in_channels, args.out_channels, args.hidden_channels, args.n_res_blocks, args.upscale_factor, mean, std),
+            'EDSR': EDSR(args.in_channels, 64, 16, args.upscale_factor, mean, std),
+            'WDSR': WDSR(args.in_channels, args.out_channels, 32,18, args.upscale_factor, mean, std),
             'SwinIR': SwinIR(upscale=args.upscale_factor, in_chans=args.in_channels, img_size=(height, width),
                     window_size=window_size, img_range=1., depths=[6, 6, 6, 6, 6, 6],
                     embed_dim=180, num_heads=[6, 6, 6, 6, 6, 6], mlp_ratio=2, upsampler='pixelshuffle', resi_connection='1conv',mean =mean,std=std),
@@ -349,9 +347,10 @@ def main():
 
     model = model_list[args.model]
     model = torch.nn.DataParallel(model)
-    
-    model_path = 'results/model_' + str(args.model) + '_' + str(args.data_name) + '_' + str(args.upscale_factor) + '_' + str(args.lr) + '_' + str(args.method) +'_' + str(args.noise_ratio) + '_' + str(args.seed) + '.pt'
-
+    if args.model_path is None:
+        model_path = 'results/model_' + str(args.model) + '_' + str(args.data_name) + '_' + str(args.upscale_factor) + '_' + str(args.lr) + '_' + str(args.method) +'_' + str(args.noise_ratio) + '_' + str(args.seed) + '.pt'
+    else:
+        model_path = args.model_path
     if args.model != 'bicubic':
         model = load_checkpoint(model, model_path)
         model = model.to(args.device)

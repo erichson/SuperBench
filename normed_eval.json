@@ -24,29 +24,4 @@
             }
         }
     },
-    {
-        "model": "FNO2D",
-        "dataset": "cosmo",
-        "method": "bicubic",
-        "scale factor": 8,
-        "noise ratio": 0.0,
-        "metrics": {
-            "Infinity": {
-                "test1 error": 8.624371528625488,
-                "test2 error": 7.882047176361084
-            },
-            "RFNE": {
-                "test1 error": 0.6038274765014648,
-                "test2 error": 0.6239342093467712
-            },
-            "PSNR": {
-                "test1 error": 26.014137268066406,
-                "test2 error": 25.354598999023438
-            },
-            "SSIM": {
-                "test1 error": 0.5155473351478577,
-                "test2 error": 0.5063171982765198
-            }
-        }
-    }
 }

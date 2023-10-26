@@ -150,8 +150,8 @@ def main():
     model_list = {
             'subpixelCNN': subpixelCNN(args.in_channels, upscale_factor=args.upscale_factor, width=1, mean = mean,std = std),
             'SRCNN': SRCNN(args.in_channels, args.upscale_factor,mean,std),
-            'EDSR': EDSR(args.in_channels, args.hidden_channels, args.n_res_blocks, args.upscale_factor, mean, std),
-            'WDSR': WDSR(args.in_channels, args.out_channels, args.hidden_channels, args.n_res_blocks, args.upscale_factor, mean, std),
+            'EDSR': EDSR(args.in_channels, 64, 16, args.upscale_factor, mean, std),
+            'WDSR': WDSR(args.in_channels, args.in_channels, 32, 18, args.upscale_factor, mean, std),
             'SwinIR': SwinIR(upscale=args.upscale_factor, in_chans=args.in_channels, img_size=(height, width),
                     window_size=window_size, img_range=1., depths=[6, 6, 6, 6, 6, 6],
                     embed_dim=180, num_heads=[6, 6, 6, 6, 6, 6], mlp_ratio=2, upsampler='pixelshuffle', resi_connection='1conv',mean =mean,std=std),

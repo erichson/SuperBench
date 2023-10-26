@@ -3,14 +3,14 @@ import torch
 from torch import nn
 
 def get_data_info(data_name):
-    if data_name == 'nskt_32k':
+    if data_name == 'nskt_32k' or data_name == 'nskt_32k_sim':
         resol = [2048, 2048] 
         n_fields = 3
         n_train_samples = 1000
         mean = [-1.44020306e-20,5.80499913e-20 ,-1.65496884e-15]
         std = [ 0.67831907 ,0.68145471,10.75285724]
 
-    elif data_name == 'nskt_16k':
+    elif data_name == 'nskt_16k' or data_name == 'nskt_16k_sim':
         resol = [2048, 2048]
         n_fields = 3
         n_train_samples = 1000
