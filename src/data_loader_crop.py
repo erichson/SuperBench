@@ -51,7 +51,7 @@ def get_data_loader(args, data_tag, train, n_patches, std):
 
     dataloader = DataLoader(dataset,
                             batch_size = int(args.batch_size),
-                            num_workers = 4, # TODO: make a param
+                            num_workers = 2, # TODO: make a param
                             shuffle = (train == True), # TODO: now validation set will also shuffle. If need change here, a new variable validation shoud be added.   
                             sampler = None,
                             drop_last = False,
