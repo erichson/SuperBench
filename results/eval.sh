@@ -18,3 +18,5 @@ python eval.py --data_name nskt_32k --data_path /pscratch/sd/j/junyi012/superben
 python eval.py --data_name nskt_32k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k --in_channels 3 --model Bicubic --upscale_factor 16; 
 python eval.py --data_name nskt_32k_sim --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k_sim_4 --in_channels 3 --model Bicubic --upscale_factor 4; 
 python eval.py --data_name nskt_16k_sim --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k_sim_4 --in_channels 3 --model Bicubic --upscale_factor 4; 
+python eval_FNO.py --data_name era5 --data_path /pscratch/sd/j/junyi012/superbench_v2/era5 --in_channels 3 --modes 12 --upscale_factor 8 --model_path results/era5_8/model_FNO2D_era5_8_0.001_bicubic_0.0_5544_263.pt; 
+python eval_FNO.py --data_name era5 --data_path /pscratch/sd/j/junyi012/superbench_v2/era5 --in_channels 3 --modes 12 --upscale_factor 16 --model_path results/era5_16/model_FNO2D_era5_16_0.001_bicubic_0.0_5544_811.pt;

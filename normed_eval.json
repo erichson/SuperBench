@@ -672,5 +672,73 @@
                 "test2 error": 3.6482099628448488
             }
         }
+    },
+    "FNO2D_era5_bicubic_8_0.0": {
+        "model": "FNO2D",
+        "dataset": "era5",
+        "method": "bicubic",
+        "scale factor": 8,
+        "noise ratio": 0.0,
+        "parameters": 4.752259,
+        "metrics": {
+            "Infinity": {
+                "test1 error": 0.6160446405410767,
+                "test2 error": 0.6080915331840515
+            },
+            "RFNE": {
+                "test1 error": 0.1926531344652176,
+                "test2 error": 0.19163012504577637
+            },
+            "PSNR": {
+                "test1 error": 25.327238082885742,
+                "test2 error": 25.369638442993164
+            },
+            "SSIM": {
+                "test1 error": 0.8090377449989319,
+                "test2 error": 0.810011088848114
+            },
+            "MSE": {
+                "test1 error": 0.047770462930202484,
+                "test2 error": 0.048675600439310074
+            },
+            "MAE": {
+                "test1 error": 0.13468728959560394,
+                "test2 error": 0.13580107688903809
+            }
+        }
+    },
+    "FNO2D_era5_bicubic_16_0.0": {
+        "model": "FNO2D",
+        "dataset": "era5",
+        "method": "bicubic",
+        "scale factor": 16,
+        "noise ratio": 0.0,
+        "parameters": 4.752259,
+        "metrics": {
+            "Infinity": {
+                "test1 error": 0.6768568158149719,
+                "test2 error": 0.6661369800567627
+            },
+            "RFNE": {
+                "test1 error": 0.32469871640205383,
+                "test2 error": 0.32240763306617737
+            },
+            "PSNR": {
+                "test1 error": 20.74013328552246,
+                "test2 error": 20.78983497619629
+            },
+            "SSIM": {
+                "test1 error": 0.6867209076881409,
+                "test2 error": 0.6873404383659363
+            },
+            "MSE": {
+                "test1 error": 0.13334327936172485,
+                "test2 error": 0.1351674199104309
+            },
+            "MAE": {
+                "test1 error": 0.23687602579593658,
+                "test2 error": 0.23853421211242676
+            }
+        }
     }
 }

@@ -144,147 +144,65 @@ def normalize(args,target,mean,std):
     std = torch.Tensor(std).to(args.device).view(1,target.shape[1],1,1)
     target = (target - mean) / std
     return target
+def validate_all_metrics(args, test1_loader, test2_loader, model, mean, std):
+    from torchmetrics import StructuralSimilarityIndexMeasure
 
-def validate_RINE(args, test1_loader, test2_loader, model,mean,std):
-    '''Relative infinity norm error (RINE)'''
-    # calculate the RINE of each snapshot and then average
-    ine1 = [] 
+    ssim = StructuralSimilarityIndexMeasure().to(args.device)
+    rine1, rine2, rfne1, rfne2, psnr1, psnr2, ssim1, ssim2,mse1,mse2,mae1,mae2 = [], [], [], [], [], [], [], [],[],[],[],[]
+
+    # Helper function for PSNR
+    def compute_psnr(true, pred):
+        mse = torch.mean((true - pred) ** 2)
+        if mse == 0:
+            return float('inf')
+        max_value = torch.max(true)
+        return 20 * torch.log10(max_value / torch.sqrt(mse))
+
     with torch.no_grad():
-        for batch_idx, (data, target) in enumerate((test1_loader)):
-            data, target = data.to(args.device).float(), target.to(args.device).float() # [b,c,h,w]
-            output = model(data) 
-            output = normalize(args,output,mean,std)
-            target = normalize(args,target,mean,std)
-            # calculate infinity norm of each snapshot
-            err_ine = torch.norm((target-output), p=np.inf,dim = (-1,-2))
-            ine1.append(err_ine.mean())
-    INE1 = torch.stack(ine1).mean().item()
-    ine2 = []
-    with torch.no_grad():
-        for batch_idx, (data, target) in enumerate((test2_loader)):
-            data, target = data.to(args.device).float(), target.to(args.device).float()
-            output = model(data)  
-            # calculate infinity norm of each snapshot
-            output = normalize(args,output,mean,std)
-            target = normalize(args,target,mean,std)
-            err_ine = torch.norm((target-output), p=np.inf,dim = (-1,-2))
-            ine2.append(err_ine.mean())
-    INE2 = torch.stack(ine2).mean().item()
-    return INE1, INE2
-
-
-def validate_RFNE(args, test1_loader, test2_loader, model,mean,std):
-    '''Relative Frobenius norm error (RFNE)'''
-    err1 = []
-    err2 = []
-    with torch.no_grad():
-        for batch_idx, (data, target) in enumerate((test1_loader)):
-            data, target = data.to(args.device).float(), target.to(args.device).float()
-            output = model(data)   
-            output = normalize(args,output,mean,std)
-            target = normalize(args,target,mean,std)
-            # calculate frobenius norm of each snapshot of each channel
-            rfne1 = torch.norm((target-output), dim=(-2,-1),p=2) / torch.norm(target, dim=(-2,-1),p=2)
-            err1.append(rfne1.mean())
-    RFNE1 = torch.stack(err1).mean().item()
-    with torch.no_grad():
-        for batch_idx, (data, target) in enumerate((test2_loader)):
-            data, target = data.to(args.device).float(), target.to(args.device).float()
-            output = model(data) 
-            output = normalize(args,output,mean,std)
-            target = normalize(args,target,mean,std)
-            # calculate frobenius norm of each snapshot
-            rfne2 = torch.norm((target-output), dim=(-2,-1),p=2) / torch.norm(target, dim=(-2,-1),p=2)
-            err2.append(rfne2.mean())
-    RFNE2 = torch.stack(err2).mean().item()
-    # fig,ax = plt.subplots(1,3)
-    # ax[0].imshow(target[0,-1,:,:].cpu().detach().numpy())
-    # ax[1].imshow(output[0,-1,:,:].cpu().detach().numpy())
-    # ax[2].imshow(np.abs(output[0,-1,:,:].cpu().detach().numpy()-target[0,-1,:,:].cpu().detach().numpy()))
-    # fig.savefig("test.png")
-    return RFNE1, RFNE2
-
-
-
-def psnr(true, pred):
-    mse = torch.mean((true - pred) ** 2)
-    if mse == 0:
-        return float('inf')
-    max_value = torch.max(true)
-    return 20 * torch.log10(max_value / torch.sqrt(mse))
-
-
-def validate_PSNR(args, test1_loader, test2_loader, model,mean,std):
-    '''Peak signal-to-noise ratio (PSNR)'''
-    
-    error1 = []   
-    with torch.no_grad():
-        for batch_idx, (data, target) in enumerate((test1_loader)):
-            data, target = data.to(args.device).float(), target.to(args.device).float()
-            output = model(data) 
-            output = normalize(args,output,mean,std)
-            target = normalize(args,target,mean,std)
-            # calculate PSNR of each snapshot and then average (Change to channel-wise)
-            for i in range(target.shape[0]):
-                for j in range(target.shape[1]):
-                    err_psnr = psnr(target[i,j,...], output[i,j,...])
-                    error1.append(err_psnr)
-    error1 = torch.mean(torch.tensor(error1)).item()
-
-    error2 = []  
-    with torch.no_grad():
-        for batch_idx, (data, target) in enumerate((test2_loader)):
-            data, target = data.to(args.device).float(), target.to(args.device).float()
-            output = model(data) 
-            output = normalize(args,output,mean,std)
-            target = normalize(args,target,mean,std)
-            # calculate PSNR of each snapshot and then average
-            for i in range(target.shape[0]):
-                for j in range(target.shape[1]):
-                    err_psnr = psnr(target[i,j,...], output[i,j,...])
-                    error2.append(err_psnr)
-    error2 = torch.mean(torch.tensor(error2)).item()
-
-    return error1, error2
-
-
-def validate_SSIM(args, test1_loader, test2_loader, model,mean,std):
-        '''Structual Similarity Index Measure (SSIM)'''
-        from torchmetrics import StructuralSimilarityIndexMeasure
-        ssim = StructuralSimilarityIndexMeasure().to(args.device)
-        
-        error1 = []
-        with torch.no_grad():
-            for batch_idx, (data, target) in enumerate((test1_loader)):
+        for loader, (rine_list, rfne_list, psnr_list, ssim_list,mse_list,mae_list) in zip([test1_loader, test2_loader],
+                                                                        [(rine1, rfne1, psnr1, ssim1,mse1,mae1),
+                                                                         (rine2, rfne2, psnr2, ssim2,mse2,mae2)]):
+            for batch_idx, (data, target) in enumerate(loader):
                 data, target = data.to(args.device).float(), target.to(args.device).float()
-                output = model(data) 
-                
-                output = normalize(args,output,mean,std)
-                target = normalize(args,target,mean,std)
+                output = model(data)
+                output = normalize(args, output, mean, std)
+                target = normalize(args, target, mean, std)
+
+                # MSE 
+                mse = torch.mean((target - output) ** 2,dim =(-1,-2,-3))
+                mse_list.append(mse.mean())
+
+                # MAE
+                mae = torch.mean(torch.abs(target - output),dim=(-1,-2,-3))
+                mae_list.append(mae.mean())
+                # RINE
+                err_ine = torch.norm(target-output, p=np.inf, dim=(-1, -2)) / torch.norm(target, p=np.inf, dim=(-1, -2))
+                rine_list.append(err_ine.mean())
+
+                # RFNE
+                err_rfne = torch.norm(target-output, p=2, dim=(-1, -2)) / torch.norm(target, p=2, dim=(-1, -2))
+                rfne_list.append(err_rfne.mean())
+
+                # PSNR
                 for i in range(target.shape[0]):
                     for j in range(target.shape[1]):
-                        err_ssim = ssim(target[i:(i+1),j:(j+1),...], output[i:(i+1),j:(j+1),...])
-                        error1.append(err_ssim.cpu())
+                        err_psnr = compute_psnr(target[i, j, ...], output[i, j, ...])
+                        psnr_list.append(err_psnr)
 
-        # averaged SSIM
-        err1 = torch.mean(torch.tensor(error1)).item()
-
-        error2 = []
-        with torch.no_grad():
-            for batch_idx, (data, target) in enumerate((test2_loader)):
-                data, target = data.to(args.device).float(), target.to(args.device).float()
-                output = model(data) 
-                output = normalize(args,output,mean,std)
-                target = normalize(args,target,mean,std)                
+                # SSIM
                 for i in range(target.shape[0]):
                     for j in range(target.shape[1]):
-                        err_ssim = ssim(target[i:(i+1),j:(j+1),...], output[i:(i+1),j:(j+1),...])
-                        error2.append(err_ssim.cpu())
+                        err_ssim = ssim(target[i:(i+1), j:(j+1), ...], output[i:(i+1), j:(j+1), ...])
+                        ssim_list.append(err_ssim.cpu())
 
-        err2 = torch.mean(torch.tensor(error2)).item()
-
-        return err1, err2
-
+    # Averaging and converting to scalar values
+    avg_rine1, avg_rine2 = torch.mean(torch.stack(rine1)).item(), torch.mean(torch.stack(rine2)).item()
+    avg_rfne1, avg_rfne2 = torch.mean(torch.stack(rfne1)).item(), torch.mean(torch.stack(rfne2)).item()
+    avg_psnr1, avg_psnr2 = torch.mean(torch.stack(psnr1)).item(), torch.mean(torch.stack(psnr2)).item()
+    avg_ssim1, avg_ssim2 = torch.mean(torch.stack(ssim1)).item(), torch.mean(torch.stack(ssim2)).item()
+    avg_mse1,avg_mse2 = torch.mean(torch.stack(mse1)).item(), torch.mean(torch.stack(mse2)).item()
+    avg_mae1,avg_mae2 = torch.mean(torch.stack(mae1)).item(), torch.mean(torch.stack(mae2)).item()
+    return (avg_rine1, avg_rine2), (avg_rfne1, avg_rfne2), (avg_psnr1, avg_psnr2), (avg_ssim1, avg_ssim2),(avg_mse1,avg_mse2),(avg_mae1,avg_mae2)
     
 def main():  
     parser = argparse.ArgumentParser(description='training parameters')
@@ -353,25 +271,14 @@ def main():
     # if pretrain and posttune
     model= load_checkpoint(model, args.model_path)
 
-    
-    # =============== validate ======================
-    # with open("result.txt", "a") as f:
-    #     print(" model" + str(args.model) + " data: " + str(args.data_name)+ "  method: " + str(args.method) +" scale factor " + str(args.upscale_factor) + " noise ratio: " + str(args.noise_ratio),file = f)
-    #     ine1, ine2 = validate_RINE(args, test1_loader, test2_loader, model,mean,std)
-    #     print("Infinity norm --- test1 error: %.8f, test2 error: %.8f" % (ine1, ine2),file = f) 
+    model = model.to(args.device)
 
-    #     error1, error2 = validate_RFNE(args, test1_loader, test2_loader, model,mean,std)
-    #     print("RFNE --- test1 error: %.5f %%, test2 error: %.5f %%" % (error1*100.0, error2*100.0),file = f)          
+        # Model summary   
+    print('**** Setup ****')
+    print('Total params Generator: %.3fM' % (sum(p.numel() for p in model.parameters())/1000000.0))
+    print('************')    
 
-    #     error1, error2 = validate_PSNR(args, test1_loader, test2_loader, model,mean,std)
-    #     print("PSNR --- test1 error: %.5f, test2 error: %.5f" % (error1, error2),file = f) 
 
-    #     error1, error2 = validate_SSIM(args, test1_loader, test2_loader, model,mean,std)
-    #     print("SSIM --- test1 error: %.5f, test2 error: %.5f" % (error1, error2),file = f) 
-
-    #     if args.data_name == "nskt_16k" or args.data_name == "nskt_32k":
-    #         phy_err1, phy_err2 = validate_phyLoss(args, test1_loader, test2_loader, model)
-    #         print("Physics loss --- test1 error: %.8f, test2 error: %.8f" % (phy_err1, phy_err2),file=f) 
     import json
     
     # Check if the results file already exists and load it, otherwise initialize an empty list
@@ -380,6 +287,7 @@ def main():
             all_results = json.load(f)
     except (FileNotFoundError, json.JSONDecodeError):
         all_results = {}
+        print("No results file found, initializing a new one.")
     # Create a unique key based on your parameters
     key = f"{args.model}_{args.data_name}_{args.method}_{args.upscale_factor}_{args.noise_ratio}"
 
@@ -395,22 +303,26 @@ def main():
             "metrics": {}
         }
 
+    INE, RFNE, PSNR, SSIM,MSE,MAE = validate_all_metrics(args, test1_loader, test2_loader, model, mean, std)
     # Validate and store Infinity norm results
-    ine1, ine2 = validate_RINE(args, test1_loader, test2_loader, model, mean, std)
-    all_results[key]["metrics"]["Infinity"] = {'test1 error': ine1, 'test2 error': ine2}
+    # ine1, ine2 = validate_RINE(args, test1_loader, test2_loader, model, mean, std)
+    all_results[key]["metrics"]["Infinity"] = {'test1 error': INE[0], 'test2 error': INE[1]}
 
     # Validate and store RFNE results
-    error1, error2 = validate_RFNE(args, test1_loader, test2_loader, model, mean, std)
-    all_results[key]["metrics"]["RFNE"] = {'test1 error': error1, 'test2 error': error2}
+    # error1, error2 = validate_RFNE(args, test1_loader, test2_loader, model, mean, std)
+    all_results[key]["metrics"]["RFNE"] = {'test1 error': RFNE[0], 'test2 error': RFNE[1]}
 
     # Validate and store PSNR results
-    error1, error2 = validate_PSNR(args, test1_loader, test2_loader, model, mean, std)
-    all_results[key]["metrics"]["PSNR"] = {'test1 error': error1, 'test2 error': error2}
+    # error1, error2 = validate_PSNR(args, test1_loader, test2_loader, model, mean, std)
+    all_results[key]["metrics"]["PSNR"] = {'test1 error': PSNR[0], 'test2 error': PSNR[1]}
 
     # Validate and store SSIM results
-    error1, error2 = validate_SSIM(args, test1_loader, test2_loader, model, mean, std)
-    all_results[key]["metrics"]["SSIM"] = {'test1 error': error1, 'test2 error': error2}
-
+    # error1, error2 = validate_SSIM(args, test1_loader, test2_loader, model, mean, std)
+    all_results[key]["metrics"]["SSIM"] = {'test1 error': SSIM[0], 'test2 error': SSIM[1]}
+    # Validate and store MSE results
+    all_results[key]["metrics"]["MSE"] = {'test1 error': MSE[0], 'test2 error': MSE[1]}
+    # Validate and store MAE results
+    all_results[key]["metrics"]["MAE"] = {'test1 error': MAE[0], 'test2 error': MAE[1]}
     # Validate and store Physics loss results for specific data names
     if args.data_name in ["nskt_16k", "nskt_32k","nskt_16k_sim","nskt_32k_sim"]:
         phy_err1, phy_err2 = validate_phyLoss(args, test1_loader, test2_loader, model)
@@ -419,6 +331,7 @@ def main():
     # Serialize the updated results list to the JSON file
     with open("normed_eval.json", "w") as f:
         json.dump(all_results, f, indent=4)
+
 
 if __name__ =='__main__':
     main()
