@@ -6,3 +6,4 @@ figures/*
 *.ipynb_checkpoints
 *.out
 results/*/*.pt
+make_file/*.sbatch
