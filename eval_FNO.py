@@ -306,7 +306,7 @@ def main():
     INE, RFNE, PSNR, SSIM,MSE,MAE = validate_all_metrics(args, test1_loader, test2_loader, model, mean, std)
     # Validate and store Infinity norm results
     # ine1, ine2 = validate_RINE(args, test1_loader, test2_loader, model, mean, std)
-    all_results[key]["metrics"]["Infinity"] = {'test1 error': INE[0], 'test2 error': INE[1]}
+    all_results[key]["metrics"]["IN"] = {'test1 error': INE[0], 'test2 error': INE[1]}
 
     # Validate and store RFNE results
     # error1, error2 = validate_RFNE(args, test1_loader, test2_loader, model, mean, std)

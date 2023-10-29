@@ -1006,5 +1006,879 @@
                 "test2 error": 3.217433309555054
             }
         }
+    },
+    "SRCNN_nskt_16k_bicubic_16_0.0": {
+        "model": "SRCNN",
+        "dataset": "nskt_16k",
+        "method": "bicubic",
+        "scale factor": 16,
+        "noise ratio": 0.0,
+        "parameters": 0.069251,
+        "metrics": {
+            "IN": {
+                "test1 error": 0.43446433544158936,
+                "test2 error": 0.3584817349910736
+            },
+            "RFNE": {
+                "test1 error": 0.23479510843753815,
+                "test2 error": 0.22510546445846558
+            },
+            "PSNR": {
+                "test1 error": 27.07895278930664,
+                "test2 error": 28.49935531616211
+            },
+            "SSIM": {
+                "test1 error": 0.8254820108413696,
+                "test2 error": 0.8474466800689697
+            },
+            "MSE": {
+                "test1 error": 0.07545632869005203,
+                "test2 error": 0.06714203953742981
+            },
+            "MAE": {
+                "test1 error": 0.15638859570026398,
+                "test2 error": 0.14799566566944122
+            },
+            "Physics": {
+                "test1 error": 3.31004243850708,
+                "test2 error": 3.0361165189743042
+            }
+        }
+    },
+    "SRCNN_nskt_32k_bicubic_8_0.0": {
+        "model": "SRCNN",
+        "dataset": "nskt_32k",
+        "method": "bicubic",
+        "scale factor": 8,
+        "noise ratio": 0.0,
+        "parameters": 0.069251,
+        "metrics": {
+            "IN": {
+                "test1 error": 0.27196720242500305,
+                "test2 error": 0.21748392283916473
+            },
+            "RFNE": {
+                "test1 error": 0.12702274322509766,
+                "test2 error": 0.12102071195840836
+            },
+            "PSNR": {
+                "test1 error": 32.65403747558594,
+                "test2 error": 34.06398010253906
+            },
+            "SSIM": {
+                "test1 error": 0.9094610810279846,
+                "test2 error": 0.9234310984611511
+            },
+            "MSE": {
+                "test1 error": 0.02225867658853531,
+                "test2 error": 0.01936047337949276
+            },
+            "MAE": {
+                "test1 error": 0.08122672885656357,
+                "test2 error": 0.07676652073860168
+            },
+            "Physics": {
+                "test1 error": 2.870984101295471,
+                "test2 error": 2.5348944091796874
+            }
+        }
+    },
+    "EDSR_nskt_16k_bicubic_8_0.0": {
+        "model": "EDSR",
+        "dataset": "nskt_16k",
+        "method": "bicubic",
+        "scale factor": 8,
+        "noise ratio": 0.0,
+        "parameters": 1.665283,
+        "metrics": {
+            "IN": {
+                "test1 error": 0.056919198483228683,
+                "test2 error": 0.04561914876103401
+            },
+            "RFNE": {
+                "test1 error": 0.02514367550611496,
+                "test2 error": 0.024241222068667412
+            },
+            "PSNR": {
+                "test1 error": 47.007755279541016,
+                "test2 error": 48.283573150634766
+            },
+            "SSIM": {
+                "test1 error": 0.9944671392440796,
+                "test2 error": 0.9957079291343689
+            },
+            "MSE": {
+                "test1 error": 0.001150360330939293,
+                "test2 error": 0.0010034097358584404
+            },
+            "MAE": {
+                "test1 error": 0.016649138182401657,
+                "test2 error": 0.015853876248002052
+            },
+            "Physics": {
+                "test1 error": 0.18537953719496728,
+                "test2 error": 0.16109751671552658
+            }
+        }
+    },
+    "EDSR_nskt_16k_bicubic_16_0.0": {
+        "model": "EDSR",
+        "dataset": "nskt_16k",
+        "method": "bicubic",
+        "scale factor": 16,
+        "noise ratio": 0.0,
+        "parameters": 1.812995,
+        "metrics": {
+            "IN": {
+                "test1 error": 0.12271449714899063,
+                "test2 error": 0.0994381234049797
+            },
+            "RFNE": {
+                "test1 error": 0.06830533593893051,
+                "test2 error": 0.06538872420787811
+            },
+            "PSNR": {
+                "test1 error": 41.0045051574707,
+                "test2 error": 42.3524055480957
+            },
+            "SSIM": {
+                "test1 error": 0.9513866901397705,
+                "test2 error": 0.9609102606773376
+            },
+            "MSE": {
+                "test1 error": 0.010214579291641712,
+                "test2 error": 0.008908282965421677
+            },
+            "MAE": {
+                "test1 error": 0.04636582359671593,
+                "test2 error": 0.043513696640729904
+            },
+            "Physics": {
+                "test1 error": 0.494471515417099,
+                "test2 error": 0.4433633476495743
+            }
+        }
+    },
+    "EDSR_nskt_32k_bicubic_8_0.0": {
+        "model": "EDSR",
+        "dataset": "nskt_32k",
+        "method": "bicubic",
+        "scale factor": 8,
+        "noise ratio": 0.0,
+        "parameters": 1.665283,
+        "metrics": {
+            "IN": {
+                "test1 error": 0.08189937472343445,
+                "test2 error": 0.07458733022212982
+            },
+            "RFNE": {
+                "test1 error": 0.04370640218257904,
+                "test2 error": 0.04187484830617905
+            },
+            "PSNR": {
+                "test1 error": 45.27458190917969,
+                "test2 error": 46.20895767211914
+            },
+            "SSIM": {
+                "test1 error": 0.9829185009002686,
+                "test2 error": 0.9853753447532654
+            },
+            "MSE": {
+                "test1 error": 0.0040559424087405205,
+                "test2 error": 0.003571289125829935
+            },
+            "MAE": {
+                "test1 error": 0.029340628534555435,
+                "test2 error": 0.027734942734241486
+            },
+            "Physics": {
+                "test1 error": 0.30425566762685774,
+                "test2 error": 0.26810462653636935
+            }
+        }
+    },
+    "EDSR_nskt_32k_bicubic_16_0.0": {
+        "model": "EDSR",
+        "dataset": "nskt_32k",
+        "method": "bicubic",
+        "scale factor": 16,
+        "noise ratio": 0.0,
+        "parameters": 1.812995,
+        "metrics": {
+            "IN": {
+                "test1 error": 0.14276239275932312,
+                "test2 error": 0.1280640810728073
+            },
+            "RFNE": {
+                "test1 error": 0.09114024043083191,
+                "test2 error": 0.08760843425989151
+            },
+            "PSNR": {
+                "test1 error": 39.719139099121094,
+                "test2 error": 40.67247772216797
+            },
+            "SSIM": {
+                "test1 error": 0.9285449385643005,
+                "test2 error": 0.9366604685783386
+            },
+            "MSE": {
+                "test1 error": 0.018132079392671585,
+                "test2 error": 0.016280369833111763
+            },
+            "MAE": {
+                "test1 error": 0.06281892210245132,
+                "test2 error": 0.05971618369221687
+            },
+            "Physics": {
+                "test1 error": 0.35890721321105956,
+                "test2 error": 0.31757998108863833
+            }
+        }
+    },
+    "subpixelCNN_nskt_16k_bicubic_8_0.0": {
+        "model": "subpixelCNN",
+        "dataset": "nskt_16k",
+        "method": "bicubic",
+        "scale factor": 8,
+        "noise ratio": 0.0,
+        "parameters": 0.341888,
+        "metrics": {
+            "IN": {
+                "test1 error": 0.08618785440921783,
+                "test2 error": 0.06839004158973694
+            },
+            "RFNE": {
+                "test1 error": 0.037206102162599564,
+                "test2 error": 0.03531638905405998
+            },
+            "PSNR": {
+                "test1 error": 44.8302116394043,
+                "test2 error": 46.22576141357422
+            },
+            "SSIM": {
+                "test1 error": 0.9850940108299255,
+                "test2 error": 0.9885340332984924
+            },
+            "MSE": {
+                "test1 error": 0.002857934683561325,
+                "test2 error": 0.0024239681661128998
+            },
+            "MAE": {
+                "test1 error": 0.024747151881456375,
+                "test2 error": 0.023094424977898598
+            },
+            "Physics": {
+                "test1 error": 0.6830295372009277,
+                "test2 error": 0.6118054378032685
+            }
+        }
+    },
+    "subpixelCNN_nskt_16k_bicubic_16_0.0": {
+        "model": "subpixelCNN",
+        "dataset": "nskt_16k",
+        "method": "bicubic",
+        "scale factor": 16,
+        "noise ratio": 0.0,
+        "parameters": 0.67424,
+        "metrics": {
+            "IN": {
+                "test1 error": 0.14831678569316864,
+                "test2 error": 0.11900351941585541
+            },
+            "RFNE": {
+                "test1 error": 0.08351734280586243,
+                "test2 error": 0.07983043789863586
+            },
+            "PSNR": {
+                "test1 error": 39.29522705078125,
+                "test2 error": 40.52824401855469
+            },
+            "SSIM": {
+                "test1 error": 0.9334983229637146,
+                "test2 error": 0.9466187357902527
+            },
+            "MSE": {
+                "test1 error": 0.015065829269587994,
+                "test2 error": 0.013030258938670158
+            },
+            "MAE": {
+                "test1 error": 0.05741945281624794,
+                "test2 error": 0.05385046824812889
+            },
+            "Physics": {
+                "test1 error": 0.7036478543281555,
+                "test2 error": 0.6365506625175477
+            }
+        }
+    },
+    "subpixelCNN_nskt_32k_bicubic_8_0.0": {
+        "model": "subpixelCNN",
+        "dataset": "nskt_32k",
+        "method": "bicubic",
+        "scale factor": 8,
+        "noise ratio": 0.0,
+        "parameters": 0.341888,
+        "metrics": {
+            "IN": {
+                "test1 error": 0.11407670378684998,
+                "test2 error": 0.1024303063750267
+            },
+            "RFNE": {
+                "test1 error": 0.058625075966119766,
+                "test2 error": 0.05583481118083
+            },
+            "PSNR": {
+                "test1 error": 42.53265380859375,
+                "test2 error": 43.43370056152344
+            },
+            "SSIM": {
+                "test1 error": 0.9698030352592468,
+                "test2 error": 0.9744271636009216
+            },
+            "MSE": {
+                "test1 error": 0.007365357596427202,
+                "test2 error": 0.0063999127596616745
+            },
+            "MAE": {
+                "test1 error": 0.03933760151267052,
+                "test2 error": 0.03693517670035362
+            },
+            "Physics": {
+                "test1 error": 0.9630252373218536,
+                "test2 error": 0.876407949924469
+            }
+        }
+    },
+    "subpixelCNN_nskt_32k_bicubic_16_0.0": {
+        "model": "subpixelCNN",
+        "dataset": "nskt_32k",
+        "method": "bicubic",
+        "scale factor": 16,
+        "noise ratio": 0.0,
+        "parameters": 0.67424,
+        "metrics": {
+            "IN": {
+                "test1 error": 0.24918776750564575,
+                "test2 error": 0.21574153006076813
+            },
+            "RFNE": {
+                "test1 error": 0.15295207500457764,
+                "test2 error": 0.14640982449054718
+            },
+            "PSNR": {
+                "test1 error": 32.48915481567383,
+                "test2 error": 33.41781997680664
+            },
+            "SSIM": {
+                "test1 error": 0.8612220287322998,
+                "test2 error": 0.8763269782066345
+            },
+            "MSE": {
+                "test1 error": 0.039794664829969406,
+                "test2 error": 0.035029277205467224
+            },
+            "MAE": {
+                "test1 error": 0.10893897712230682,
+                "test2 error": 0.1031387597322464
+            },
+            "Physics": {
+                "test1 error": 42.853407592773436,
+                "test2 error": 40.1068733215332
+            }
+        }
+    },
+    "SwinIR_nskt_32k_bicubic_16_0.0": {
+        "model": "SwinIR",
+        "dataset": "nskt_32k",
+        "method": "bicubic",
+        "scale factor": 16,
+        "noise ratio": 0.0,
+        "parameters": 12.195623,
+        "metrics": {
+            "IN": {
+                "test1 error": 0.14439503848552704,
+                "test2 error": 0.12750715017318726
+            },
+            "RFNE": {
+                "test1 error": 0.08666366338729858,
+                "test2 error": 0.08435243368148804
+            },
+            "PSNR": {
+                "test1 error": 41.31340026855469,
+                "test2 error": 42.20061111450195
+            },
+            "SSIM": {
+                "test1 error": 0.9306958913803101,
+                "test2 error": 0.9371651411056519
+            },
+            "MSE": {
+                "test1 error": 0.01722932979464531,
+                "test2 error": 0.015921032056212425
+            },
+            "MAE": {
+                "test1 error": 0.05929211527109146,
+                "test2 error": 0.05714624375104904
+            },
+            "Physics": {
+                "test1 error": 0.300514372587204,
+                "test2 error": 0.26259201049804687
+            }
+        }
+    },
+    "SwinIR_nskt_16k_bicubic_8_0.0": {
+        "model": "SwinIR",
+        "dataset": "nskt_16k",
+        "method": "bicubic",
+        "scale factor": 8,
+        "noise ratio": 0.0,
+        "parameters": 12.047911,
+        "metrics": {
+            "IN": {
+                "test1 error": 0.05440019071102142,
+                "test2 error": 0.0428461916744709
+            },
+            "RFNE": {
+                "test1 error": 0.017737269401550293,
+                "test2 error": 0.017846154049038887
+            },
+            "PSNR": {
+                "test1 error": 51.8572998046875,
+                "test2 error": 52.949546813964844
+            },
+            "SSIM": {
+                "test1 error": 0.9965067505836487,
+                "test2 error": 0.9970089793205261
+            },
+            "MSE": {
+                "test1 error": 0.0007080076611600816,
+                "test2 error": 0.0006928290240466595
+            },
+            "MAE": {
+                "test1 error": 0.011205814778804779,
+                "test2 error": 0.010954661294817924
+            },
+            "Physics": {
+                "test1 error": 0.08874792754650115,
+                "test2 error": 0.07436025805771351
+            }
+        }
+    },
+    "SwinIR_nskt_16k_bicubic_16_0.0": {
+        "model": "SwinIR",
+        "dataset": "nskt_16k",
+        "method": "bicubic",
+        "scale factor": 16,
+        "noise ratio": 0.0,
+        "parameters": 12.195623,
+        "metrics": {
+            "IN": {
+                "test1 error": 0.13444527983665466,
+                "test2 error": 0.10751014202833176
+            },
+            "RFNE": {
+                "test1 error": 0.06528308987617493,
+                "test2 error": 0.06342299282550812
+            },
+            "PSNR": {
+                "test1 error": 41.794063568115234,
+                "test2 error": 43.00505828857422
+            },
+            "SSIM": {
+                "test1 error": 0.9543414115905762,
+                "test2 error": 0.9628010988235474
+            },
+            "MSE": {
+                "test1 error": 0.009462850168347359,
+                "test2 error": 0.008509436622262001
+            },
+            "MAE": {
+                "test1 error": 0.04412354528903961,
+                "test2 error": 0.04210310056805611
+            },
+            "Physics": {
+                "test1 error": 0.4957668673992157,
+                "test2 error": 0.434134715795517
+            }
+        }
+    },
+    "SwinIR_nskt_32k_bicubic_8_0.0": {
+        "model": "SwinIR",
+        "dataset": "nskt_32k",
+        "method": "bicubic",
+        "scale factor": 8,
+        "noise ratio": 0.0,
+        "parameters": 12.047911,
+        "metrics": {
+            "IN": {
+                "test1 error": 0.09837628155946732,
+                "test2 error": 0.08289701491594315
+            },
+            "RFNE": {
+                "test1 error": 0.03937377408146858,
+                "test2 error": 0.03802848607301712
+            },
+            "PSNR": {
+                "test1 error": 46.560646057128906,
+                "test2 error": 47.486881256103516
+            },
+            "SSIM": {
+                "test1 error": 0.9857085943222046,
+                "test2 error": 0.9875081181526184
+            },
+            "MSE": {
+                "test1 error": 0.003467882750555873,
+                "test2 error": 0.003147789975628257
+            },
+            "MAE": {
+                "test1 error": 0.02595914714038372,
+                "test2 error": 0.02474701590836048
+            },
+            "Physics": {
+                "test1 error": 0.3711737927794456,
+                "test2 error": 0.32030670464038846
+            }
+        }
+    },
+    "subpixelCNN_nskt_16k_sim_bicubic_4_0.0": {
+        "model": "subpixelCNN",
+        "dataset": "nskt_16k_sim",
+        "method": "bicubic",
+        "scale factor": 4,
+        "noise ratio": 0.0,
+        "parameters": 0.2588,
+        "metrics": {
+            "IN": {
+                "test1 error": 1.0452697277069092,
+                "test2 error": 0.9827108383178711
+            },
+            "RFNE": {
+                "test1 error": 0.8532070517539978,
+                "test2 error": 0.8874818086624146
+            },
+            "PSNR": {
+                "test1 error": 14.602871894836426,
+                "test2 error": 15.18743896484375
+            },
+            "SSIM": {
+                "test1 error": 0.2943075895309448,
+                "test2 error": 0.2829563021659851
+            },
+            "MSE": {
+                "test1 error": 0.6954076290130615,
+                "test2 error": 0.7379440069198608
+            },
+            "MAE": {
+                "test1 error": 0.594886064529419,
+                "test2 error": 0.6162717342376709
+            },
+            "Physics": {
+                "test1 error": 61.11606376647949,
+                "test2 error": 56.23469009399414
+            }
+        }
+    },
+    "subpixelCNN_nskt_32k_sim_bicubic_4_0.0": {
+        "model": "subpixelCNN",
+        "dataset": "nskt_32k_sim",
+        "method": "bicubic",
+        "scale factor": 4,
+        "noise ratio": 0.0,
+        "parameters": 0.2588,
+        "metrics": {
+            "IN": {
+                "test1 error": 1.0420063734054565,
+                "test2 error": 1.0082319974899292
+            },
+            "RFNE": {
+                "test1 error": 0.8643275499343872,
+                "test2 error": 0.9084746837615967
+            },
+            "PSNR": {
+                "test1 error": 14.75019359588623,
+                "test2 error": 14.898346900939941
+            },
+            "SSIM": {
+                "test1 error": 0.2927186191082001,
+                "test2 error": 0.2671259641647339
+            },
+            "MSE": {
+                "test1 error": 0.7176418900489807,
+                "test2 error": 0.7823932766914368
+            },
+            "MAE": {
+                "test1 error": 0.6125463247299194,
+                "test2 error": 0.6376387476921082
+            },
+            "Physics": {
+                "test1 error": 66.30796005249023,
+                "test2 error": 61.938713226318356
+            }
+        }
+    },
+    "EDSR_nskt_16k_sim_bicubic_4_0.0": {
+        "model": "EDSR",
+        "dataset": "nskt_16k_sim",
+        "method": "bicubic",
+        "scale factor": 4,
+        "noise ratio": 0.0,
+        "parameters": 1.517571,
+        "metrics": {
+            "IN": {
+                "test1 error": 0.8871070742607117,
+                "test2 error": 1.030009150505066
+            },
+            "RFNE": {
+                "test1 error": 0.609785795211792,
+                "test2 error": 0.9299023151397705
+            },
+            "PSNR": {
+                "test1 error": 17.486040115356445,
+                "test2 error": 14.98316764831543
+            },
+            "SSIM": {
+                "test1 error": 0.4877443313598633,
+                "test2 error": 0.24382543563842773
+            },
+            "MSE": {
+                "test1 error": 0.3576182425022125,
+                "test2 error": 0.8244678974151611
+            },
+            "MAE": {
+                "test1 error": 0.4213496446609497,
+                "test2 error": 0.652238130569458
+            },
+            "Physics": {
+                "test1 error": 155.1046405029297,
+                "test2 error": 138.6595880126953
+            }
+        }
+    },
+    "EDSR_nskt_32k_sim_bicubic_4_0.0": {
+        "model": "EDSR",
+        "dataset": "nskt_32k_sim",
+        "method": "bicubic",
+        "scale factor": 4,
+        "noise ratio": 0.0,
+        "parameters": 1.517571,
+        "metrics": {
+            "IN": {
+                "test1 error": 0.934255063533783,
+                "test2 error": 1.0375770330429077
+            },
+            "RFNE": {
+                "test1 error": 0.6647985577583313,
+                "test2 error": 0.9394237399101257
+            },
+            "PSNR": {
+                "test1 error": 17.129592895507812,
+                "test2 error": 14.84389877319336
+            },
+            "SSIM": {
+                "test1 error": 0.44590213894844055,
+                "test2 error": 0.24116210639476776
+            },
+            "MSE": {
+                "test1 error": 0.4315462112426758,
+                "test2 error": 0.853143036365509
+            },
+            "MAE": {
+                "test1 error": 0.46771955490112305,
+                "test2 error": 0.6644331812858582
+            },
+            "Physics": {
+                "test1 error": 128.3356610107422,
+                "test2 error": 119.34958679199218
+            }
+        }
+    },
+    "SRCNN_nskt_16k_sim_bicubic_4_0.0": {
+        "model": "SRCNN",
+        "dataset": "nskt_16k_sim",
+        "method": "bicubic",
+        "scale factor": 4,
+        "noise ratio": 0.0,
+        "parameters": 0.069251,
+        "metrics": {
+            "IN": {
+                "test1 error": 1.081063985824585,
+                "test2 error": 1.0053863525390625
+            },
+            "RFNE": {
+                "test1 error": 0.8722793459892273,
+                "test2 error": 0.9052190780639648
+            },
+            "PSNR": {
+                "test1 error": 14.318633079528809,
+                "test2 error": 14.95472240447998
+            },
+            "SSIM": {
+                "test1 error": 0.2776017189025879,
+                "test2 error": 0.2695798873901367
+            },
+            "MSE": {
+                "test1 error": 0.7217100262641907,
+                "test2 error": 0.7643845677375793
+            },
+            "MAE": {
+                "test1 error": 0.6123071908950806,
+                "test2 error": 0.6319540739059448
+            },
+            "Physics": {
+                "test1 error": 81.80094879150391,
+                "test2 error": 75.63632308959961
+            }
+        }
+    },
+    "SRCNN_nskt_32k_sim_bicubic_4_0.0": {
+        "model": "SRCNN",
+        "dataset": "nskt_32k_sim",
+        "method": "bicubic",
+        "scale factor": 4,
+        "noise ratio": 0.0,
+        "parameters": 0.069251,
+        "metrics": {
+            "IN": {
+                "test1 error": 1.043835997581482,
+                "test2 error": 1.0200011730194092
+            },
+            "RFNE": {
+                "test1 error": 0.8809698224067688,
+                "test2 error": 0.9194485545158386
+            },
+            "PSNR": {
+                "test1 error": 14.480524063110352,
+                "test2 error": 14.72299861907959
+            },
+            "SSIM": {
+                "test1 error": 0.27761250734329224,
+                "test2 error": 0.2580569088459015
+            },
+            "MSE": {
+                "test1 error": 0.7403481602668762,
+                "test2 error": 0.7975622415542603
+            },
+            "MAE": {
+                "test1 error": 0.6285294890403748,
+                "test2 error": 0.6480891108512878
+            },
+            "Physics": {
+                "test1 error": 64.48225410461426,
+                "test2 error": 59.963130187988284
+            }
+        }
+    },
+    "SwinIR_nskt_16k_sim_bicubic_4_0.0": {
+        "model": "SwinIR",
+        "dataset": "nskt_16k_sim",
+        "method": "bicubic",
+        "scale factor": 4,
+        "noise ratio": 0.0,
+        "parameters": 11.900199,
+        "metrics": {
+            "IN": {
+                "test1 error": 0.9503704905509949,
+                "test2 error": 0.9411303400993347
+            },
+            "RFNE": {
+                "test1 error": 0.8044281601905823,
+                "test2 error": 0.8524923324584961
+            },
+            "PSNR": {
+                "test1 error": 15.435173034667969,
+                "test2 error": 15.813360214233398
+            },
+            "SSIM": {
+                "test1 error": 0.32824477553367615,
+                "test2 error": 0.3056715428829193
+            },
+            "MSE": {
+                "test1 error": 0.6268112063407898,
+                "test2 error": 0.6896913051605225
+            },
+            "MAE": {
+                "test1 error": 0.5565304160118103,
+                "test2 error": 0.5881670713424683
+            },
+            "Physics": {
+                "test1 error": 8.580919852256775,
+                "test2 error": 7.882064657211304
+            }
+        }
+    },
+    "SwinIR_nskt_32k_sim_bicubic_4_0.0": {
+        "model": "SwinIR",
+        "dataset": "nskt_32k_sim",
+        "method": "bicubic",
+        "scale factor": 4,
+        "noise ratio": 0.0,
+        "parameters": 11.900199,
+        "metrics": {
+            "IN": {
+                "test1 error": 0.9022509455680847,
+                "test2 error": 0.9711282253265381
+            },
+            "RFNE": {
+                "test1 error": 0.7095807194709778,
+                "test2 error": 0.9056885242462158
+            },
+            "PSNR": {
+                "test1 error": 16.72815704345703,
+                "test2 error": 15.276511192321777
+            },
+            "SSIM": {
+                "test1 error": 0.4267881214618683,
+                "test2 error": 0.2609219253063202
+            },
+            "MSE": {
+                "test1 error": 0.4850371778011322,
+                "test2 error": 0.799723207950592
+            },
+            "MAE": {
+                "test1 error": 0.4927419126033783,
+                "test2 error": 0.6399258375167847
+            },
+            "Physics": {
+                "test1 error": 17.609618301391603,
+                "test2 error": 18.33530647277832
+            }
+        }
+    },
+    "WDSR_nskt_16k_sim_bicubic_4_0.0": {
+        "model": "WDSR",
+        "dataset": "nskt_16k_sim",
+        "method": "bicubic",
+        "scale factor": 4,
+        "noise ratio": 0.0,
+        "parameters": 1.351408,
+        "metrics": {
+            "IN": {
+                "test1 error": 0.9545074105262756,
+                "test2 error": 0.9626395106315613
+            },
+            "RFNE": {
+                "test1 error": 0.787004828453064,
+                "test2 error": 0.8815458416938782
+            },
+            "PSNR": {
+                "test1 error": 15.588377952575684,
+                "test2 error": 15.5087308883667
+            },
+            "SSIM": {
+                "test1 error": 0.358807235956192,
+                "test2 error": 0.27591750025749207
+            },
+            "MSE": {
+                "test1 error": 0.5994604229927063,
+                "test2 error": 0.7412985563278198
+            },
+            "MAE": {
+                "test1 error": 0.5411152839660645,
+                "test2 error": 0.6124718189239502
+            },
+            "Physics": {
+                "test1 error": 29.176128005981447,
+                "test2 error": 29.488498916625975
+            }
+        }
     }
 }

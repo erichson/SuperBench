@@ -72,7 +72,7 @@ def generate_latex_table_from_json(json_file, target_dataset):
 
     # Add rows for each model
     model_order = ["Bicubic","FNO2D","SRCNN", "subpixelCNN", "EDSR", "WDSR", "SwinIR"]
-    for scale in [8,16]:
+    for scale in [4]:
         for model in model_order:
             if (model in table_data) and (scale in table_data[model]):
                 latex_table += generate_row(model, table_data[model],scale) + "\n"
@@ -86,4 +86,4 @@ def generate_latex_table_from_json(json_file, target_dataset):
 
 # Return the modified function for review
 with open("latex_table.sh", "w") as file:
-    print(generate_latex_table_from_json("normed_eval.json", "nskt_16k"),file=file)
+    print(generate_latex_table_from_json("normed_eval.json", "nskt_16k_sim"),file=file)

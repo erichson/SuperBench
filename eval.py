@@ -393,8 +393,8 @@ def main():
     # % --- %
     upscale = args.upscale_factor
     window_size = 8
-    height = (resol[0] // upscale // window_size + 1) * window_size
-    width = (resol[1] // upscale // window_size + 1) * window_size
+    height = (128 // upscale // window_size + 1) * window_size
+    width = (128 // upscale // window_size + 1) * window_size
     model_list = {
             'subpixelCNN': subpixelCNN(args.in_channels, upscale_factor=args.upscale_factor, width=1, mean = mean,std = std),
             'SRCNN': SRCNN(args.in_channels, args.upscale_factor,mean,std),
@@ -451,7 +451,7 @@ def main():
     INE, RFNE, PSNR, SSIM,MSE,MAE = validate_all_metrics(args, test1_loader, test2_loader, model, mean, std)
     # Validate and store Infinity norm results
     # ine1, ine2 = validate_RINE(args, test1_loader, test2_loader, model, mean, std)
-    all_results[key]["metrics"]["Infinity"] = {'test1 error': INE[0], 'test2 error': INE[1]}
+    all_results[key]["metrics"]["IN"] = {'test1 error': INE[0], 'test2 error': INE[1]}
 
     # Validate and store RFNE results
     # error1, error2 = validate_RFNE(args, test1_loader, test2_loader, model, mean, std)

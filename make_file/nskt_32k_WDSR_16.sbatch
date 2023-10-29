@@ -14,7 +14,7 @@
 
 module load pytorch/2.0.1
 
-cmd1="srun python train.py --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k --data_name nskt_32k --in_channels 3 --upscale_factor 16 --model WDSR --lr 0.0002 --batch_size 64 --epochs 300"
+cmd1="srun python train.py --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k --data_name nskt_32k --in_channels 3 --upscale_factor 16 --model WDSR --lr 0.001 --batch_size 32 --epochs 300"
 
 set -x
 bash -c "$cmd1"

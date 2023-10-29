@@ -132,7 +132,7 @@ def main():
     parser.add_argument('--in_channels', type=int, default=3, help='num of input channels')
     parser.add_argument('--out_channels', type=int, default=3, help='num of output channels')
     parser.add_argument('--hidden_channels', type=int, default=64, help='num of output channels')
-    parser.add_argument('--modes', type=int, default=20, help='num of modes in first dimension')
+    parser.add_argument('--modes', type=int, default=12, help='num of modes in first dimension')
     parser.add_argument('--loss_type', type=str, default='l2', help='L1 or L2 loss')
     parser.add_argument('--optimizer_type', type=str, default='Adam', help='type of optimizer')
     parser.add_argument('--scheduler_type', type=str, default='StepLR', help='type of scheduler')
