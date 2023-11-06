@@ -1880,5 +1880,141 @@
                 "test2 error": 29.488498916625975
             }
         }
+    },
+    "Bicubic_cosmo_bicubic_8_0.0": {
+        "model": "Bicubic",
+        "dataset": "cosmo",
+        "method": "bicubic",
+        "scale factor": 8,
+        "noise ratio": 0.0,
+        "parameters": 0.0,
+        "metrics": {
+            "IN": {
+                "test1 error": 0.6472866535186768,
+                "test2 error": 0.6531801223754883
+            },
+            "RFNE": {
+                "test1 error": 0.3641597032546997,
+                "test2 error": 0.3615049421787262
+            },
+            "PSNR": {
+                "test1 error": 30.02264976501465,
+                "test2 error": 30.208026885986328
+            },
+            "SSIM": {
+                "test1 error": 0.7739819884300232,
+                "test2 error": 0.7718895673751831
+            },
+            "MSE": {
+                "test1 error": 0.13330507278442383,
+                "test2 error": 0.12447062879800797
+            },
+            "MAE": {
+                "test1 error": 0.22978462278842926,
+                "test2 error": 0.22803258895874023
+            }
+        }
+    },
+    "Bicubic_cosmo_bicubic_16_0.0": {
+        "model": "Bicubic",
+        "dataset": "cosmo",
+        "method": "bicubic",
+        "scale factor": 16,
+        "noise ratio": 0.0,
+        "parameters": 0.0,
+        "metrics": {
+            "IN": {
+                "test1 error": 0.7590839266777039,
+                "test2 error": 0.7542632818222046
+            },
+            "RFNE": {
+                "test1 error": 0.5765263438224792,
+                "test2 error": 0.5800803899765015
+            },
+            "PSNR": {
+                "test1 error": 26.031967163085938,
+                "test2 error": 26.1014404296875
+            },
+            "SSIM": {
+                "test1 error": 0.5600824952125549,
+                "test2 error": 0.5529578924179077
+            },
+            "MSE": {
+                "test1 error": 0.33360153436660767,
+                "test2 error": 0.3202840983867645
+            },
+            "MAE": {
+                "test1 error": 0.4051617383956909,
+                "test2 error": 0.4036509096622467
+            }
+        }
+    },
+    "FNO2D_cosmo_bicubic_8_0.0": {
+        "model": "FNO2D",
+        "dataset": "cosmo",
+        "method": "bicubic",
+        "scale factor": 8,
+        "noise ratio": 0.0,
+        "parameters": 4.75213,
+        "metrics": {
+            "IN": {
+                "test1 error": 0.7615441679954529,
+                "test2 error": 0.7789137363433838
+            },
+            "RFNE": {
+                "test1 error": 0.7319506406784058,
+                "test2 error": 0.737528383731842
+            },
+            "PSNR": {
+                "test1 error": 23.96351432800293,
+                "test2 error": 24.016735076904297
+            },
+            "SSIM": {
+                "test1 error": 0.4113626778125763,
+                "test2 error": 0.41433075070381165
+            },
+            "MSE": {
+                "test1 error": 0.5369665622711182,
+                "test2 error": 0.5178219676017761
+            },
+            "MAE": {
+                "test1 error": 0.5453747510910034,
+                "test2 error": 0.5361973643302917
+            }
+        }
+    },
+    "FNO2D_cosmo_bicubic_16_0.0": {
+        "model": "FNO2D",
+        "dataset": "cosmo",
+        "method": "bicubic",
+        "scale factor": 16,
+        "noise ratio": 0.0,
+        "parameters": 4.75213,
+        "metrics": {
+            "IN": {
+                "test1 error": 0.8356208801269531,
+                "test2 error": 0.8462170362472534
+            },
+            "RFNE": {
+                "test1 error": 0.7391414642333984,
+                "test2 error": 0.7438847422599792
+            },
+            "PSNR": {
+                "test1 error": 23.872106552124023,
+                "test2 error": 23.939044952392578
+            },
+            "SSIM": {
+                "test1 error": 0.42088252305984497,
+                "test2 error": 0.4228651523590088
+            },
+            "MSE": {
+                "test1 error": 0.5477717518806458,
+                "test2 error": 0.5262574553489685
+            },
+            "MAE": {
+                "test1 error": 0.537680447101593,
+                "test2 error": 0.52999347448349
+            }
+        }
     }
 }

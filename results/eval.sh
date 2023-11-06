@@ -56,7 +56,7 @@
 # python eval.py --data_name nskt_32k_sim --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k_sim_4 --in_channels 3 --model WDSR --upscale_factor 4 --model_path results/model_WDSR_nskt_32k_sim_4_0.0005_bicubic_0.0_5544_4747.pt; 
 # python eval.py --data_name nskt_16k_sim --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k_sim_4 --in_channels 3 --model WDSR --upscale_factor 4 --model_path results/model_WDSR_nskt_32k_sim_4_0.0005_bicubic_0.0_5544_3549.pt; 
 # python eval.py --data_name nskt_32k_sim --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k_sim_4 --in_channels 3 --model WDSR --upscale_factor 4 --model_path results/model_WDSR_nskt_32k_sim_4_0.0005_bicubic_0.0_5544_4747.pt; 
-python eval.py --data_name nskt_16k_sim --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k_sim_4 --in_channels 3 --model WDSR --upscale_factor 4 --model_path results/model_WDSR_nskt_16k_sim_4_0.0005_bicubic_0.0_5544_3549.pt; 
+# python eval.py --data_name nskt_16k_sim --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k_sim_4 --in_channels 3 --model WDSR --upscale_factor 4 --model_path results/model_WDSR_nskt_16k_sim_4_0.0005_bicubic_0.0_5544_3549.pt; 
 # python eval.py --data_name nskt_16k_sim --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k_sim_4 --in_channels 3 --model subpixelCNN --upscale_factor 4 --model_path results/model_subpixelCNN_nskt_16k_sim_4_0.001_bicubic_0.0_5544_3056.pt;
 # python eval.py --data_name nskt_32k_sim --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k_sim_4 --in_channels 3 --model subpixelCNN --upscale_factor 4 --model_path results/model_subpixelCNN_nskt_32k_sim_4_0.001_bicubic_0.0_5544_7481.pt;
 # python eval.py --data_name nskt_16k_sim --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k_sim_4 --in_channels 3 --model EDSR --upscale_factor 4 --model_path results/model_EDSR_nskt_16k_sim_4_0.001_bicubic_0.0_5544_7845.pt;
@@ -65,3 +65,8 @@ python eval.py --data_name nskt_16k_sim --data_path /pscratch/sd/j/junyi012/supe
 # python eval.py --data_name nskt_32k_sim --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k_sim_4 --in_channels 3 --model SRCNN --upscale_factor 4 --model_path results/model_SRCNN_nskt_32k_sim_4_0.001_bicubic_0.0_5544_1341.pt;
 # python eval.py --data_name nskt_16k_sim --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k_sim_4 --in_channels 3 --model SwinIR --upscale_factor 4 --model_path results/model_SwinIR_nskt_16k_sim_4_0.0001_bicubic_0.0_5544_2931.pt;
 # python eval.py --data_name nskt_32k_sim --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k_sim_4 --in_channels 3 --model SwinIR --upscale_factor 4 --model_path results/model_SwinIR_nskt_32k_sim_4_0.0001_bicubic_0.0_5544_8353.pt;
+
+python eval_FNO.py --model_path results/model_FNO2D_cosmo_8_0.001_bicubic_0.0_5544_710.pt --data_name cosmo --data_path /pscratch/sd/j/junyi012/superbench_v2/cosmo2048 --upscale_factor 8 --in_channels 2 --modes 12;
+# python eval.py --model Bicubic --data_name cosmo --data_path /pscratch/sd/j/junyi012/superbench_v2/cosmo2048 --upscale_factor 8 --in_channels 2;
+python eval_FNO.py --model_path results/model_FNO2D_cosmo_16_0.001_bicubic_0.0_5544_58.pt --data_name cosmo --data_path /pscratch/sd/j/junyi012/superbench_v2/cosmo2048 --upscale_factor 16 --in_channels 2 --modes 12;
+# python eval.py --model Bicubic --data_name cosmo --data_path /pscratch/sd/j/junyi012/superbench_v2/cosmo2048 --upscale_factor 16 --in_channels 2;
