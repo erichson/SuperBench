@@ -11,7 +11,7 @@ DATA_INFO = {"nskt_16k": ["/pscratch/sd/j/junyi012/superbench_v2/nskt_16k",3],
 MODEL_INFO = {"SRCNN": {"lr": 1e-3,"batch_size": 64,"epochs": 300},
             "subpixelCNN": {"lr": 1e-3,"batch_size": 64,"epochs": 300},
             "EDSR": {"lr": 1e-3,"batch_size": 32,"epochs": 300},
-            "WDSR": {"lr": 1e-3,"batch_size": 32,"epochs": 300},
+            "WDSR": {"lr": 1e-4,"batch_size": 32,"epochs": 300},
             "SwinIR": {"lr": 1e-4,"batch_size": 32,"epochs":300},
             "FNO2D": {"lr": 1e-3,"batch_size": 32,"epochs": 500},}
 
