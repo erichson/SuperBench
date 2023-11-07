@@ -394,6 +394,3 @@ def GetCosmoSimData(data_path, data_tag, train, transform, crop_size, n_patches)
     return TensorDataset(lres_dataset, hres_dataset)
 
 
-
-
-if __name__ == "++"
