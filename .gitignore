@@ -7,3 +7,4 @@ figures/*
 *.out
 results/*/*.pt
 make_file/*.sbatch
+debug/*
