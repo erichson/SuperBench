@@ -209,11 +209,11 @@ class GetFluidDataset_LRsim(Dataset):
         # Apply transform 
         y = self.transform(self.files[file_idx][local_idx])
         X = self.transform(self.LR_files[file_idx][local_idx])
-        # if self.train:
-        #     # Random crop
-        #     i, j, h, w = transforms.RandomCrop.get_params(y, output_size=(self.crop_size, self.crop_size)) # i,j are the top left corner of the crop, h,w are the height and width of the crop
-        #     y = F.crop(y, i, j, h, w)
-        #     X = F.crop(X, i//self.upscale_factor, j//self.upscale_factor, h//self.upscale_factor, w//self.upscale_factor) # relative location on LR
+        if self.train:
+            # Random crop
+            i, j, h, w = transforms.RandomCrop.get_params(y, output_size=(self.crop_size, self.crop_size)) # i,j are the top left corner of the crop, h,w are the height and width of the crop
+            y = F.crop(y, i, j, h, w)
+            X = F.crop(X, i//self.upscale_factor, j//self.upscale_factor, h//self.upscale_factor, w//self.upscale_factor) # relative location on LR
         return X, y
 
     def get_indices(self, global_idx):

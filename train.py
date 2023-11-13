@@ -29,7 +29,7 @@ def train(args, train_loader, val1_loader, val2_loader, model, optimizer, criter
 
         for batch_idx, (data, target) in enumerate(train_loader):
             # [b,c,h,w]
-            data, target = data.to(args.device).float(), target.to(args.device).float()
+            data, target = data.float().to(args.device), target.float().to(args.device)
 
             # forward
             model.train()
@@ -51,7 +51,7 @@ def train(args, train_loader, val1_loader, val2_loader, model, optimizer, criter
         mse1, mse2 = validate(args, val1_loader, val2_loader, model, criterion)
         print("epoch: %s, val1 error (interp): %.10f, val2 error (extrap): %.10f" % (epoch, mse1, mse2))      
         val_error_list.append(mse1+mse2)
-        run["val/error"].log((mse1+mse2)/2)
+        run["val/loss"].log((mse1+mse2)/2)
         if (mse1+mse2) <= best_val:
             best_val = mse1+mse2
             save_checkpoint(model, optimizer,'results/model_' + str(args.model) + '_' + str(args.data_name) + '_' + str(args.upscale_factor) + '_' + str(args.lr) + '_' + str(args.method) +'_' + str(args.noise_ratio) + '_' + str(args.seed) +'_' +str(id) + '.pt')
@@ -66,23 +66,30 @@ def train(args, train_loader, val1_loader, val2_loader, model, optimizer, criter
 def validate(args, val1_loader, val2_loader, model, criterion):
     mse1 = 0
     mse2 = 0
+    rfne_mean =0
+    rfne_mean2 =0
     c = 0
     with torch.no_grad():
         for batch_idx, (data, target) in enumerate(val1_loader):
-            data, target = data.to(args.device).float(), target.to(args.device).float()
+            data, target = data.float().to(args.device), target.float().to(args.device)
             output = model(data) 
             mse1 += criterion(output, target) * data.shape[0]
+            rfne = torch.norm(output - target, p=2, dim=(-1,-2,-3)) / torch.norm(target, p=2, dim=(-1,-2,-3))
+            rfne_mean += rfne.mean()
             c += data.shape[0]
+    run["val1_rfne"].log(rfne_mean.item()/c)
     mse1 /= c
     c = 0
     with torch.no_grad():
         for batch_idx, (data, target) in enumerate(val2_loader):
-            data, target = data.to(args.device).float(), target.to(args.device).float()
+            data, target = data.float().to(args.device), target.float().to(args.device)
             output = model(data) 
             mse2 += criterion(output, target) * data.shape[0]
+            rfne = torch.norm(output - target, p=2, dim=(-1,-2,-3)) / torch.norm(target, p=2, dim=(-1,-2,-3))
+            rfne_mean2 += rfne.mean()
             c += data.shape[0]
     mse2 /= c
-
+    run.log("val2_rfne",rfne_mean2.item()/c)
     return mse1.item(), mse2.item()
 
 
@@ -175,6 +182,11 @@ def main():
     # Set optimizer, loss function and Learning Rate Scheduler
     # % --- %
     optimizer = set_optimizer(args, model)
+    if args.pretrained == True:
+        optimizer = load_checkpoint(optimizer, args.model_path)
+        checkpoint = torch.load(args.model_path)
+        optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+        optimizer = optimizer.to(args.device)
     scheduler = set_scheduler(args, optimizer, train_loader)
     criterion = loss_function(args)
 

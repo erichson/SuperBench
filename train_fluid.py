@@ -145,6 +145,7 @@ def train(args, train_loader, val1_loader, val2_loader, model, optimizer, criter
         train_loss_mean = train_loss_total / len(train_loader)
         train_loss_list.append(train_loss_mean)
         run["train/loss"].log(train_loss_mean)
+        run["train/phy_loss"].log(phy_loss.item())
         # validate
         mse1, mse2 = validate(args, val1_loader, val2_loader, model, criterion)
         run["val/error"].log((mse1+mse2)/2)
@@ -280,6 +281,9 @@ def main():
     # Set optimizer, loss function and Learning Rate Scheduler
     # % --- %
     optimizer = set_optimizer(args, model)
+    if args.pretrained == True:
+        optimizer = load_checkpoint(optimizer, args.model_path)
+        optimizer = optimizer.to(args.device)
     scheduler = set_scheduler(args, optimizer, train_loader)
     criterion = loss_function(args)
 
