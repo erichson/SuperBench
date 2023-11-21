@@ -12,7 +12,7 @@ DATA_INFO = {"nskt_16k": ["/pscratch/sd/j/junyi012/superbench_v2/nskt_16k",3],
 
 MODEL_INFO = {"SRCNN": {"lr": 4e-3,"batch_size": 256,"epochs": 300},
             "subpixelCNN": {"lr": 4e-3,"batch_size": 256,"epochs": 300},
-            "EDSR": {"lr": 1e-3,"batch_size": 256,"epochs": 300},
+            "EDSR": {"lr": 4e-3,"batch_size": 256,"epochs": 300},
             "WDSR": {"lr": 8e-4,"batch_size": 256,"epochs": 300},
             "SwinIR": {"lr": 8e-4,"batch_size": 256,"epochs":400},
             "FNO2D": {"lr": 1e-3,"batch_size": 256,"epochs": 500},}
@@ -57,6 +57,13 @@ if __name__ == "__main__":
     data_name_list = ["nskt_16k_sim_4","nskt_32k_sim_4"]
     model_name_list =  ["WDSR","SwinIR"]
     # model_name_list =  ["FNO2D","WDSR"]
+    for name in data_name_list:
+        for scale_factor in [4]:
+            for model_name in model_name_list:
+                job_name = generate_bash_script(data_name=name,model_name=model_name,scale_factor=scale_factor,num_pathches=32)
+                with open("bash2slurm.sh","a") as f:
+                    print(f"sbatch make_file/{job_name}.sbatch",file=f)
+                f.close()
     for name in data_name_list:
         for scale_factor in [4]:
             for model_name in model_name_list:

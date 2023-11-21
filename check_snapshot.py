@@ -70,64 +70,64 @@ def main():
     window_size = 8
     height = (args.crop_size // upscale // window_size + 1) * window_size
     width = (args.crop_size // upscale // window_size + 1) * window_size
-
+    import cmocean
     for idx,(lr,hr) in enumerate(train_loader):
         
         for j in range(4):
             fig,ax = plt.subplots(2,3)
-            ax[0,0].imshow(hr[j,0,:,:])
-            ax[0,1].imshow(hr[j,1,:,:])
-            ax[0,2].imshow(hr[j,2,:,:])
-            ax[1,0].imshow(lr[j,0,:,:])
-            ax[1,1].imshow(lr[j,1,:,:])
-            ax[1,2].imshow(lr[j,2,:,:])
+            ax[0,0].imshow(hr[j,0,:,:],cmap = cmocean.cm.balance)
+            ax[0,1].imshow(hr[j,1,:,:],cmap = cmocean.cm.balance)
+            ax[0,2].imshow(hr[j,2,:,:],cmap = cmocean.cm.balance)
+            ax[1,0].imshow(lr[j,0,:,:],cmap = cmocean.cm.balance)
+            ax[1,1].imshow(lr[j,1,:,:],cmap = cmocean.cm.balance)
+            ax[1,2].imshow(lr[j,2,:,:],cmap = cmocean.cm.balance)
             fig.savefig(f"debug/check_snapshot_train_{j}.png")
         break
     
     for idx,(lr,hr)  in enumerate(val1_loader):
         for j in range(4):
             fig,ax = plt.subplots(2,3)
-            ax[0,0].imshow(hr[j,0,:,:])
-            ax[0,1].imshow(hr[j,1,:,:])
-            ax[0,2].imshow(hr[j,2,:,:])
-            ax[1,0].imshow(lr[j,0,:,:])
-            ax[1,1].imshow(lr[j,1,:,:])
-            ax[1,2].imshow(lr[j,2,:,:])
+            ax[0,0].imshow(hr[j,0,:,:],cmap = cmocean.cm.balance)
+            ax[0,1].imshow(hr[j,1,:,:],cmap = cmocean.cm.balance)
+            ax[0,2].imshow(hr[j,2,:,:],cmap = cmocean.cm.balance)
+            ax[1,0].imshow(lr[j,0,:,:],cmap = cmocean.cm.balance)
+            ax[1,1].imshow(lr[j,1,:,:],cmap = cmocean.cm.balance)
+            ax[1,2].imshow(lr[j,2,:,:],cmap = cmocean.cm.balance)
             fig.savefig(f"debug/check_snapshot_val1_{j}.png")
         break
     
     for idx,(lr,hr)  in enumerate(val2_loader):
         for j in range(4):
             fig,ax = plt.subplots(2,3)
-            ax[0,0].imshow(hr[j,0,:,:])
-            ax[0,1].imshow(hr[j,1,:,:])
-            ax[0,2].imshow(hr[j,2,:,:])
-            ax[1,0].imshow(lr[j,0,:,:])
-            ax[1,1].imshow(lr[j,1,:,:])
-            ax[1,2].imshow(lr[j,2,:,:])
+            ax[0,0].imshow(hr[j,0,:,:],cmap = cmocean.cm.balance)
+            ax[0,1].imshow(hr[j,1,:,:],cmap = cmocean.cm.balance)
+            ax[0,2].imshow(hr[j,2,:,:],cmap = cmocean.cm.balance)
+            ax[1,0].imshow(lr[j,0,:,:],cmap = cmocean.cm.balance)
+            ax[1,1].imshow(lr[j,1,:,:],cmap = cmocean.cm.balance)
+            ax[1,2].imshow(lr[j,2,:,:],cmap = cmocean.cm.balance)
             fig.savefig(f"debug/check_snapshot_val2_{j}.png")
         break
         
     for idx,(lr,hr)  in enumerate(test1_loader):
         for j in range(4):
             fig,ax = plt.subplots(2,3)
-            ax[0,0].imshow(hr[j,0,:,:])
-            ax[0,1].imshow(hr[j,1,:,:])
-            ax[0,2].imshow(hr[j,2,:,:])
-            ax[1,0].imshow(lr[j,0,:,:])
-            ax[1,1].imshow(lr[j,1,:,:])
-            ax[1,2].imshow(lr[j,2,:,:])
+            ax[0,0].imshow(hr[j,0,:,:],cmap = cmocean.cm.balance)
+            ax[0,1].imshow(hr[j,1,:,:],cmap = cmocean.cm.balance)
+            ax[0,2].imshow(hr[j,2,:,:],cmap = cmocean.cm.balance)
+            ax[1,0].imshow(lr[j,0,:,:],cmap = cmocean.cm.balance)
+            ax[1,1].imshow(lr[j,1,:,:],cmap = cmocean.cm.balance)
+            ax[1,2].imshow(lr[j,2,:,:],cmap = cmocean.cm.balance)
             fig.savefig(f"debug/check_snapshot_test1_{j}.png")
         break
     for idx,(lr,hr) in enumerate(test2_loader):
         for j in range(4):
             fig,ax = plt.subplots(2,3)
-            ax[0,0].imshow(hr[j,0,:,:])
-            ax[0,1].imshow(hr[j,1,:,:])
-            ax[0,2].imshow(hr[j,2,:,:])
-            ax[1,0].imshow(lr[j,0,:,:])
-            ax[1,1].imshow(lr[j,1,:,:])
-            ax[1,2].imshow(lr[j,2,:,:])
+            ax[0,0].imshow(hr[j,0,:,:],cmap = cmocean.cm.balance)
+            ax[0,1].imshow(hr[j,1,:,:],cmap = cmocean.cm.balance)
+            ax[0,2].imshow(hr[j,2,:,:],cmap = cmocean.cm.balance)
+            ax[1,0].imshow(lr[j,0,:,:],cmap = cmocean.cm.balance)
+            ax[1,1].imshow(lr[j,1,:,:],cmap = cmocean.cm.balance)
+            ax[1,2].imshow(lr[j,2,:,:],cmap = cmocean.cm.balance)
             fig.savefig(f"debug/check_snapshot_test2_{j}.png")
         break
 if __name__ =='__main__':

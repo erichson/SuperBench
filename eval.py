@@ -150,7 +150,7 @@ def validate_all_metrics(args, test1_loader, test2_loader, model, mean, std):
 
     ssim = StructuralSimilarityIndexMeasure().to(args.device)
     rine1, rine2, rfne1, rfne2, psnr1, psnr2, ssim1, ssim2,mse1,mse2,mae1,mae2 = [], [], [], [], [], [], [], [],[],[],[],[]
-
+    first = True
     # Helper function for PSNR
     def compute_psnr(true, pred):
         mse = torch.mean((true - pred) ** 2)
@@ -163,46 +163,80 @@ def validate_all_metrics(args, test1_loader, test2_loader, model, mean, std):
         for loader, (rine_list, rfne_list, psnr_list, ssim_list,mse_list,mae_list) in zip([test1_loader, test2_loader],
                                                                         [(rine1, rfne1, psnr1, ssim1,mse1,mae1),
                                                                          (rine2, rfne2, psnr2, ssim2,mse2,mae2)]):
+            test = 0
             for batch_idx, (data, target) in enumerate(loader):
                 data, target = data.to(args.device).float(), target.to(args.device).float()
                 output = model(data)
+                if first == True:
+                    output2 = output
+                    data2 = data
+                    target2 = target
+                    first = False
                 output = normalize(args, output, mean, std)
                 target = normalize(args, target, mean, std)
 
                 # MSE 
                 mse = torch.mean((target - output) ** 2,dim =(-1,-2,-3))
-                mse_list.append(mse.mean())
+                mse_list.append(mse.cpu())
 
                 # MAE
                 mae = torch.mean(torch.abs(target - output),dim=(-1,-2,-3))
-                mae_list.append(mae.mean())
+                mae_list.append(mae.cpu())
                 # RINE
                 err_ine = torch.norm(target-output, p=np.inf, dim=(-1, -2)) / torch.norm(target, p=np.inf, dim=(-1, -2))
-                rine_list.append(err_ine.mean())
+                rine_list.append(err_ine.cpu())
 
                 # RFNE
                 err_rfne = torch.norm(target-output, p=2, dim=(-1, -2)) / torch.norm(target, p=2, dim=(-1, -2))
-                rfne_list.append(err_rfne.mean())
+                rfne_list.append(err_rfne.cpu())
 
                 # PSNR
                 for i in range(target.shape[0]):
                     for j in range(target.shape[1]):
                         err_psnr = compute_psnr(target[i, j, ...], output[i, j, ...])
-                        psnr_list.append(err_psnr)
+                        psnr_list.append(err_psnr.cpu())
 
                 # SSIM
                 for i in range(target.shape[0]):
                     for j in range(target.shape[1]):
                         err_ssim = ssim(target[i:(i+1), j:(j+1), ...], output[i:(i+1), j:(j+1), ...])
                         ssim_list.append(err_ssim.cpu())
-
+            test += 1
     # Averaging and converting to scalar values
+    rfne1_np = torch.stack(rfne1).numpy().reshape(100,1,3)
+    print("rfne1_np shape",rfne1_np.shape)
+    rfne2_np = torch.stack(rfne2).numpy().reshape(100,1,3)
+    psnr1_np = torch.stack(psnr1).numpy()
+    print("psnr1_np.shape",psnr1_np.shape)
+    psnr2_np = torch.stack(psnr2).numpy()
+    fig, ax = plt.subplots(2, 2, figsize=(14, 10))
+    ax[0,0].scatter(np.arange(0,len(rfne1_np),1),rfne1_np[:,0,2],label = "RFNE1 vorticity")
+    ax[0,0].scatter(np.arange(0,len(rfne1_np),1),rfne1_np[:,0,0],label = "RFNE1 u")
+    ax[0,0].scatter(np.arange(0,len(rfne1_np),1),rfne1_np[:,0,1],label = "RFNE1 v")
+    ax[0,0].legend()
+    ax[1,0].scatter(np.arange(0,len(rfne1_np),1),rfne2_np[:,0,2],label = "RFNE2 vorticity")
+    ax[1,0].scatter(np.arange(0,len(rfne1_np),1),rfne2_np[:,0,0],label = "RFNE2 u")
+    ax[1,0].scatter(np.arange(0,len(rfne1_np),1),rfne2_np[:,0,1],label = "RFNE2 v")
+    ax[1,0].legend()    
+    ax[0,1].scatter(np.arange(0,len(psnr1),1),psnr1_np)
+    ax[1,1].scatter(np.arange(0,len(psnr1),1),psnr2_np)
+    fig.savefig(f"figures/check_snapshot_rfne_psnr.png")
     avg_rine1, avg_rine2 = torch.mean(torch.stack(rine1)).item(), torch.mean(torch.stack(rine2)).item()
     avg_rfne1, avg_rfne2 = torch.mean(torch.stack(rfne1)).item(), torch.mean(torch.stack(rfne2)).item()
     avg_psnr1, avg_psnr2 = torch.mean(torch.stack(psnr1)).item(), torch.mean(torch.stack(psnr2)).item()
     avg_ssim1, avg_ssim2 = torch.mean(torch.stack(ssim1)).item(), torch.mean(torch.stack(ssim2)).item()
     avg_mse1,avg_mse2 = torch.mean(torch.stack(mse1)).item(), torch.mean(torch.stack(mse2)).item()
     avg_mae1,avg_mae2 = torch.mean(torch.stack(mae1)).item(), torch.mean(torch.stack(mae2)).item()
+    fig, ax = plt.subplots(3, 3, figsize=(10, 10))
+    for i in range(3):
+        ax[i, 0].imshow(target2[0, i, ...].cpu().numpy(), cmap=cmocean.cm.balance)
+        ax[i, 0].set_title('Ground truth')
+        ax[i, 1].imshow(output2[0, i, ...].cpu().numpy(), cmap=cmocean.cm.balance)
+        ax[i, 1].set_title('Prediction')
+        ax[i, 2].imshow(data2[0, i, ...].cpu().numpy(), cmap=cmocean.cm.balance)
+        ax[i, 2].set_title('Input')
+    fig.savefig(f"figures/check_snapshot_prediciton.png")
+
     return (avg_rine1, avg_rine2), (avg_rfne1, avg_rfne2), (avg_psnr1, avg_psnr2), (avg_ssim1, avg_ssim2),(avg_mse1,avg_mse2),(avg_mae1,avg_mae2)
 
 # def validate_RINE(args, test1_loader, test2_loader, model,mean,std):
