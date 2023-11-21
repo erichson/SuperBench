@@ -69,6 +69,7 @@ def validate(args, val1_loader, val2_loader, model, criterion):
     rfne_mean =0
     rfne_mean2 =0
     c = 0
+    d = 0
     with torch.no_grad():
         for batch_idx, (data, target) in enumerate(val1_loader):
             data, target = data.float().to(args.device), target.float().to(args.device)
@@ -77,9 +78,11 @@ def validate(args, val1_loader, val2_loader, model, criterion):
             rfne = torch.norm(output - target, p=2, dim=(-1,-2,-3)) / torch.norm(target, p=2, dim=(-1,-2,-3))
             rfne_mean += rfne.mean()
             c += data.shape[0]
-    run["val1_rfne"].log(rfne_mean.item()/c)
+            d +=1
+    run["val1_rfne"].log(rfne_mean.item()/d)
     mse1 /= c
     c = 0
+    d = 0
     with torch.no_grad():
         for batch_idx, (data, target) in enumerate(val2_loader):
             data, target = data.float().to(args.device), target.float().to(args.device)
@@ -88,8 +91,9 @@ def validate(args, val1_loader, val2_loader, model, criterion):
             rfne = torch.norm(output - target, p=2, dim=(-1,-2,-3)) / torch.norm(target, p=2, dim=(-1,-2,-3))
             rfne_mean2 += rfne.mean()
             c += data.shape[0]
+            d +=1
     mse2 /= c
-    run.log("val2_rfne",rfne_mean2.item()/c)
+    run["val2_rfne"].log(rfne_mean2.item()/d)
     return mse1.item(), mse2.item()
 
 
@@ -153,7 +157,7 @@ def main():
     window_size = 8
     height = (args.crop_size // upscale // window_size + 1) * window_size
     width = (args.crop_size // upscale // window_size + 1) * window_size
-
+    print(height, width)
     model_list = {
             'subpixelCNN': subpixelCNN(args.in_channels, upscale_factor=args.upscale_factor, width=1, mean = mean,std = std),
             'SRCNN': SRCNN(args.in_channels, args.upscale_factor,mean,std),
@@ -183,7 +187,6 @@ def main():
     # % --- %
     optimizer = set_optimizer(args, model)
     if args.pretrained == True:
-        optimizer = load_checkpoint(optimizer, args.model_path)
         checkpoint = torch.load(args.model_path)
         optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
         optimizer = optimizer.to(args.device)

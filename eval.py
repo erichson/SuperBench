@@ -344,7 +344,7 @@ def main():
     parser.add_argument('--data_name', type=str, default='nskt_16k', help='dataset')
     parser.add_argument('--data_path', type=str, default='./datasets/nskt16000_1024', help='the folder path of dataset')
     parser.add_argument('--method', type=str, default="bicubic", help='downsample method')
-    parser.add_argument('--crop_size', type=int, default=128, help='crop size for high-resolution snapshots')
+    parser.add_argument('--crop_size', type=int, default=256, help='crop size for high-resolution snapshots')
     parser.add_argument('--n_patches', type=int, default=8, help='number of patches')
 
     # arguments for evaluation
@@ -393,8 +393,8 @@ def main():
     # % --- %
     upscale = args.upscale_factor
     window_size = 8
-    height = (128 // upscale // window_size + 1) * window_size
-    width = (128 // upscale // window_size + 1) * window_size
+    height = (args.crop_size // upscale // window_size + 1) * window_size
+    width = (args.crop_size // upscale // window_size + 1) * window_size
     model_list = {
             'subpixelCNN': subpixelCNN(args.in_channels, upscale_factor=args.upscale_factor, width=1, mean = mean,std = std),
             'SRCNN': SRCNN(args.in_channels, args.upscale_factor,mean,std),

@@ -1,14 +1,5 @@
-# sbatch make_file/cosmo_WDSR_8.sbatch
-# sbatch make_file/cosmo_WDSR_16.sbatch
-sbatch make_file/nskt_16k_sim_2_SRCNN_2.sbatch
-sbatch make_file/nskt_16k_sim_2_WDSR_2.sbatch
-sbatch make_file/nskt_16k_sim_2_SwinIR_2.sbatch
-sbatch make_file/nskt_32k_sim_2_SRCNN_2.sbatch
-sbatch make_file/nskt_32k_sim_2_WDSR_2.sbatch
-sbatch make_file/nskt_32k_sim_2_SwinIR_2.sbatch
-sbatch make_file/no_crop_nskt_16k_sim_2_SRCNN_2.sbatch
-sbatch make_file/no_crop_nskt_16k_sim_2_WDSR_2.sbatch
-sbatch make_file/no_crop_nskt_16k_sim_2_SwinIR_2.sbatch
-sbatch make_file/no_crop_nskt_32k_sim_2_SRCNN_2.sbatch
-sbatch make_file/no_crop_nskt_32k_sim_2_WDSR_2.sbatch
-sbatch make_file/no_crop_nskt_32k_sim_2_SwinIR_2.sbatch
+
+sbatch make_file/nskt_16k_sim_4_WDSR_4.sbatch
+sbatch make_file/nskt_16k_sim_4_SwinIR_4.sbatch
+sbatch make_file/nskt_32k_sim_4_WDSR_4.sbatch
+sbatch make_file/nskt_32k_sim_4_SwinIR_4.sbatch
