@@ -5,6 +5,8 @@ DATA_INFO = {"nskt_16k": ["/pscratch/sd/j/junyi012/superbench_v2/nskt_16k",3],
              "nskt_32k": ["/pscratch/sd/j/junyi012/superbench_v2/nskt_32k",3],
             "nskt_16k_sim_4": ["/pscratch/sd/j/junyi012/superbench_v2/nskt_16k_sim_4",3],
             "nskt_32k_sim_4": ["/pscratch/sd/j/junyi012/superbench_v2/nskt_32k_sim_4",3],
+            "nskt_16k_sim_4_v2": ["/pscratch/sd/j/junyi012/superbench_v2/nskt_16k_sim_4_v2",3],
+            "nskt_32k_sim_4_v2": ["/pscratch/sd/j/junyi012/superbench_v2/nskt_32k_sim_4_v2",3],
             "nskt_16k_sim_2": ["/pscratch/sd/j/junyi012/superbench_v2/nskt_16k_sim_2",3],
             "nskt_32k_sim_2": ["/pscratch/sd/j/junyi012/superbench_v2/nskt_32k_sim_2",3],
             "cosmo": ["/pscratch/sd/j/junyi012/superbench_v2/cosmo2048",2],
@@ -54,7 +56,7 @@ bash -c "$cmd1"
 # Run the function
 if __name__ == "__main__":
     # data_name_list = ["cosmo"]
-    data_name_list = ["nskt_16k_sim_4","nskt_32k_sim_4"]
+    data_name_list = ["nskt_16k_sim_4_v2","nskt_32k_sim_4_v2"]
     model_name_list =  ["WDSR","SwinIR"]
     # model_name_list =  ["FNO2D","WDSR"]
     for name in data_name_list:
@@ -64,13 +66,13 @@ if __name__ == "__main__":
                 with open("bash2slurm.sh","a") as f:
                     print(f"sbatch make_file/{job_name}.sbatch",file=f)
                 f.close()
-    for name in data_name_list:
-        for scale_factor in [4]:
-            for model_name in model_name_list:
-                job_name = generate_bash_script(data_name=name,model_name=model_name,scale_factor=scale_factor,num_pathches=32)
-                with open("bash2slurm.sh","a") as f:
-                    print(f"sbatch make_file/{job_name}.sbatch",file=f)
-                f.close()
+    # for name in data_name_list:
+    #     for scale_factor in [4]:
+    #         for model_name in model_name_list:
+    #             job_name = generate_bash_script(data_name=name,model_name=model_name,scale_factor=scale_factor,num_pathches=32)
+    #             with open("bash2slurm.sh","a") as f:
+    #                 print(f"sbatch make_file/{job_name}.sbatch",file=f)
+    #             f.close()
     # for name in ["nskt_16k_sim","nskt_32k_sim"]:
     #     for scale_factor in [4]:
     #         for model_name in model_name_list:

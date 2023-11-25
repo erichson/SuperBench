@@ -79,7 +79,7 @@ def validate(args, val1_loader, val2_loader, model, criterion):
             rfne_mean += rfne.mean()
             c += data.shape[0]
             d +=1
-    run["val1_rfne"].log(rfne_mean.item()/d)
+    run["val1_rfne"].log(rfne.mean().item())
     mse1 /= c
     c = 0
     d = 0
@@ -93,7 +93,7 @@ def validate(args, val1_loader, val2_loader, model, criterion):
             c += data.shape[0]
             d +=1
     mse2 /= c
-    run["val2_rfne"].log(rfne_mean2.item()/d)
+    run["val2_rfne"].log(rfne.mean().item())
     return mse1.item(), mse2.item()
 
 
