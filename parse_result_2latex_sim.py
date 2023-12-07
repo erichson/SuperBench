@@ -60,7 +60,7 @@ def generate_latex_table_from_json(json_file, target_dataset):
     # Generate the LaTeX table
     latex_table = "\\begin{table}[h!]\n"
     latex_table += "\\caption{Results for " + target_dataset.replace("_", "\\_") + " dataset with bicubic down-sampling.}\n"
-    latex_table += "\\label{tab:" + target_dataset.replace("_", "\\_") + "_bicubic}\n"
+    latex_table += "\\label{tab:" + target_dataset + "_bicubic}\n"
     latex_table += "\\centering\n"
     latex_table += "\\scalebox{0.8}{\n"
     latex_table += "\\begin{tabular}{l|c|cccccc|cccccc|c}\n"
@@ -86,4 +86,4 @@ def generate_latex_table_from_json(json_file, target_dataset):
 
 # Return the modified function for review
 with open("latex_table.sh", "w") as file:
-    print(generate_latex_table_from_json("normed_eval.json", "nskt_16k_sim"),file=file)
+    print(generate_latex_table_from_json("normed_eval.json", "nskt_32k_sim_4_v4"),file=file)
