@@ -43,7 +43,7 @@ def get_data_loader(args, data_tag, train, n_patches, std):
     elif args.data_name == 'cosmo_lres_sim':
         # print('Using low-resolution simulation degradation...')
         dataset = GetCosmoSimData(args.data_path+data_tag, data_tag, train, transform, args.crop_size, n_patches)
-    elif args.data_name == "nskt_16k_sim_4" or args.data_name=="nskt_32k_sim_4" or args.data_name == "nskt_16k_sim_2" or args.data_name=="nskt_32k_sim_2" or args.data_name=="nskt_16k_sim_4_v2" or args.data_name=="nskt_32k_sim_4_v2":
+    elif args.data_name.startswith("nskt_16k_sim") or args.data_name.startswith("nskt_32k_sim"):
         dataset = GetFluidDataset_LRsim(args.data_path+data_tag, train, transform, args.upscale_factor, args.noise_ratio, std, args.crop_size,n_patches,args.method) 
 
     else:

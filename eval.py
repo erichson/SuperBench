@@ -176,19 +176,20 @@ def validate_all_metrics(args, test1_loader, test2_loader, model, mean, std):
                 target = normalize(args, target, mean, std)
 
                 # MSE 
-                mse = torch.mean((target - output) ** 2,dim =(-1,-2,-3))
-                mse_list.append(mse.cpu())
+                for i in range(target.shape[0]): # for loop for drop last
+                    mse = torch.mean((target[i] - output[i]) ** 2,dim =(-1,-2,-3))
+                    mse_list.append(mse.cpu())
 
-                # MAE
-                mae = torch.mean(torch.abs(target - output),dim=(-1,-2,-3))
-                mae_list.append(mae.cpu())
-                # RINE
-                err_ine = torch.norm(target-output, p=np.inf, dim=(-1, -2)) / torch.norm(target, p=np.inf, dim=(-1, -2))
-                rine_list.append(err_ine.cpu())
+                    # MAE
+                    mae = torch.mean(torch.abs(target[i] - output[i]),dim=(-1,-2,-3))
+                    mae_list.append(mae.cpu())
+                    # INE
+                    err_ine = torch.norm(target[i]-output[i], p=np.inf, dim=(-1, -2)) 
+                    rine_list.append(err_ine.cpu())
 
-                # RFNE
-                err_rfne = torch.norm(target-output, p=2, dim=(-1, -2)) / torch.norm(target, p=2, dim=(-1, -2))
-                rfne_list.append(err_rfne.cpu())
+                    # RFNE
+                    err_rfne = torch.norm(target[i]-output[i], p=2, dim=(-1, -2)) / torch.norm(target[i], p=2, dim=(-1, -2))
+                    rfne_list.append(err_rfne.cpu())
 
                 # PSNR
                 for i in range(target.shape[0]):
@@ -203,24 +204,24 @@ def validate_all_metrics(args, test1_loader, test2_loader, model, mean, std):
                         ssim_list.append(err_ssim.cpu())
             test += 1
     # Averaging and converting to scalar values
-    rfne1_np = torch.stack(rfne1).numpy().reshape(100,1,3)
-    print("rfne1_np shape",rfne1_np.shape)
-    rfne2_np = torch.stack(rfne2).numpy().reshape(100,1,3)
-    psnr1_np = torch.stack(psnr1).numpy()
-    print("psnr1_np.shape",psnr1_np.shape)
-    psnr2_np = torch.stack(psnr2).numpy()
-    fig, ax = plt.subplots(2, 2, figsize=(14, 10))
-    ax[0,0].scatter(np.arange(0,len(rfne1_np),1),rfne1_np[:,0,2],label = "RFNE1 vorticity")
-    ax[0,0].scatter(np.arange(0,len(rfne1_np),1),rfne1_np[:,0,0],label = "RFNE1 u")
-    ax[0,0].scatter(np.arange(0,len(rfne1_np),1),rfne1_np[:,0,1],label = "RFNE1 v")
-    ax[0,0].legend()
-    ax[1,0].scatter(np.arange(0,len(rfne1_np),1),rfne2_np[:,0,2],label = "RFNE2 vorticity")
-    ax[1,0].scatter(np.arange(0,len(rfne1_np),1),rfne2_np[:,0,0],label = "RFNE2 u")
-    ax[1,0].scatter(np.arange(0,len(rfne1_np),1),rfne2_np[:,0,1],label = "RFNE2 v")
-    ax[1,0].legend()    
-    ax[0,1].scatter(np.arange(0,len(psnr1),1),psnr1_np)
-    ax[1,1].scatter(np.arange(0,len(psnr1),1),psnr2_np)
-    fig.savefig(f"figures/check_snapshot_rfne_psnr.png")
+    # rfne1_np = torch.stack(rfne1).numpy().reshape(100,1,3)
+    # print("rfne1_np shape",rfne1_np.shape)
+    # rfne2_np = torch.stack(rfne2).numpy().reshape(100,1,3)
+    # psnr1_np = torch.stack(psnr1).numpy()
+    # print("psnr1_np.shape",psnr1_np.shape)
+    # psnr2_np = torch.stack(psnr2).numpy()
+    # fig, ax = plt.subplots(2, 2, figsize=(14, 10))
+    # ax[0,0].scatter(np.arange(0,len(rfne1_np),1),rfne1_np[:,0,2],label = "RFNE1 vorticity")
+    # ax[0,0].scatter(np.arange(0,len(rfne1_np),1),rfne1_np[:,0,0],label = "RFNE1 u")
+    # ax[0,0].scatter(np.arange(0,len(rfne1_np),1),rfne1_np[:,0,1],label = "RFNE1 v")
+    # ax[0,0].legend()
+    # ax[1,0].scatter(np.arange(0,len(rfne1_np),1),rfne2_np[:,0,2],label = "RFNE2 vorticity")
+    # ax[1,0].scatter(np.arange(0,len(rfne1_np),1),rfne2_np[:,0,0],label = "RFNE2 u")
+    # ax[1,0].scatter(np.arange(0,len(rfne1_np),1),rfne2_np[:,0,1],label = "RFNE2 v")
+    # ax[1,0].legend()    d
+    # ax[0,1].scatter(np.arange(0,len(psnr1),1),psnr1_np)
+    # ax[1,1].scatter(np.arange(0,len(psnr1),1),psnr2_np)
+    # fig.savefig(f"figures/check_snapshot_rfne_psnr.png")
     avg_rine1, avg_rine2 = torch.mean(torch.stack(rine1)).item(), torch.mean(torch.stack(rine2)).item()
     avg_rfne1, avg_rfne2 = torch.mean(torch.stack(rfne1)).item(), torch.mean(torch.stack(rfne2)).item()
     avg_psnr1, avg_psnr2 = torch.mean(torch.stack(psnr1)).item(), torch.mean(torch.stack(psnr2)).item()
@@ -239,6 +240,7 @@ def validate_all_metrics(args, test1_loader, test2_loader, model, mean, std):
 
     return (avg_rine1, avg_rine2), (avg_rfne1, avg_rfne2), (avg_psnr1, avg_psnr2), (avg_ssim1, avg_ssim2),(avg_mse1,avg_mse2),(avg_mae1,avg_mae2)
 
+'''comment below for old data'''
 # def validate_RINE(args, test1_loader, test2_loader, model,mean,std):
 #     '''Relative infinity norm error (RINE)'''
 #     # calculate the RINE of each snapshot and then average
@@ -378,14 +380,14 @@ def main():
     parser.add_argument('--data_name', type=str, default='nskt_16k', help='dataset')
     parser.add_argument('--data_path', type=str, default='./datasets/nskt16000_1024', help='the folder path of dataset')
     parser.add_argument('--method', type=str, default="bicubic", help='downsample method')
-    parser.add_argument('--crop_size', type=int, default=256, help='crop size for high-resolution snapshots')
+    parser.add_argument('--crop_size', type=int, default=128, help='crop size for high-resolution snapshots')
     parser.add_argument('--n_patches', type=int, default=8, help='number of patches')
 
     # arguments for evaluation
     parser.add_argument('--model', type=str, default='shallowDecoder', help='model')
     parser.add_argument('--model_path', type=str, default=None, help='saved model')
     parser.add_argument('--device', type=str, default=torch.device('cuda' if torch.cuda.is_available() else 'cpu'), help='computing device')
-    parser.add_argument('--batch_size', type=int, default=4, help='batch size')
+    parser.add_argument('--batch_size', type=int, default=32, help='batch size')
     parser.add_argument('--seed', type=int, default=5544, help='random seed')
     parser.add_argument('--noise_ratio', type=float, default=0.0, help='noise ratio')
     
@@ -439,8 +441,13 @@ def main():
                     embed_dim=180, num_heads=[6, 6, 6, 6, 6, 6], mlp_ratio=2, upsampler='pixelshuffle', resi_connection='1conv',mean =mean,std=std),
             'Bicubic': Bicubic(args.upscale_factor),
     }
+    # Regarding train with physics loss
+    if args.model.startswith('SwinIR'):
+        name = "SwinIR"
+    else:
+        name = args.model
 
-    model = model_list[args.model]
+    model = model_list[name]
     model = torch.nn.DataParallel(model)
     if args.model_path is None:
         model_path = 'results/model_' + str(args.model) + '_' + str(args.data_name) + '_' + str(args.upscale_factor) + '_' + str(args.lr) + '_' + str(args.method) +'_' + str(args.noise_ratio) + '_' + str(args.seed) + '.pt'
@@ -503,7 +510,7 @@ def main():
     # Validate and store MAE results
     all_results[key]["metrics"]["MAE"] = {'test1 error': MAE[0], 'test2 error': MAE[1]}
     # Validate and store Physics loss results for specific data names
-    if args.data_name in ["nskt_16k", "nskt_32k","nskt_16k_sim","nskt_32k_sim"]:
+    if args.data_name in ["nskt_16k", "nskt_32k"] or args.data_name.startswith("nskt_16k_sim") or args.data_name.startswith("nskt_32k_sim"):
         phy_err1, phy_err2 = validate_phyLoss(args, test1_loader, test2_loader, model)
         all_results[key]["metrics"]["Physics"] = {'test1 error': phy_err1, 'test2 error': phy_err2}
 
@@ -511,24 +518,6 @@ def main():
     with open("normed_eval.json", "w") as f:
         json.dump(all_results, f, indent=4)
 
-    # =============== validate ======================
-    # with open("result.txt", "a") as f:
-    #     print(" model" + str(args.model) + " data: " + str(args.data_name)+ "  method: " + str(args.method) +" scale factor " + str(args.upscale_factor) + " noise ratio: " + str(args.noise_ratio),file = f)
-    #     ine1, ine2 = validate_RINE(args, test1_loader, test2_loader, model,mean,std)
-    #     print("Infinity norm --- test1 error: %.8f, test2 error: %.8f" % (ine1, ine2),file = f) 
-
-    #     error1, error2 = validate_RFNE(args, test1_loader, test2_loader, model,mean,std)
-    #     print("RFNE --- test1 error: %.5f %%, test2 error: %.5f %%" % (error1*100.0, error2*100.0),file = f)          
-
-    #     error1, error2 = validate_PSNR(args, test1_loader, test2_loader, model,mean,std)
-    #     print("PSNR --- test1 error: %.5f, test2 error: %.5f" % (error1, error2),file = f) 
-
-    #     error1, error2 = validate_SSIM(args, test1_loader, test2_loader, model,mean,std)
-    #     print("SSIM --- test1 error: %.5f, test2 error: %.5f" % (error1, error2),file = f) 
-
-    #     if args.data_name == "nskt_16k" or args.data_name == "nskt_32k":
-    #         phy_err1, phy_err2 = validate_phyLoss(args, test1_loader, test2_loader, model)
-    #         print("Physics loss --- test1 error: %.8f, test2 error: %.8f" % (phy_err1, phy_err2),file=f) 
 
 if __name__ =='__main__':
     main()

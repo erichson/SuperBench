@@ -5,8 +5,8 @@ DATA_INFO = {"nskt_16k": ["/pscratch/sd/j/junyi012/superbench_v2/nskt_16k",3],
              "nskt_32k": ["/pscratch/sd/j/junyi012/superbench_v2/nskt_32k",3],
             "nskt_16k_sim_4": ["/pscratch/sd/j/junyi012/superbench_v2/nskt_16k_sim_4",3],
             "nskt_32k_sim_4": ["/pscratch/sd/j/junyi012/superbench_v2/nskt_32k_sim_4",3],
-            "nskt_16k_sim_4_v2": ["/pscratch/sd/j/junyi012/superbench_v2/nskt_16k_sim_4_v2",3],
-            "nskt_32k_sim_4_v2": ["/pscratch/sd/j/junyi012/superbench_v2/nskt_32k_sim_4_v2",3],
+            "nskt_16k_sim_4_v4": ["/pscratch/sd/j/junyi012/superbench_v2/nskt_16k_sim_4_v4",3],
+            "nskt_32k_sim_4_v4": ["/pscratch/sd/j/junyi012/superbench_v2/nskt_32k_sim_4_v4",3],
             "nskt_16k_sim_2": ["/pscratch/sd/j/junyi012/superbench_v2/nskt_16k_sim_2",3],
             "nskt_32k_sim_2": ["/pscratch/sd/j/junyi012/superbench_v2/nskt_32k_sim_2",3],
             "cosmo": ["/pscratch/sd/j/junyi012/superbench_v2/cosmo2048",2],
@@ -56,7 +56,7 @@ bash -c "$cmd1"
 # Run the function
 if __name__ == "__main__":
     # data_name_list = ["cosmo"]
-    data_name_list = ["nskt_16k_sim_4_v2","nskt_32k_sim_4_v2"]
+    data_name_list = ["nskt_16k_sim_4_v4","nskt_32k_sim_4_v4"]
     model_name_list =  ["WDSR","SwinIR"]
     # model_name_list =  ["FNO2D","WDSR"]
     for name in data_name_list:
