@@ -22,7 +22,7 @@
 # python eval.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --model EDSR --upscale_factor 8 --model_path results/model_EDSR_nskt_16k_8_0.001_bicubic_0.0_5544_5321.pt; 
 # python eval.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --model SRCNN --upscale_factor 8 --model_path results/model_SRCNN_nskt_16k_8_0.002_bicubic_0.0_5544_6350.pt; 
 # python eval.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --model subpixelCNN --upscale_factor 8 --model_path results/model_subpixelCNN_nskt_16k_8_0.001_bicubic_0.0_5544_5277.pt; 
-# python eval.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --model SwinIR --upscale_factor 8 --model_path results/model_SwinIR_nskt_16k_8_0.0001_bicubic_0.0_5544_3094.pt; 
+python eval.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --model SwinIR --upscale_factor 8 --model_path results/model_SwinIR_nskt_16k_8_0.0001_bicubic_0.0_5544_3094.pt; 
 # python eval_FNO.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --modes 12 --upscale_factor 8 --model_path results/model_FNO2D_nskt_16k_8_0.001_bicubic_0.0_5544_927.pt;
 
 ### NSKT 16k BICUBIC x16

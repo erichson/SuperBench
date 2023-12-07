@@ -514,6 +514,7 @@ def main():
         phy_err1, phy_err2 = validate_phyLoss(args, test1_loader, test2_loader, model)
         all_results[key]["metrics"]["Physics"] = {'test1 error': phy_err1, 'test2 error': phy_err2}
 
+    # all_results.sorted()
     # Serialize the updated results list to the JSON file
     with open("normed_eval.json", "w") as f:
         json.dump(all_results, f, indent=4)

@@ -62,7 +62,7 @@ if __name__ == "__main__":
     for name in data_name_list:
         for scale_factor in [4]:
             for model_name in model_name_list:
-                job_name = generate_bash_script(data_name=name,model_name=model_name,scale_factor=scale_factor,num_pathches=32)
+                job_name = generate_bash_script(data_name=name,model_name=model_name,scale_factor=scale_factor,num_pathches=8)
                 with open("bash2slurm.sh","a") as f:
                     print(f"sbatch make_file/{job_name}.sbatch",file=f)
                 f.close()

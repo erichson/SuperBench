@@ -53,8 +53,8 @@ if __name__ == "__main__":
     data_name_list = ["nskt_16k","nskt_32k"]
     # model_name_list =  ["SRCNN","WDSR","SwinIR","subpixelCNN","EDSR"]
     model_name_list = ["SwinIR"]
-    downsample_method = ["noisy_uniform"]
-    lamb = [1,0.1,0.01,0.001,0.0001]
+    downsample_method = ["bicubic"]
+    lamb = [0.001]
     # for name in data_name_list:
     #     for scale_factor in [8,16]:
     #         for model_name in model_name_list:
@@ -64,8 +64,9 @@ if __name__ == "__main__":
     #             f.close()
     for name in data_name_list:
         for lamb_p in lamb:
-            for model_name in model_name_list:
-                job_name = generate_bash_script(data_name=name,model_name=model_name,scale_factor=8,lamb_p=lamb_p)
-                with open("bash2slurm.sh","a") as f:
-                    print(f"sbatch make_file/{job_name}.sbatch",file=f)
-                f.close()
+            for s in [8,16]:
+                for model_name in model_name_list:
+                    job_name = generate_bash_script(data_name=name,model_name=model_name,scale_factor=s,lamb_p=lamb_p)
+                    with open("bash2slurm.sh","a") as f:
+                        print(f"sbatch make_file/{job_name}.sbatch",file=f)
+                    f.close()
