@@ -34,7 +34,7 @@
 # python eval.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --model subpixelCNN --upscale_factor 16 --model_path results/model_subpixelCNN_nskt_16k_16_0.001_bicubic_0.0_5544_47.pt; 
 # python eval.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --model SwinIR --upscale_factor 16 --model_path results/model_SwinIR_nskt_16k_16_0.0001_bicubic_0.0_5544_4150.pt; 
 # python eval_FNO.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --modes 12 --upscale_factor 16 --model_path results/model_FNO2D_nskt_16k_16_0.001_bicubic_0.0_5544_557.pt --model FNO2D_patch;
-python eval_FNO.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --modes 12 --upscale_factor 16 --model_path results/model_FNO2D_nskt_16k_16_0.001_bicubic_0.0_5544_557.pt --model FNO2D;
+# python eval_FNO.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --modes 12 --upscale_factor 16 --model_path results/model_FNO2D_nskt_16k_16_0.001_bicubic_0.0_5544_557.pt --model FNO2D;
 
 ### NSKT 32k BICUBIC x8
 # python eval_FNO.py --data_name nskt_32k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k --in_channels 3 --modes 12 --upscale_factor 8 --model_path results/model_FNO2D_nskt_32k_8_0.001_bicubic_0.0_5544_410.pt;
@@ -70,25 +70,25 @@ python eval_FNO.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/supe
 
 
 ##NSKT 16k LRSIM x4 
-# python eval.py --data_name nskt_16k_sim_4_v4 --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k_sim_4_v5 --in_channels 3 --model Bicubic --upscale_factor 4;
-# python eval.py --data_name nskt_16k_sim_4_v4 --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k_sim_4_v5 --in_channels 3 --model WDSR --upscale_factor 4 --model_path results/model_WDSR_nskt_16k_sim_4_v4_4_0.0008_bicubic_0.0_5544_488.pt;
-# python eval.py --data_name nskt_16k_sim_4_v4 --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k_sim_4_v5 --in_channels 3 --model SwinIR --upscale_factor 4 --model_path results/model_SwinIR_nskt_16k_sim_4_v4_4_0.0008_bicubic_0.0_5544_9572.pt;
+# python eval.py --data_name nskt_16k_sim_4_v7 --data_path /pscratch/sd/j/junyi012/nskt/nskt_16k_sim_4_v7 --in_channels 3 --model Bicubic --upscale_factor 4;
+# python eval.py --data_name nskt_16k_sim_4_v7 --data_path /pscratch/sd/j/junyi012/nskt/nskt_16k_sim_4_v7 --in_channels 3 --model WDSR --upscale_factor 4 --model_path results/model_WDSR_nskt_16k_sim_4_v4_4_0.0008_bicubic_0.0_5544_488.pt;
+# python eval.py --data_name nskt_16k_sim_4_v7 --data_path /pscratch/sd/j/junyi012/nskt/nskt_16k_sim_4_v7 --in_channels 3 --model SwinIR --upscale_factor 4 --model_path results/model_SwinIR_nskt_16k_sim_4_v4_4_0.0008_bicubic_0.0_5544_9572.pt;
 
-## NSKT 32k LRSIM x4
-# python eval.py --data_name nskt_32k_sim_4_v4 --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k_sim_4_v5 --in_channels 3 --model Bicubic --upscale_factor 4;
-# python eval.py --data_name nskt_32k_sim_4_v4 --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k_sim_4_v5 --in_channels 3 --model WDSR --upscale_factor 4 --model_path results/model_WDSR_nskt_32k_sim_4_v4_4_0.0008_bicubic_0.0_5544_3853.pt;
-# python eval.py --data_name nskt_32k_sim_4_v4 --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k_sim_4_v5 --in_channels 3 --model SwinIR --upscale_factor 4 --model_path results/model_SwinIR_nskt_32k_sim_4_v4_4_0.0008_bicubic_0.0_5544_1830.pt;
+# ## NSKT 32k LRSIM x4
+# python eval.py --data_name nskt_32k_sim_4_v7 --data_path /pscratch/sd/j/junyi012/nskt/nskt_32k_sim_4_v7 --in_channels 3 --model Bicubic --upscale_factor 4;
+# python eval.py --data_name nskt_32k_sim_4_v7 --data_path /pscratch/sd/j/junyi012/nskt/nskt_32k_sim_4_v7 --in_channels 3 --model WDSR --upscale_factor 4 --model_path results/model_WDSR_nskt_32k_sim_4_v4_4_0.0008_bicubic_0.0_5544_3853.pt;
+# python eval.py --data_name nskt_32k_sim_4_v7 --data_path /pscratch/sd/j/junyi012/nskt/nskt_32k_sim_4_v7 --in_channels 3 --model SwinIR --upscale_factor 4 --model_path results/model_SwinIR_nskt_32k_sim_4_v4_4_0.0008_bicubic_0.0_5544_1830.pt;
 
 
 ### SwinIR + Noise 
-python eval.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --model SwinIR --upscale_factor 8 --model_path results/model_SwinIR_nskt_16k_8_0.0001_noisy_uniform_0.05_5544_9073.pt --noise_ratio 0.05 --method noisy_uniform;
-python eval.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --model SwinIR --upscale_factor 8 --model_path results/model_SwinIR_nskt_16k_8_0.0001_noisy_uniform_0.1_5544_4754.pt --noise_ratio 0.1 --method noisy_uniform;
-python eval.py --data_name nskt_32k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k --in_channels 3 --model SwinIR --upscale_factor 8 --model_path results/model_SwinIR_nskt_32k_8_0.0001_noisy_uniform_0.05_5544_8822.pt --noise_ratio 0.05 --method noisy_uniform;
-python eval.py --data_name nskt_32k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k --in_channels 3 --model SwinIR --upscale_factor 8 --model_path results/model_SwinIR_nskt_32k_8_0.0001_noisy_uniform_0.1_5544_756.pt --noise_ratio 0.1 --method noisy_uniform;
+# python eval.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --model SwinIR --upscale_factor 8 --model_path results/model_SwinIR_nskt_16k_8_0.0001_noisy_uniform_0.05_5544_9073.pt --noise_ratio 0.05 --method noisy_uniform;
+# python eval.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --model SwinIR --upscale_factor 8 --model_path results/model_SwinIR_nskt_16k_8_0.0001_noisy_uniform_0.1_5544_4754.pt --noise_ratio 0.1 --method noisy_uniform;
+# python eval.py --data_name nskt_32k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k --in_channels 3 --model SwinIR --upscale_factor 8 --model_path results/model_SwinIR_nskt_32k_8_0.0001_noisy_uniform_0.05_5544_8822.pt --noise_ratio 0.05 --method noisy_uniform;
+# python eval.py --data_name nskt_32k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k --in_channels 3 --model SwinIR --upscale_factor 8 --model_path results/model_SwinIR_nskt_32k_8_0.0001_noisy_uniform_0.1_5544_756.pt --noise_ratio 0.1 --method noisy_uniform;
 
 
-# python eval.py --data_name era5 --data_path /pscratch/sd/j/junyi012/superbench_v2/era5 --in_channels 3 --model SwinIR --upscale_factor 8 --model_path model_SwinIR_new_era5_8_0.0001_noisy_uniform_0.05_5544.pt --noise_ratio 0.05;
-# python eval.py --data_name era5 --data_path /pscratch/sd/j/junyi012/superbench_v2/era5 --in_channels 3 --model SwinIR --upscale_factor 8 --model_path model_SwinIR_new_era5_8_0.0001_noisy_uniform_0.1_5544.pt --noise_ratio 0.1;
+python eval.py --data_name era5 --data_path /pscratch/sd/j/junyi012/superbench_v2/era5 --in_channels 3 --model SwinIR --upscale_factor 8 --model_path results/model_SwinIR_new_era5_8_0.0001_noisy_uniform_0.05_5544.pt --noise_ratio 0.05 --method noisy_uniform;
+python eval.py --data_name era5 --data_path /pscratch/sd/j/junyi012/superbench_v2/era5 --in_channels 3 --model SwinIR --upscale_factor 8 --model_path results/model_SwinIR_new_era5_8_0.0001_noisy_uniform_0.1_5544.pt --noise_ratio 0.1 --method noisy_uniform;
 
 
 

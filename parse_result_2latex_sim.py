@@ -86,4 +86,4 @@ def generate_latex_table_from_json(json_file, target_dataset):
 
 # Return the modified function for review
 with open("latex_table.sh", "w") as file:
-    print(generate_latex_table_from_json("normed_eval.json", "nskt_16k_sim_4_v4"),file=file)
+    print(generate_latex_table_from_json("normed_eval.json", "nskt_32k_sim_4_v7"),file=file)
