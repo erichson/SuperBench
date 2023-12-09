@@ -154,7 +154,7 @@ def validate_all_metrics(args, test1_loader, test2_loader, model, mean, std):
     def compute_psnr(true, pred):
         mse = torch.mean((true - pred) ** 2)
         if mse == 0:
-            return float('inf')
+            return float(500)
         max_value = torch.max(true)
         return 20 * torch.log10(max_value / torch.sqrt(mse))
 
@@ -249,8 +249,13 @@ def main():
     # % --- %
     # Load data
     # % --- %
+    if args.model == "FNO2D_patch":
+        flag = True
+    else :
+        flag = False
+
     resol, n_fields, n_train_samples, mean, std = get_data_info(args.data_name) # 
-    train_loader, val1_loader, val2_loader,test1_loader, test2_loader= getData(args, args.n_patches, std=std)
+    train_loader, val1_loader, val2_loader,test1_loader, test2_loader= getData(args, args.n_patches, std=std,patched_eval=flag)
     print('The data resolution is: ', resol)
     print("mean is: ",mean)
     print("std is: ",std)
@@ -267,7 +272,10 @@ def main():
         "FNO2D_conv":FNO2D_conv(layers=[hidden, hidden, hidden, hidden, hidden],modes1=[modes, modes, modes, modes],modes2=[modes, modes, modes, modes],fc_dim=128,in_dim=args.in_channels,out_dim=args.in_channels,mean= mean,std=std,scale_factor=upscale),
     }
 
-    model = model_list[args.model].to(args.device)    
+    if args.model == "FNO2D_patch":
+        model = model_list["FNO2D"].to(args.device)    
+    else:
+        model = model_list[args.model].to(args.device)
     # if pretrain and posttune
     model= load_checkpoint(model, args.model_path)
 

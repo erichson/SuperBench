@@ -9,7 +9,7 @@ from PIL import Image, ImageFilter
 import torchvision.transforms.functional as F
 from torch.utils.data import Dataset, DataLoader, TensorDataset
 
-def getData(args, n_patches, std):  
+def getData(args, n_patches, std,patched_eval=False,test=False):  
     '''
     Loading data from four dataset folders: (a) nskt_16k; (b) nskt_32k; (c) cosmo; (d) era5.
     Each dataset contains: 
@@ -20,14 +20,18 @@ def getData(args, n_patches, std):
     ===
     std: the channel-wise standard deviation of each dataset, list: [#channels]
     '''
-
-    train_loader = get_data_loader(args, '/train', train=True, n_patches=n_patches, std=std)
-    val1_loader = get_data_loader(args, '/valid_1', train=True, n_patches=n_patches, std=std)        
-    val2_loader = get_data_loader(args, '/valid_2', train=True, n_patches=n_patches, std=std)         
-    test1_loader = get_data_loader(args, '/test_1', train=False, n_patches=n_patches, std=std)        
-    test2_loader = get_data_loader(args, '/test_2', train=False, n_patches=n_patches, std=std)
-        
-    return train_loader, val1_loader, val2_loader, test1_loader, test2_loader 
+    if test == True:
+        test1_loader = get_data_loader(args, '/test_1', train=patched_eval, n_patches=n_patches, std=std)        
+        test2_loader = get_data_loader(args, '/test_2', train=patched_eval, n_patches=n_patches, std=std)
+        return test1_loader, test2_loader
+    else:
+        train_loader = get_data_loader(args, '/train', train=True, n_patches=n_patches, std=std)
+        val1_loader = get_data_loader(args, '/valid_1', train=True, n_patches=n_patches, std=std)        
+        val2_loader = get_data_loader(args, '/valid_2', train=True, n_patches=n_patches, std=std)         
+        test1_loader = get_data_loader(args, '/test_1', train=patched_eval, n_patches=n_patches, std=std)        
+        test2_loader = get_data_loader(args, '/test_2', train=patched_eval, n_patches=n_patches, std=std)
+            
+        return train_loader, val1_loader, val2_loader, test1_loader, test2_loader 
 
 
 def get_data_loader(args, data_tag, train, n_patches, std):

@@ -422,7 +422,7 @@ def main():
     # Load data
     # % --- %
     resol, n_fields, n_train_samples, mean, std = get_data_info(args.data_name)
-    _, _, _, test1_loader, test2_loader = getData(args, args.n_patches, std=std)
+    test1_loader, test2_loader = getData(args, args.n_patches, std=std,test=True)
 
     # % --- %
     # Get model
