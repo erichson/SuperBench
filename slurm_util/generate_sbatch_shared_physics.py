@@ -3,12 +3,10 @@ import argparse
 
 DATA_INFO = {"nskt_16k": ["/pscratch/sd/j/junyi012/superbench_v2/nskt_16k",3],
              "nskt_32k": ["/pscratch/sd/j/junyi012/superbench_v2/nskt_32k",3],
-            # "nskt_16k_sim_4": ["/pscratch/sd/j/junyi012/superbench_v2/nskt_16k_sim_4",3],
-            # "nskt_32k_sim_4": ["/pscratch/sd/j/junyi012/superbench_v2/nskt_32k_sim_4",3],
-            # "nskt_16k_sim_2": ["/pscratch/sd/j/junyi012/superbench_v2/nskt_16k_sim_2",3],
-            # "nskt_32k_sim_2": ["/pscratch/sd/j/junyi012/superbench_v2/nskt_32k_sim_2",3],
+            "nskt_16k_sim_4_v7": ["/pscratch/sd/j/junyi012/superbench_v2/nskt_16k_sim_4_v7",3],
+            "nskt_32k_sim_4_v7": ["/pscratch/sd/j/junyi012/superbench_v2/nskt_32k_sim_4_v7",3],
             "cosmo": ["/pscratch/sd/j/junyi012/superbench_v2/cosmo2048",2],
-              }
+            }
 
 MODEL_INFO = {"SRCNN": {"lr": 1e-3,"batch_size": 64,"epochs": 300},
             "subpixelCNN": {"lr": 1e-3,"batch_size": 64,"epochs": 300},
@@ -50,7 +48,7 @@ bash -c "$cmd1"
 # Run the function
 if __name__ == "__main__":
     # data_name_list = ["cosmo"]
-    data_name_list = ["nskt_16k","nskt_32k"]
+    data_name_list = ["nskt_16k_sim_4_v7","nskt_32k_sim_4_v7"]
     # model_name_list =  ["SRCNN","WDSR","SwinIR","subpixelCNN","EDSR"]
     model_name_list = ["SwinIR"]
     downsample_method = ["bicubic"]
@@ -64,7 +62,7 @@ if __name__ == "__main__":
     #             f.close()
     for name in data_name_list:
         for lamb_p in lamb:
-            for s in [8,16]:
+            for s in [4]:
                 for model_name in model_name_list:
                     job_name = generate_bash_script(data_name=name,model_name=model_name,scale_factor=s,lamb_p=lamb_p)
                     with open("bash2slurm.sh","a") as f:

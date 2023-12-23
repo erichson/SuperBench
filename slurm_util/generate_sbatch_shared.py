@@ -3,6 +3,8 @@ import argparse
 
 DATA_INFO = {"nskt_16k": ["/pscratch/sd/j/junyi012/superbench_v2/nskt_16k",3],
              "nskt_32k": ["/pscratch/sd/j/junyi012/superbench_v2/nskt_32k",3],
+            "nskt_16k_sim_4_v7": ["/pscratch/sd/j/junyi012/superbench_v2/nskt_16k_sim_4_v7",3],
+            "nskt_32k_sim_4_v7": ["/pscratch/sd/j/junyi012/superbench_v2/nskt_32k_sim_4_v7",3],
             # "nskt_16k_sim_4": ["/pscratch/sd/j/junyi012/superbench_v2/nskt_16k_sim_4",3],
             # "nskt_32k_sim_4": ["/pscratch/sd/j/junyi012/superbench_v2/nskt_32k_sim_4",3],
             # "nskt_16k_sim_2": ["/pscratch/sd/j/junyi012/superbench_v2/nskt_16k_sim_2",3],
@@ -54,11 +56,11 @@ bash -c "$cmd1"
 # Run the function
 if __name__ == "__main__":
     # data_name_list = ["cosmo"]
-    data_name_list = ["nskt_16k","nskt_32k"]
-    # model_name_list =  ["SRCNN","WDSR","SwinIR","subpixelCNN","EDSR"]
-    model_name_list = ["SwinIR"]
-    downsample_method = ["noisy_uniform"]
-    noisy_level = [0.05,0.1]
+    data_name_list = ["nskt_16k_sim_4_v7","nskt_32k_sim_4_v7"]
+    model_name_list =  ["SRCNN","WDSR","SwinIR","subpixelCNN","EDSR","FNO2D"]
+    # model_name_list = ["SwinIR"]
+    # downsample_method = ["noisy_uniform"]
+    # noisy_level = [0.05,0.1]
     # for name in data_name_list:
     #     for scale_factor in [8,16]:
     #         for model_name in model_name_list:
@@ -67,9 +69,8 @@ if __name__ == "__main__":
     #                 print(f"sbatch make_file/{job_name}.sbatch",file=f)
     #             f.close()
     for name in data_name_list:
-        for noise in noisy_level:
-            for model_name in model_name_list:
-                job_name = generate_bash_script(data_name=name,model_name=model_name,scale_factor=8,noise=noise,downsample_method="noisy_uniform")
-                with open("bash2slurm.sh","a") as f:
-                    print(f"sbatch make_file/{job_name}.sbatch",file=f)
-                f.close()
+        for model_name in model_name_list:
+            job_name = generate_bash_script(data_name=name,model_name=model_name,scale_factor=4,noise=0.0,downsample_method="bicubic")
+            with open("bash2slurm.sh","a") as f:
+                print(f"sbatch make_file/{job_name}.sbatch",file=f)
+            f.close()

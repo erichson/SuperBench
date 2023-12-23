@@ -431,8 +431,9 @@ def main():
     window_size = 8
     height = (args.crop_size // upscale // window_size + 1) * window_size
     width = (args.crop_size // upscale // window_size + 1) * window_size
-    height = (720 // upscale // window_size + 1) * window_size # for era5 
-    width = (1440 // upscale // window_size + 1) * window_size # for era5
+    if args.data_name == 'era5':
+        height = (720 // upscale // window_size + 1) * window_size # for era5 
+        width = (1440 // upscale // window_size + 1) * window_size # for era5
     model_list = {
             'subpixelCNN': subpixelCNN(args.in_channels, upscale_factor=args.upscale_factor, width=1, mean = mean,std = std),
             'SRCNN': SRCNN(args.in_channels, args.upscale_factor,mean,std),
