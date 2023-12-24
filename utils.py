@@ -20,14 +20,14 @@ def get_data_info(data_name):
     elif data_name == 'cosmo':
         resol = [2048, 2048] 
         n_fields = 2
-        n_train_samples = 1200
+        n_train_samples = 1000
         mean = [ 3.9017, -0.3575] # [ 3.8956, -0.3664] 
         std = [0.2266, 0.4048] # [0.2191, 0.3994]
 
-    elif data_name == 'cosmo_lres_sim':
-        resol = [4096, 4096] 
+    elif data_name == 'cosmo_lres_sim'or data_name.startswith('cosmo_sim'):
+        resol = [2048, 2048] 
         n_fields = 2
-        n_train_samples = 400
+        n_train_samples = 1200
         mean = [3.8990, -0.3613] 
         std = [0.2237, 0.4039]  
 
