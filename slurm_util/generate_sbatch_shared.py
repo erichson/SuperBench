@@ -10,7 +10,7 @@ DATA_INFO = {"nskt_16k": ["/pscratch/sd/j/junyi012/superbench_v2/nskt_16k",3],
             # "nskt_16k_sim_2": ["/pscratch/sd/j/junyi012/superbench_v2/nskt_16k_sim_2",3],
             # "nskt_32k_sim_2": ["/pscratch/sd/j/junyi012/superbench_v2/nskt_32k_sim_2",3],
             "cosmo": ["/pscratch/sd/j/junyi012/superbench_v2/cosmo_v2",2],
-            "cosmo_sim_8":["/pscratch/sd/j/junyi012/superbench_v2/cosmo_sim8",2],
+            "cosmo_sim_8":["/pscratch/sd/j/junyi012/superbench_v2/cosmo_lre_sim_s8_v2",2],
               }
 
 MODEL_INFO = {"SRCNN": {"lr": 1e-3,"batch_size": 64,"epochs": 300},
