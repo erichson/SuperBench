@@ -62,7 +62,7 @@ def generate_latex_table_from_json(json_file, target_dataset):
     latex_table += "\\caption{Results for " + target_dataset.replace("_", "\\_") + " dataset with bicubic down-sampling.}\n"
     latex_table += "\\label{tab:" + target_dataset + "_bicubic}\n"
     latex_table += "\\centering\n"
-    latex_table += "\\scalebox{0.8}{\n"
+    latex_table += "\\scalebox{0.6}{\n"
     latex_table += "\\begin{tabular}{l|c|cccccc|cccccc|c}\n"
     latex_table += "\\toprule\n"
     latex_table += "& UF & \\multicolumn{6}{c}{{Interpolation Errors}} & \\multicolumn{6}{c}{{Extrapolation Errors}} \\\\ \n"
@@ -71,7 +71,7 @@ def generate_latex_table_from_json(json_file, target_dataset):
     latex_table += "\\midrule\n"
 
     # Add rows for each model
-    model_order = ["Bicubic","FNO2D","SRCNN", "subpixelCNN", "EDSR", "WDSR", "SwinIR"]
+    model_order = ["Bicubic","FNO2D","FNO2D_patch","SRCNN", "subpixelCNN", "EDSR", "WDSR", "SwinIR","SwinIR_p001"]
     for scale in [4]:
         for model in model_order:
             if (model in table_data) and (scale in table_data[model]):
@@ -86,4 +86,4 @@ def generate_latex_table_from_json(json_file, target_dataset):
 
 # Return the modified function for review
 with open("latex_table.sh", "w") as file:
-    print(generate_latex_table_from_json("normed_eval.json", "nskt_32k_sim_4_v7"),file=file)
+    print(generate_latex_table_from_json("normed_eval.json", "nskt_32k_sim_4_v8"),file=file)

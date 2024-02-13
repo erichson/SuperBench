@@ -3,8 +3,8 @@ import argparse
 
 DATA_INFO = {"nskt_16k": ["/pscratch/sd/j/junyi012/superbench_v2/nskt_16k",3],
              "nskt_32k": ["/pscratch/sd/j/junyi012/superbench_v2/nskt_32k",3],
-            "nskt_16k_sim_4_v7": ["/pscratch/sd/j/junyi012/superbench_v2/nskt_16k_sim_4_v7",3],
-            "nskt_32k_sim_4_v7": ["/pscratch/sd/j/junyi012/superbench_v2/nskt_32k_sim_4_v7",3],
+            "nskt_16k_sim_4_v8": ["/pscratch/sd/j/junyi012/superbench_v2/nskt_16k_sim_4_v7",3],
+            "nskt_32k_sim_4_v8": ["/pscratch/sd/j/junyi012/superbench_v2/nskt_32k_sim_4_v7",3],
             "cosmo": ["/pscratch/sd/j/junyi012/superbench_v2/cosmo2048",2],
             }
 
@@ -48,11 +48,11 @@ bash -c "$cmd1"
 # Run the function
 if __name__ == "__main__":
     # data_name_list = ["cosmo"]
-    data_name_list = ["nskt_16k_sim_4_v7","nskt_32k_sim_4_v7"]
+    data_name_list = ["nskt_16k_sim_4_v8","nskt_32k_sim_4_v8"]
     # model_name_list =  ["SRCNN","WDSR","SwinIR","subpixelCNN","EDSR"]
     model_name_list = ["SwinIR"]
     downsample_method = ["bicubic"]
-    lamb = [0.001]
+    lamb = [0.0001,0.0005]
     # for name in data_name_list:
     #     for scale_factor in [8,16]:
     #         for model_name in model_name_list:

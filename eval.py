@@ -229,14 +229,14 @@ def validate_all_metrics(args, test1_loader, test2_loader, model, mean, std):
     avg_mse1,avg_mse2 = torch.mean(torch.stack(mse1)).item(), torch.mean(torch.stack(mse2)).item()
     avg_mae1,avg_mae2 = torch.mean(torch.stack(mae1)).item(), torch.mean(torch.stack(mae2)).item()
     fig, ax = plt.subplots(3, 3, figsize=(10, 10))
-    for i in range(3):
-        ax[i, 0].imshow(target2[0, i, ...].cpu().numpy(), cmap=cmocean.cm.balance)
-        ax[i, 0].set_title('Ground truth')
-        ax[i, 1].imshow(output2[0, i, ...].cpu().numpy(), cmap=cmocean.cm.balance)
-        ax[i, 1].set_title('Prediction')
-        ax[i, 2].imshow(data2[0, i, ...].cpu().numpy(), cmap=cmocean.cm.balance)
-        ax[i, 2].set_title('Input')
-    fig.savefig(f"figures/check_snapshot_prediciton.png")
+    # for i in range(3):
+    #     ax[i, 0].imshow(target2[0, i, ...].cpu().numpy(), cmap=cmocean.cm.balance)
+    #     ax[i, 0].set_title('Ground truth')
+    #     ax[i, 1].imshow(output2[0, i, ...].cpu().numpy(), cmap=cmocean.cm.balance)
+    #     ax[i, 1].set_title('Prediction')
+    #     ax[i, 2].imshow(data2[0, i, ...].cpu().numpy(), cmap=cmocean.cm.balance)
+    #     ax[i, 2].set_title('Input')
+    # fig.savefig(f"figures/check_snapshot_prediciton.png")
 
     return (avg_rine1, avg_rine2), (avg_rfne1, avg_rfne2), (avg_psnr1, avg_psnr2), (avg_ssim1, avg_ssim2),(avg_mse1,avg_mse2),(avg_mae1,avg_mae2)
 

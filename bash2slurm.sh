@@ -67,3 +67,7 @@ sbatch make_file/cosmo_sim_8_SwinIR_8_bicubic_0.0.sbatch
 sbatch make_file/cosmo_sim_8_subpixelCNN_8_bicubic_0.0.sbatch
 sbatch make_file/cosmo_sim_8_EDSR_8_bicubic_0.0.sbatch
 sbatch make_file/cosmo_sim_8_FNO2D_8_bicubic_0.0.sbatch
+sbatch make_file/nskt_16k_sim_4_v8_SwinIR_4_0.0001.sbatch
+sbatch make_file/nskt_16k_sim_4_v8_SwinIR_4_0.0005.sbatch
+sbatch make_file/nskt_32k_sim_4_v8_SwinIR_4_0.0001.sbatch
+sbatch make_file/nskt_32k_sim_4_v8_SwinIR_4_0.0005.sbatch

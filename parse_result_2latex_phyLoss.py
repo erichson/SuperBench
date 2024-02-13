@@ -16,7 +16,7 @@ def generate_row(model, data_16k, data_32k, scale):
     return row
 
 def generate_row_nosie(model, data_16k, data_32k, noise):
-    row = f"{model} & 4 & Noisy Uniform & {noise}"
+    row = f"{model} & 8 & Noisy Uniform & {noise}"
     for data in [data_16k, data_32k]:
         physics_test_error_1 = data["metrics"]["Physics"].get("test1 error", placeholder_value)
         physics_test_error_2 = data["metrics"]["Physics"].get("test2 error", placeholder_value)
@@ -26,7 +26,7 @@ def generate_row_nosie(model, data_16k, data_32k, noise):
     return row
 
 def generate_row_lrsim(model, data_16k, data_32k, noise):
-    row = f"{model} & 8 & LR Simulation & 0"
+    row = f"{model} & 4 & LR Simulation & 0"
     for data in [data_16k, data_32k]:
         physics_test_error_1 = data["metrics"]["Physics"].get("test1 error", placeholder_value)
         physics_test_error_2 = data["metrics"]["Physics"].get("test2 error", placeholder_value)
@@ -51,7 +51,7 @@ def generate_latex_table_from_json(json_file):
     latex_table += "Methods & ($\\times$) & & (\\%) & Interp. & Extrap. & Interp. & Extrap. & \\# par.\\\\\n"
     latex_table += "\\midrule\n"
 
-    model_order = ["Bicubic", "SRCNN","FNO2D","FNO2D_patch", "subpixelCNN", "EDSR", "WDSR", "SwinIR","SwinIR_p_001"]
+    model_order = ["Bicubic", "SRCNN","FNO2D", "subpixelCNN", "EDSR", "WDSR", "SwinIR","SwinIR_p001"]
 
     scales = [8, 16]
     for scale in scales:
@@ -65,9 +65,10 @@ def generate_latex_table_from_json(json_file):
     scales = [4]
     for scale in scales:
         for model in model_order:
-            key_16k = f"{model}_nskt_16k_sim_4_v4_bicubic_{scale}_0.0"
-            key_32k = f"{model}_nskt_32k_sim_4_v4_bicubic_{scale}_0.0"
+            key_16k = f"{model}_nskt_16k_sim_4_v8_bicubic_{scale}_0.0" #nskt_32k_sim_4_v8
+            key_32k = f"{model}_nskt_32k_sim_4_v8_bicubic_{scale}_0.0"
             if key_16k in data and key_32k in data:
+                print(model)
                 latex_table += generate_row_lrsim(model, data[key_16k], data[key_32k], scale) + "\n"
             else:
                 latex_table += generate_na_row(model, scale) + "\n"

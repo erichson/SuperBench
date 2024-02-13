@@ -48,5 +48,5 @@ def generate_latex_table_from_json(json_file,noise_level):
     return latex_table
 
 # Example usage
-latex_table = generate_latex_table_from_json("normed_eval.json",0.05)
+latex_table = generate_latex_table_from_json("normed_eval.json",0.1)
 print(latex_table)

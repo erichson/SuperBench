@@ -332,7 +332,7 @@ def main():
     # Validate and store MAE results
     all_results[key]["metrics"]["MAE"] = {'test1 error': MAE[0], 'test2 error': MAE[1]}
     # Validate and store Physics loss results for specific data names
-    if args.data_name in ["nskt_16k", "nskt_32k","nskt_16k_sim","nskt_32k_sim"]:
+    if args.data_name in ["nskt_16k", "nskt_32k","nskt_16k_sim","nskt_32k_sim"] or args.data_name.startswith("nskt"):
         phy_err1, phy_err2 = validate_phyLoss(args, test1_loader, test2_loader, model)
         all_results[key]["metrics"]["Physics"] = {'test1 error': phy_err1, 'test2 error': phy_err2}
 
