@@ -18,8 +18,8 @@ def generate_row(model, data,scale):
         row += " & " + str(scale)
         for metric in ["MSE", "MAE", "RFNE", "IN", "PSNR", "SSIM", "MSE_2", "MAE_2", "RFNE_2", "IN_2", "PSNR_2", "SSIM_2"]:
             value = data[scale][metric]
-            row += " & " + "{:.4f}".format(value) if isinstance(value, (float, int)) else " & " + value
-        row += " & " + "{:.4f} M".format(data[scale]["parameters"]) + " \\\\"
+            row += " & " + "{:.2f}".format(value) if isinstance(value, (float, int)) else " & " + value
+        row += " & " + "{:.2f} M".format(data[scale]["parameters"]) + " \\\\"
 
     else:
         row += " & " + " ".join([placeholder_value] * 15)
@@ -71,8 +71,8 @@ def generate_latex_table_from_json(json_file, target_dataset):
     latex_table += "\\midrule\n"
 
     # Add rows for each model
-    model_order = ["Bicubic","FNO2D","FNO2D_patch","SRCNN", "subpixelCNN", "EDSR", "WDSR", "SwinIR","SwinIR_p001"]
-    for scale in [4]:
+    model_order = ["Bicubic","FNO2D","FNO2D_patch","SRCNN", "subpixelCNN", "EDSR", "WDSR", "SwinIR"]
+    for scale in [8]:
         for model in model_order:
             if (model in table_data) and (scale in table_data[model]):
                 latex_table += generate_row(model, table_data[model],scale) + "\n"
@@ -86,4 +86,4 @@ def generate_latex_table_from_json(json_file, target_dataset):
 
 # Return the modified function for review
 with open("latex_table.sh", "w") as file:
-    print(generate_latex_table_from_json("normed_eval.json", "nskt_32k_sim_4_v8"),file=file)
+    print(generate_latex_table_from_json("normed_eval.json", "cosmo_sim_8"),file=file)
