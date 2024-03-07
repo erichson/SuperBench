@@ -139,8 +139,9 @@ def plot_all_image42(
     from matplotlib.colors import Normalize
     normalizer = Normalize(vmin, vmax)
     im = cm.ScalarMappable(norm=normalizer,cmap=cmap)
-    cbar = fig.colorbar(im, ax=axs.ravel().tolist(),fraction=0.04666, pad=0.02, extend='both',aspect=60) # larger aspect value make cbar thinner
+    cbar = fig.colorbar(im, ax=axs.ravel().tolist(),fraction=0.04666, pad=0.02, extend='both',aspect=30) # larger aspect value make cbar thinner
     cbar.ax.tick_params(labelsize=label_size)
+    # fig.subplots_adjust(wspace=0.1, hspace=0.1)
     # fig.tight_layout(w_pad=0.25,h_pad=0.25,pad=0.25)
     # fig.tight_layout()
     fig.savefig(data_name+"_"+str(upcale_factor)+"_24"+".png", dpi=300, bbox_inches='tight', transparent=False)
@@ -281,7 +282,7 @@ def plot_all_image(
     from matplotlib.colors import Normalize
     normalizer = Normalize(vmin, vmax)
     im = cm.ScalarMappable(norm=normalizer,cmap=cmap)
-    cbar = fig.colorbar(im, ax=axs.ravel().tolist(),fraction=0.04666, pad=0.02, extend='both',aspect=60) # larger aspect value make cbar thinner
+    cbar = fig.colorbar(im, ax=axs.ravel().tolist(),fraction=0.04666, pad=0.02, extend='both',aspect=30) # larger aspect value make cbar thinner
     cbar.ax.tick_params(labelsize=label_size)
     # fig.tight_layout(w_pad=0.25,h_pad=0.25,pad=0.25)
     # fig.tight_layout()
@@ -306,129 +307,136 @@ if __name__ == "__main__":
     # elif args.data_name =="cosmo_sim_8":
     #     batch,channel = 55,0
     # # nskt 16k, spatial domain is [1024,1024]
-    # zoom_loc_x = (1600, 1680)
-    # zoom_loc_y = (490, 410)
-    # import seaborn
-    # import cmocean
-    # plot_all_image(data_name = "nskt_16k",
-    #                 upcale_factor = 8, 
-    #                 snapshot_num = 16,
-    #                 channel_num = -1,
-    #                 zoom_loc_x = zoom_loc_x, 
-    #                 zoom_loc_y = zoom_loc_y, 
-    #                 figsize = (7.2,7),
-    #                 cmap = cmocean.cm.balance)
-    # plot_all_image(data_name = "nskt_16k",
-    #                 upcale_factor = 16, 
-    #                 snapshot_num = 16,
-    #                 channel_num = -1,
-    #                 zoom_loc_x = zoom_loc_x, 
-    #                 zoom_loc_y = zoom_loc_y, 
-    #                 figsize = (7.2,7),
-    #                 cmap = cmocean.cm.balance)
+    zoom_loc_x = (1600, 1680)
+    zoom_loc_y = (490, 410)
+    import seaborn
+    import cmocean
+    plot_all_image(data_name = "nskt_16k",
+                    upcale_factor = 8, 
+                    snapshot_num = 16,
+                    channel_num = -1,
+                    zoom_loc_x = zoom_loc_x, 
+                    zoom_loc_y = zoom_loc_y, 
+                    figsize = (7.2,7),
+                    cmap = cmocean.cm.balance)
+    plot_all_image(data_name = "nskt_16k",
+                    upcale_factor = 16, 
+                    snapshot_num = 16,
+                    channel_num = -1,
+                    zoom_loc_x = zoom_loc_x, 
+                    zoom_loc_y = zoom_loc_y, 
+                    figsize = (7.2,7),
+                    cmap = cmocean.cm.balance)
     
 
-    # # # nskt 32k, spatial domain is [1024,1024]
-    # zoom_loc_x = (1220, 1300)
-    # zoom_loc_y = (440, 360)
-    # plot_all_image(data_name = "nskt_32k",
-    #                 upcale_factor = 8, 
-    #                 snapshot_num = 16,
-    #                 channel_num = -1,
-    #                 zoom_loc_x = zoom_loc_x,
-    #                 zoom_loc_y = zoom_loc_y, 
-    #                 figsize = (7.2,7),
-    #                 cmap = cmocean.cm.balance)
+    # # nskt 32k, spatial domain is [1024,1024]
+    zoom_loc_x = (1220, 1300)
+    zoom_loc_y = (440, 360)
+    plot_all_image(data_name = "nskt_32k",
+                    upcale_factor = 8, 
+                    snapshot_num = 16,
+                    channel_num = -1,
+                    zoom_loc_x = zoom_loc_x,
+                    zoom_loc_y = zoom_loc_y, 
+                    figsize = (7.2,7),
+                    cmap = cmocean.cm.balance)
 
-    # plot_all_image(data_name = "nskt_32k",
-    #                 upcale_factor = 16, 
-    #                 snapshot_num = 16,
-    #                 channel_num = -1,
-    #                 zoom_loc_x = zoom_loc_x,
-    #                 zoom_loc_y = zoom_loc_y, 
-    #                 figsize = (7.2,7),
-    #                 cmap = cmocean.cm.balance)
+    plot_all_image(data_name = "nskt_32k",
+                    upcale_factor = 16, 
+                    snapshot_num = 16,
+                    channel_num = -1,
+                    zoom_loc_x = zoom_loc_x,
+                    zoom_loc_y = zoom_loc_y, 
+                    figsize = (7.2,7),
+                    cmap = cmocean.cm.balance)
 
-    # # cosmology data, spatial domain is [2048,2048]
-    # zoom_loc_x = (620, 700)
-    # zoom_loc_y = (420, 340)
-    # plot_all_image(data_name = "cosmo",
-    #                 upcale_factor = 8, 
-    #                 snapshot_num = 55,
-    #                 channel_num = 0,
-    #                 zoom_loc_x = zoom_loc_x,
-    #                 zoom_loc_y = zoom_loc_y, 
-    #                 figsize = (7.2,7),
-    #                 cmap = cmocean.cm.thermal)
-
-    # plot_all_image(data_name = "cosmo",
-    #                 upcale_factor = 16, 
-    #                 snapshot_num = 55,
-    #                 channel_num = 0,
-    #                 zoom_loc_x = zoom_loc_x,
-    #                 zoom_loc_y = zoom_loc_y, 
-    #                 figsize = (7.2,7),
-    #                 cmap = cmocean.cm.thermal)
-
-    # # weather data, spatial domain is [720,1440]
-    zoom_loc_x = (620, 700) 
-    zoom_loc_y = (180, 100)
-
-    # plot_all_image(data_name = "era5",
-    #                 upcale_factor = 8, 
-    #                 snapshot_num = 55,
-    #                 channel_num = 0,
-    #                 zoom_loc_x = zoom_loc_x,
-    #                 zoom_loc_y = zoom_loc_y, 
-    #                 figsize = (7.2,7),
-    #                 cmap = 'coolwarm')
-    plot_all_image42(data_name = "era5",
+    # cosmology data, spatial domain is [2048,2048]
+    zoom_loc_x = (620, 700)
+    zoom_loc_y = (420, 340)
+    plot_all_image(data_name = "cosmo",
                     upcale_factor = 8, 
                     snapshot_num = 55,
                     channel_num = 0,
                     zoom_loc_x = zoom_loc_x,
                     zoom_loc_y = zoom_loc_y, 
-                    figsize = (7.2,7/4*2),
+                    figsize = (7.2,7),
+                    cmap = cmocean.cm.thermal)
+
+    plot_all_image(data_name = "cosmo",
+                    upcale_factor = 16, 
+                    snapshot_num = 55,
+                    channel_num = 0,
+                    zoom_loc_x = zoom_loc_x,
+                    zoom_loc_y = zoom_loc_y, 
+                    figsize = (7.2,7),
+                    cmap = cmocean.cm.thermal)
+
+    # # weather data, spatial domain is [720,1440]
+    zoom_loc_x = (620, 700) 
+    zoom_loc_y = (180, 100)
+
+    plot_all_image(data_name = "era5",
+                    upcale_factor = 8, 
+                    snapshot_num = 55,
+                    channel_num = 0,
+                    zoom_loc_x = zoom_loc_x,
+                    zoom_loc_y = zoom_loc_y, 
+                    figsize = (7.2,7),
                     cmap = 'coolwarm')
-    
-                   
-    # plot_all_image(data_name = "era5",
+    # plot_all_image42(data_name = "era5",
+    #                 upcale_factor = 8, 
+    #                 snapshot_num = 55,
+    #                 channel_num = 0,
+    #                 zoom_loc_x = zoom_loc_x,
+    #                 zoom_loc_y = zoom_loc_y, 
+    #                 figsize = (7.2,7/4*2),
+    #                 cmap = 'coolwarm')
+    # plot_all_image42(data_name = "era5",
     #                 upcale_factor = 16, 
     #                 snapshot_num = 55,
     #                 channel_num = 0,
     #                 zoom_loc_x = zoom_loc_x,
     #                 zoom_loc_y = zoom_loc_y, 
-    #                 figsize = (7.2,7),
+    #                 figsize = (7.1,7/4*2),
     #                 cmap = 'coolwarm')
-    # zoom_loc_x = (1600, 1680)
-    # zoom_loc_y = (490, 410)
-    # import seaborn
-    # import cmocean
-    # plot_all_image(data_name = "nskt_16k_sim_4_v8",
-    #                 upcale_factor = 4, 
-    #                 snapshot_num = 12,
-    #                 channel_num = -1,
-    #                 zoom_loc_x = zoom_loc_x, 
-    #                 zoom_loc_y = zoom_loc_y, 
-    #                 figsize = (7.2,7),
-    #                 cmap = cmocean.cm.balance)
-    # zoom_loc_x = (1600, 1680)
-    # zoom_loc_y = (490, 410)
-    # plot_all_image(data_name = "nskt_32k_sim_4_v8",
-    #                 upcale_factor = 4, 
-    #                 snapshot_num = 12,
-    #                 channel_num = -1,
-    #                 zoom_loc_x = zoom_loc_x, 
-    #                 zoom_loc_y = zoom_loc_y, 
-    #                 figsize = (7.2,7),
-    #                 cmap = cmocean.cm.balance)
-    # zoom_loc_x = (1500, 1580)
-    # zoom_loc_y = (410, 330)
-    # plot_all_image(data_name = "cosmo_sim_8",
-    #                 upcale_factor = 8, 
-    #                 snapshot_num = 55,
-    #                 channel_num = 0,
-    #                 zoom_loc_x = zoom_loc_x, 
-    #                 zoom_loc_y = zoom_loc_y, 
-    #                 figsize = (7.2,7),
-    #                 cmap = cmocean.cm.thermal)
+                   
+    plot_all_image(data_name = "era5",
+                    upcale_factor = 16, 
+                    snapshot_num = 55,
+                    channel_num = 0,
+                    zoom_loc_x = zoom_loc_x,
+                    zoom_loc_y = zoom_loc_y, 
+                    figsize = (7.2,7),
+                    cmap = 'coolwarm')
+    zoom_loc_x = (1600, 1680)
+    zoom_loc_y = (490, 410)
+    import seaborn
+    import cmocean
+    plot_all_image(data_name = "nskt_16k_sim_4_v8",
+                    upcale_factor = 4, 
+                    snapshot_num = 12,
+                    channel_num = -1,
+                    zoom_loc_x = zoom_loc_x, 
+                    zoom_loc_y = zoom_loc_y, 
+                    figsize = (7.2,7),
+                    cmap = cmocean.cm.balance)
+    zoom_loc_x = (1600, 1680)
+    zoom_loc_y = (490, 410)
+    plot_all_image(data_name = "nskt_32k_sim_4_v8",
+                    upcale_factor = 4, 
+                    snapshot_num = 12,
+                    channel_num = -1,
+                    zoom_loc_x = zoom_loc_x, 
+                    zoom_loc_y = zoom_loc_y, 
+                    figsize = (7.2,7),
+                    cmap = cmocean.cm.balance)
+    zoom_loc_x = (1500, 1580)
+    zoom_loc_y = (410, 330)
+    plot_all_image(data_name = "cosmo_sim_8",
+                    upcale_factor = 8, 
+                    snapshot_num = 55,
+                    channel_num = 0,
+                    zoom_loc_x = zoom_loc_x, 
+                    zoom_loc_y = zoom_loc_y, 
+                    figsize = (7.2,7),
+                    cmap = cmocean.cm.thermal)

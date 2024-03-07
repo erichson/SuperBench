@@ -7,15 +7,73 @@ import argparse
 import matplotlib.pyplot as plt
 import cmocean  
 import math
+import torch.nn.functional as F
 from src.data_loader_crop import getData
 from utils import *
 from src.models import *
 from mpl_toolkits.axes_grid1.inset_locator import zoomed_inset_axes
 from mpl_toolkits.axes_grid1.inset_locator import mark_inset
+import os 
+
 
 DIR = "/pscratch/sd/j/junyi012/superbench_v2/"
 
-import os 
+def load_everything(args, test1_loader, test2_loader, model, mean, std,location=(3,0)):
+    '''load any model and return LR and HR to buffer'''
+    if args.model != 'FNO2D_patch':
+        with torch.no_grad():
+            lr_list, hr_list, pred_list = [], [], []
+            for batch_idx, (data, target) in enumerate(test2_loader):
+                data, target = data.to(args.device).float(), target.to(args.device).float()
+                output = model(data)
+                lr,hr,pred = data.cpu().numpy(), target.cpu().numpy(), output.cpu().numpy()
+                lr_list.append(lr)
+                hr_list.append(hr)
+                pred_list.append(pred)
+            pred_list = np.concatenate(pred_list)
+            lr_list = np.concatenate(lr_list)
+            hr_list = np.concatenate(hr_list)
+            if os.path.exists(DIR+f"eval_buffer/{args.data_name}_{args.upscale_factor}_lr.npy") == False:
+                np.save(DIR+f"eval_buffer/{args.data_name}_{args.upscale_factor}_lr.npy",lr_list)
+                np.save(DIR+f"eval_buffer/{args.data_name}_{args.upscale_factor}_hr.npy",hr_list)
+            np.save(DIR+f"eval_buffer/{args.data_name}_{args.upscale_factor}_{args.model}_pred.npy",pred_list)
+    else:
+        with torch.no_grad():
+            lr_list, hr_list, pred_list = [], [], []
+            for batch_idx, (data, target) in enumerate(test2_loader):
+                data, target = data.to(args.device).float(), target.to(args.device).float()
+                hr_patch_size = 128
+                hr_stride = 128
+                lr_patch_size = 128//args.upscale_factor
+                lr_stride = 128//args.upscale_factor
+                lr_patches = data.unfold(2, lr_patch_size, lr_stride).unfold(3, lr_patch_size, lr_stride)
+                hr_patches = target.unfold(2, hr_patch_size, hr_stride).unfold(3, hr_patch_size, hr_stride)
+                if lr_patches.shape[2] != hr_patches.shape[2] or lr_patches.shape[3] != hr_patches.shape[3]:
+                    print("patch size not match")
+                    return False
+                output = torch.zeros_like(hr_patches)
+                for i in range(hr_patches.shape[2]):
+                    for j in range(hr_patches.shape[3]):
+                        lr = lr_patches[:,:,i,j]
+                        with torch.no_grad():
+                            output_p = model(lr)
+                            output[:,:,i,j] = output_p
+                patches_flat = output.permute(0, 1, 4, 5, 2, 3).contiguous().view(1, hr.shape[1]*hr_patch_size**2, -1)
+                output = F.fold(patches_flat, output_size=(hr.shape[-2], hr.shape[-1]), kernel_size=(hr_patch_size, hr_patch_size), stride=(hr_stride, hr_stride))
+                lr,hr,pred = data.cpu().numpy(), target.cpu().numpy(), output.cpu().numpy()
+                lr_list.append(lr)
+                hr_list.append(hr)
+                pred_list.append(pred)
+            pred_list = np.concatenate(pred_list)
+            lr_list = np.concatenate(lr_list)
+            hr_list = np.concatenate(hr_list)
+            if os.path.exists(DIR+f"eval_buffer/{args.data_name}_{args.upscale_factor}_lr.npy") == False:
+                np.save(DIR+f"eval_buffer/{args.data_name}_{args.upscale_factor}_lr.npy",lr_list)
+                np.save(DIR+f"eval_buffer/{args.data_name}_{args.upscale_factor}_hr.npy",hr_list)
+            np.save(DIR+f"eval_buffer/{args.data_name}_{args.upscale_factor}_{args.model}_pred.npy",pred_list)
+    return True
+
+
 def load_lrhr(args, test1_loader, test2_loader, model, mean, std,location=(3,0)):
     if os.path.exists(DIR+f"plot_buffer/{args.data_name}_{args.upscale_factor}_lr.npy") == False:
         '''load any model and return LR and HR to buffer'''
@@ -91,6 +149,7 @@ def get_pred(args, lr, hr, model, mean, std,location=(3,0)):
         #     print("pred has been saved")
 
     return True
+
 def main():  
     parser = argparse.ArgumentParser(description='training parameters')
     # arguments for data
@@ -184,22 +243,23 @@ def main():
 
     else: 
         print('Using bicubic interpolation...')  
-    lr,hr = load_lrhr(args, test1_loader, test2_loader, model, mean, std)
-    if args.data_name == 'nskt_16k':
-        batch, channel = 16, -1
-    elif args.data_name == "nskt_32k":
-        batch, channel = 16, -1
-    elif args.data_name == "era5":
-        batch, channel = 55, 0
-    elif args.data_name == "cosmo":
-        batch, channel = 55, 0
-    elif args.data_name == "nskt_32k_sim_4_v8":
-        batch,channel = 12,-1
-    elif args.data_name == "nskt_16k_sim_4_v8":
-        batch,channel = 12,-1
-    elif args.data_name =="cosmo_sim_8":
-        batch,channel = 55,0
-    get_pred(args, lr, hr, model, mean, std,location=(batch,channel))
+    # lr,hr = load_lrhr(args, test1_loader, test2_loader, model, mean, std)
+    # if args.data_name == 'nskt_16k':
+    #     batch, channel = 16, -1
+    # elif args.data_name == "nskt_32k":
+    #     batch, channel = 16, -1
+    # elif args.data_name == "era5":
+    #     batch, channel = 55, 0
+    # elif args.data_name == "cosmo":
+    #     batch, channel = 55, 0
+    # elif args.data_name == "nskt_32k_sim_4_v8":
+    #     batch,channel = 12,-1
+    # elif args.data_name == "nskt_16k_sim_4_v8":
+    #     batch,channel = 12,-1
+    # elif args.data_name =="cosmo_sim_8":
+    #     batch,channel = 55,0
+    # get_pred(args, lr, hr, model, mean, std,location=(batch,channel))
+    load_everything(args, test1_loader, test2_loader, model, mean, std)
 
 if __name__ =='__main__':
     main()

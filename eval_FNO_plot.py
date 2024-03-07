@@ -12,6 +12,7 @@ from utils import *
 from src.models import *
 from eval_plot import load_lrhr
 from eval_plot import get_pred
+from eval_plot import load_everything
 def main():  
     parser = argparse.ArgumentParser(description='training parameters')
     # arguments for data
@@ -94,22 +95,22 @@ def main():
     print('Total params Generator: %.3fM' % (sum(p.numel() for p in model.parameters())/1000000.0))
     print('************')    
     
-    lr,hr = load_lrhr(args, test1_loader, test2_loader, model, mean, std)
-    if args.data_name == 'nskt_16k':
-        batch, channel = 16, -1
-    elif args.data_name == "nskt_32k":
-        batch, channel = 16, -1
-    elif args.data_name == "era5":
-        batch, channel = 55, 0
-    elif args.data_name == "cosmo":
-        batch, channel = 55, 0
-    elif args.data_name == "nskt_32k_sim_4_v8":
-        batch,channel = 12,-1
-    elif args.data_name == "nskt_16k_sim_4_v8":
-        batch,channel = 12,-1
-    elif args.data_name =="cosmo_sim_8":
-        batch,channel = 55,0
-    get_pred(args, lr, hr, model, mean, std,location=(batch,channel))
-    
+    # lr,hr = load_lrhr(args, test1_loader, test2_loader, model, mean, std)
+    # if args.data_name == 'nskt_16k':
+    #     batch, channel = 16, -1
+    # elif args.data_name == "nskt_32k":
+    #     batch, channel = 16, -1
+    # elif args.data_name == "era5":
+    #     batch, channel = 55, 0
+    # elif args.data_name == "cosmo":
+    #     batch, channel = 55, 0
+    # elif args.data_name == "nskt_32k_sim_4_v8":
+    #     batch,channel = 12,-1
+    # elif args.data_name == "nskt_16k_sim_4_v8":
+    #     batch,channel = 12,-1
+    # elif args.data_name =="cosmo_sim_8":
+    #     batch,channel = 55,0
+    # get_pred(args, lr, hr, model, mean, std,location=(batch,channel))
+    load_everything(args, test1_loader, test2_loader, model, mean, std)
 if __name__ =='__main__':
     main()
