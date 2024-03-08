@@ -64,7 +64,7 @@ def main():
         flag = False
 
     resol, n_fields, n_train_samples, mean, std = get_data_info(args.data_name) # 
-    train_loader, val1_loader, val2_loader,test1_loader, test2_loader= getData(args, args.n_patches, std=std,patched_eval=flag)
+    train_loader, val1_loader, val2_loader,test1_loader, test2_loader= getData(args, args.n_patches, std=std,patched_eval=False)
     print('The data resolution is: ', resol)
     print("mean is: ",mean)
     print("std is: ",std)
@@ -112,5 +112,6 @@ def main():
     #     batch,channel = 55,0
     # get_pred(args, lr, hr, model, mean, std,location=(batch,channel))
     load_everything(args, test1_loader, test2_loader, model, mean, std)
+
 if __name__ =='__main__':
     main()

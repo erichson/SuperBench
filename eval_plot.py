@@ -33,9 +33,8 @@ def load_everything(args, test1_loader, test2_loader, model, mean, std,location=
             pred_list = np.concatenate(pred_list)
             lr_list = np.concatenate(lr_list)
             hr_list = np.concatenate(hr_list)
-            if os.path.exists(DIR+f"eval_buffer/{args.data_name}_{args.upscale_factor}_lr.npy") == False:
-                np.save(DIR+f"eval_buffer/{args.data_name}_{args.upscale_factor}_lr.npy",lr_list)
-                np.save(DIR+f"eval_buffer/{args.data_name}_{args.upscale_factor}_hr.npy",hr_list)
+            np.save(DIR+f"eval_buffer/{args.data_name}_{args.upscale_factor}_lr.npy",lr_list)
+            np.save(DIR+f"eval_buffer/{args.data_name}_{args.upscale_factor}_hr.npy",hr_list)
             np.save(DIR+f"eval_buffer/{args.data_name}_{args.upscale_factor}_{args.model}_pred.npy",pred_list)
     else:
         with torch.no_grad():
@@ -58,18 +57,18 @@ def load_everything(args, test1_loader, test2_loader, model, mean, std,location=
                         with torch.no_grad():
                             output_p = model(lr)
                             output[:,:,i,j] = output_p
-                patches_flat = output.permute(0, 1, 4, 5, 2, 3).contiguous().view(1, hr.shape[1]*hr_patch_size**2, -1)
-                output = F.fold(patches_flat, output_size=(hr.shape[-2], hr.shape[-1]), kernel_size=(hr_patch_size, hr_patch_size), stride=(hr_stride, hr_stride))
-                lr,hr,pred = data.cpu().numpy(), target.cpu().numpy(), output.cpu().numpy()
-                lr_list.append(lr)
-                hr_list.append(hr)
+                patches_flat = output.permute(0, 1, 4, 5, 2, 3).contiguous().view(1, target.shape[1]*hr_patch_size**2, -1)
+                output = F.fold(patches_flat, output_size=(target.shape[-2], target.shape[-1]), kernel_size=(hr_patch_size, hr_patch_size), stride=(hr_stride, hr_stride))
+                lr_data,hr_data,pred = data.cpu().numpy(), target.cpu().numpy(), output.cpu().numpy()
+                lr_list.append(lr_data)
+                hr_list.append(hr_data)
                 pred_list.append(pred)
             pred_list = np.concatenate(pred_list)
             lr_list = np.concatenate(lr_list)
             hr_list = np.concatenate(hr_list)
-            if os.path.exists(DIR+f"eval_buffer/{args.data_name}_{args.upscale_factor}_lr.npy") == False:
-                np.save(DIR+f"eval_buffer/{args.data_name}_{args.upscale_factor}_lr.npy",lr_list)
-                np.save(DIR+f"eval_buffer/{args.data_name}_{args.upscale_factor}_hr.npy",hr_list)
+            # if os.path.exists(DIR+f"eval_buffer/{args.data_name}_{args.upscale_factor}_lr.npy") == False:
+            np.save(DIR+f"eval_buffer/{args.data_name}_{args.upscale_factor}_lr.npy",lr_list)
+            np.save(DIR+f"eval_buffer/{args.data_name}_{args.upscale_factor}_hr.npy",hr_list)
             np.save(DIR+f"eval_buffer/{args.data_name}_{args.upscale_factor}_{args.model}_pred.npy",pred_list)
     return True
 

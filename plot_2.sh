@@ -31,61 +31,61 @@
 
 
 ### ERA5 BICUBIC x8
-python eval_FNO_plot.py --data_name era5 --data_path /pscratch/sd/j/junyi012/superbench_v2/era5 --in_channels 3 --modes 12 --upscale_factor 8 --model_path results/era5_8/model_FNO2D_era5_8_0.001_bicubic_0.0_5544_263.pt; 
-python eval_plot.py --data_name era5 --data_path /pscratch/sd/j/junyi012/superbench_v2/era5 --in_channels 3 --model WDSR --upscale_factor 8 --model_path results/model_WDSR_era5_8_0.0005_bicubic_0.0_5544_6213.pt
-python eval_plot.py --data_name era5 --data_path /pscratch/sd/j/junyi012/superbench_v2/era5 --in_channels 3 --model EDSR --upscale_factor 8 --model_path results/era5_8/model_EDSR_era5_8_0.0001_bicubic_5544.pt;
-python eval_plot.py --data_name era5 --data_path /pscratch/sd/j/junyi012/superbench_v2/era5 --in_channels 3 --model SwinIR --upscale_factor 8 --model_path results/era5_8/model_SwinIR_era5_8_0.0001_bicubic_0.0_5544.pt;
-python eval_plot.py --data_name era5 --data_path /pscratch/sd/j/junyi012/superbench_v2/era5 --in_channels 3 --model subpixelCNN --upscale_factor 8 --model_path results/era5_8/model_subpixelCNN_era5_8_0.001_bicubic_0.0_5544.pt;
-python eval_plot.py --data_name era5 --data_path /pscratch/sd/j/junyi012/superbench_v2/era5 --in_channels 3 --model SRCNN --upscale_factor 8 --model_path results/era5_8/model_SRCNN_era5_8_0.001_bicubic_0.0_5544_6993.pt;
-python eval_plot.py --data_name era5 --data_path /pscratch/sd/j/junyi012/superbench_v2/era5 --in_channels 3 --model Bicubic --upscale_factor 8; 
+# python eval_FNO_plot.py --data_name era5 --data_path /pscratch/sd/j/junyi012/superbench_v2/era5 --in_channels 3 --modes 12 --upscale_factor 8 --model_path results/era5_8/model_FNO2D_era5_8_0.001_bicubic_0.0_5544_263.pt; 
+# python eval_plot.py --data_name era5 --data_path /pscratch/sd/j/junyi012/superbench_v2/era5 --in_channels 3 --model WDSR --upscale_factor 8 --model_path results/model_WDSR_era5_8_0.0005_bicubic_0.0_5544_6213.pt
+# python eval_plot.py --data_name era5 --data_path /pscratch/sd/j/junyi012/superbench_v2/era5 --in_channels 3 --model EDSR --upscale_factor 8 --model_path results/era5_8/model_EDSR_era5_8_0.0001_bicubic_5544.pt;
+# python eval_plot.py --data_name era5 --data_path /pscratch/sd/j/junyi012/superbench_v2/era5 --in_channels 3 --model SwinIR --upscale_factor 8 --model_path results/era5_8/model_SwinIR_era5_8_0.0001_bicubic_0.0_5544.pt;
+# python eval_plot.py --data_name era5 --data_path /pscratch/sd/j/junyi012/superbench_v2/era5 --in_channels 3 --model subpixelCNN --upscale_factor 8 --model_path results/era5_8/model_subpixelCNN_era5_8_0.001_bicubic_0.0_5544.pt;
+# python eval_plot.py --data_name era5 --data_path /pscratch/sd/j/junyi012/superbench_v2/era5 --in_channels 3 --model SRCNN --upscale_factor 8 --model_path results/era5_8/model_SRCNN_era5_8_0.001_bicubic_0.0_5544_6993.pt;
+# python eval_plot.py --data_name era5 --data_path /pscratch/sd/j/junyi012/superbench_v2/era5 --in_channels 3 --model Bicubic --upscale_factor 8; 
 
-#### ERA5 BICUBIC x16
-python eval_FNO_plot.py --data_name era5 --data_path /pscratch/sd/j/junyi012/superbench_v2/era5 --in_channels 3 --modes 12 --upscale_factor 16 --model_path results/era5_16/model_FNO2D_era5_16_0.001_bicubic_0.0_5544_811.pt;
-python eval_plot.py --data_name era5 --data_path /pscratch/sd/j/junyi012/superbench_v2/era5 --in_channels 3 --model EDSR --upscale_factor 16 --model_path results/era5_16/model_EDSR_era5_16_0.0001_bicubic_5544.pt;
-python eval_plot.py --data_name era5 --data_path /pscratch/sd/j/junyi012/superbench_v2/era5 --in_channels 3 --model SwinIR --upscale_factor 16 --model_path results/era5_16/model_SwinIR_era5_16_0.0001_bicubic_0.0_5544.pt;
-python eval_plot.py --data_name era5 --data_path /pscratch/sd/j/junyi012/superbench_v2/era5 --in_channels 3 --model subpixelCNN --upscale_factor 16 --model_path results/era5_16/model_subpixelCNN_era5_16_0.001_bicubic_0.0_5544.pt;
-python eval_plot.py --data_name era5 --data_path /pscratch/sd/j/junyi012/superbench_v2/era5 --in_channels 3 --model SRCNN --upscale_factor 16 --model_path results/era5_16/model_SRCNN_era5_16_0.001_bicubic_0.0_5544.pt;
-python eval_plot.py --data_name era5 --data_path /pscratch/sd/j/junyi012/superbench_v2/era5 --in_channels 3 --model Bicubic --upscale_factor 16; 
-python eval_plot.py --data_name era5 --data_path /pscratch/sd/j/junyi012/superbench_v2/era5 --in_channels 3 --model WDSR --upscale_factor 16 --model_path results/era5_16/model_WDSR_era5_16_0.0001_bicubic_5544.pt;
+# #### ERA5 BICUBIC x16
+# python eval_FNO_plot.py --data_name era5 --data_path /pscratch/sd/j/junyi012/superbench_v2/era5 --in_channels 3 --modes 12 --upscale_factor 16 --model_path results/era5_16/model_FNO2D_era5_16_0.001_bicubic_0.0_5544_811.pt;
+# python eval_plot.py --data_name era5 --data_path /pscratch/sd/j/junyi012/superbench_v2/era5 --in_channels 3 --model EDSR --upscale_factor 16 --model_path results/era5_16/model_EDSR_era5_16_0.0001_bicubic_5544.pt;
+# python eval_plot.py --data_name era5 --data_path /pscratch/sd/j/junyi012/superbench_v2/era5 --in_channels 3 --model SwinIR --upscale_factor 16 --model_path results/era5_16/model_SwinIR_era5_16_0.0001_bicubic_0.0_5544.pt;
+# python eval_plot.py --data_name era5 --data_path /pscratch/sd/j/junyi012/superbench_v2/era5 --in_channels 3 --model subpixelCNN --upscale_factor 16 --model_path results/era5_16/model_subpixelCNN_era5_16_0.001_bicubic_0.0_5544.pt;
+# python eval_plot.py --data_name era5 --data_path /pscratch/sd/j/junyi012/superbench_v2/era5 --in_channels 3 --model SRCNN --upscale_factor 16 --model_path results/era5_16/model_SRCNN_era5_16_0.001_bicubic_0.0_5544.pt;
+# python eval_plot.py --data_name era5 --data_path /pscratch/sd/j/junyi012/superbench_v2/era5 --in_channels 3 --model Bicubic --upscale_factor 16; 
+# python eval_plot.py --data_name era5 --data_path /pscratch/sd/j/junyi012/superbench_v2/era5 --in_channels 3 --model WDSR --upscale_factor 16 --model_path results/era5_16/model_WDSR_era5_16_0.0001_bicubic_5544.pt;
 
 ### NSKT 16k BICUBIC x8
-python eval_plot.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --model Bicubic --upscale_factor 8; 
-python eval_plot.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --model WDSR --upscale_factor 8 --model_path results/model_WDSR_nskt_16k_8_0.0002_bicubic_0.0_5544_1303.pt; 
-python eval_plot.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --model EDSR --upscale_factor 8 --model_path results/model_EDSR_nskt_16k_8_0.001_bicubic_0.0_5544_5321.pt; 
-python eval_plot.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --model SRCNN --upscale_factor 8 --model_path results/model_SRCNN_nskt_16k_8_0.002_bicubic_0.0_5544_6350.pt; 
-python eval_plot.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --model subpixelCNN --upscale_factor 8 --model_path results/model_subpixelCNN_nskt_16k_8_0.001_bicubic_0.0_5544_5277.pt; 
-python eval_plot.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --model SwinIR --upscale_factor 8 --model_path results/model_SwinIR_nskt_16k_8_0.0001_bicubic_0.0_5544_3094.pt; 
-python eval_FNO_plot.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --modes 12 --upscale_factor 8 --model_path results/model_FNO2D_nskt_16k_8_0.001_bicubic_0.0_5544_927.pt --model FNO2D;
+# python eval_plot.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --model Bicubic --upscale_factor 8; 
+# python eval_plot.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --model WDSR --upscale_factor 8 --model_path results/model_WDSR_nskt_16k_8_0.0002_bicubic_0.0_5544_1303.pt; 
+# python eval_plot.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --model EDSR --upscale_factor 8 --model_path results/model_EDSR_nskt_16k_8_0.001_bicubic_0.0_5544_5321.pt; 
+# python eval_plot.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --model SRCNN --upscale_factor 8 --model_path results/model_SRCNN_nskt_16k_8_0.002_bicubic_0.0_5544_6350.pt; 
+# python eval_plot.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --model subpixelCNN --upscale_factor 8 --model_path results/model_subpixelCNN_nskt_16k_8_0.001_bicubic_0.0_5544_5277.pt; 
+# python eval_plot.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --model SwinIR --upscale_factor 8 --model_path results/model_SwinIR_nskt_16k_8_0.0001_bicubic_0.0_5544_3094.pt; 
+# python eval_FNO_plot.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --modes 12 --upscale_factor 8 --model_path results/model_FNO2D_nskt_16k_8_0.001_bicubic_0.0_5544_927.pt --model FNO2D;
 python eval_FNO_plot.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --modes 12 --upscale_factor 8 --model_path results/model_FNO2D_nskt_16k_8_0.001_bicubic_0.0_5544_927.pt --model FNO2D_patch ;
 
 ### NSKT 16k BICUBIC x16
-python eval_plot.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --model WDSR --upscale_factor 16 --model_path results/model_WDSR_nskt_16k_16_0.0002_bicubic_0.0_5544_7264.pt; 
-python eval_plot.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --model EDSR --upscale_factor 16 --model_path results/model_EDSR_nskt_16k_16_0.001_bicubic_0.0_5544_4568.pt; 
-python eval_plot.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --model Bicubic --upscale_factor 16; 
-python eval_plot.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --model SRCNN --upscale_factor 16 --model_path results/model_SRCNN_nskt_16k_16_0.001_bicubic_0.0_5544_2572.pt;
-python eval_plot.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --model subpixelCNN --upscale_factor 16 --model_path results/model_subpixelCNN_nskt_16k_16_0.001_bicubic_0.0_5544_47.pt; 
-python eval_plot.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --model SwinIR --upscale_factor 16 --model_path results/model_SwinIR_nskt_16k_16_0.0001_bicubic_0.0_5544_4150.pt; 
+# python eval_plot.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --model WDSR --upscale_factor 16 --model_path results/model_WDSR_nskt_16k_16_0.0002_bicubic_0.0_5544_7264.pt; 
+# python eval_plot.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --model EDSR --upscale_factor 16 --model_path results/model_EDSR_nskt_16k_16_0.001_bicubic_0.0_5544_4568.pt; 
+# python eval_plot.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --model Bicubic --upscale_factor 16; 
+# python eval_plot.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --model SRCNN --upscale_factor 16 --model_path results/model_SRCNN_nskt_16k_16_0.001_bicubic_0.0_5544_2572.pt;
+# python eval_plot.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --model subpixelCNN --upscale_factor 16 --model_path results/model_subpixelCNN_nskt_16k_16_0.001_bicubic_0.0_5544_47.pt; 
+# python eval_plot.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --model SwinIR --upscale_factor 16 --model_path results/model_SwinIR_nskt_16k_16_0.0001_bicubic_0.0_5544_4150.pt; 
 python eval_FNO_plot.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --modes 12 --upscale_factor 16 --model_path results/model_FNO2D_nskt_16k_16_0.001_bicubic_0.0_5544_557.pt --model FNO2D_patch;
-python eval_FNO_plot.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --modes 12 --upscale_factor 16 --model_path results/model_FNO2D_nskt_16k_16_0.001_bicubic_0.0_5544_557.pt --model FNO2D;
+# python eval_FNO_plot.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --modes 12 --upscale_factor 16 --model_path results/model_FNO2D_nskt_16k_16_0.001_bicubic_0.0_5544_557.pt --model FNO2D;
 
 ### NSKT 32k BICUBIC x8
-python eval_FNO_plot.py --data_name nskt_32k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k --in_channels 3 --modes 12 --upscale_factor 8 --model_path results/model_FNO2D_nskt_32k_8_0.001_bicubic_0.0_5544_410.pt;
+# python eval_FNO_plot.py --data_name nskt_32k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k --in_channels 3 --modes 12 --upscale_factor 8 --model_path results/model_FNO2D_nskt_32k_8_0.001_bicubic_0.0_5544_410.pt;
 python eval_FNO_plot.py --data_name nskt_32k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k --model FNO2D_patch --in_channels 3 --modes 12 --upscale_factor 8 --model_path results/model_FNO2D_nskt_32k_8_0.001_bicubic_0.0_5544_410.pt;
-python eval_plot.py --data_name nskt_32k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k --in_channels 3 --model Bicubic --upscale_factor 8; 
-python eval_plot.py --data_name nskt_32k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k --in_channels 3 --model WDSR --upscale_factor 8 --model_path results/model_WDSR_nskt_32k_8_0.0002_bicubic_0.0_5544_786.pt; 
-python eval_plot.py --data_name nskt_32k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k --in_channels 3 --model SRCNN --upscale_factor 8 --model_path results/model_SRCNN_nskt_32k_8_0.001_bicubic_0.0_5544_3390.pt;
-python eval_plot.py --data_name nskt_32k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k --in_channels 3 --model EDSR --upscale_factor 8 --model_path results/model_EDSR_nskt_32k_8_0.001_bicubic_0.0_5544_3668.pt;
-python eval_plot.py --data_name nskt_32k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k --in_channels 3 --model subpixelCNN --upscale_factor 8 --model_path results/model_subpixelCNN_nskt_32k_8_0.001_bicubic_0.0_5544_715.pt;
-python eval_plot.py --data_name nskt_32k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k --in_channels 3 --model SwinIR --upscale_factor 8 --model_path results/model_SwinIR_nskt_32k_8_0.0001_bicubic_0.0_5544_3173.pt;
+# python eval_plot.py --data_name nskt_32k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k --in_channels 3 --model Bicubic --upscale_factor 8; 
+# python eval_plot.py --data_name nskt_32k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k --in_channels 3 --model WDSR --upscale_factor 8 --model_path results/model_WDSR_nskt_32k_8_0.0002_bicubic_0.0_5544_786.pt; 
+# python eval_plot.py --data_name nskt_32k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k --in_channels 3 --model SRCNN --upscale_factor 8 --model_path results/model_SRCNN_nskt_32k_8_0.001_bicubic_0.0_5544_3390.pt;
+# python eval_plot.py --data_name nskt_32k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k --in_channels 3 --model EDSR --upscale_factor 8 --model_path results/model_EDSR_nskt_32k_8_0.001_bicubic_0.0_5544_3668.pt;
+# python eval_plot.py --data_name nskt_32k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k --in_channels 3 --model subpixelCNN --upscale_factor 8 --model_path results/model_subpixelCNN_nskt_32k_8_0.001_bicubic_0.0_5544_715.pt;
+# python eval_plot.py --data_name nskt_32k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k --in_channels 3 --model SwinIR --upscale_factor 8 --model_path results/model_SwinIR_nskt_32k_8_0.0001_bicubic_0.0_5544_3173.pt;
 
 ### NSKT 32k BICUBIC x16
-python eval_plot.py --data_name nskt_32k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k --in_channels 3 --model Bicubic --upscale_factor 16; 
-python eval_plot.py --data_name nskt_32k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k --in_channels 3 --model WDSR --upscale_factor 16 --model_path results/model_WDSR_nskt_32k_16_0.0002_bicubic_0.0_5544_8497.pt; 
-python eval_plot.py --data_name nskt_32k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k --in_channels 3 --model SRCNN --upscale_factor 16 --model_path results/model_SRCNN_nskt_32k_16_0.001_bicubic_0.0_5544_1735.pt;
-python eval_plot.py --data_name nskt_32k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k --in_channels 3 --model EDSR --upscale_factor 16 --model_path results/model_EDSR_nskt_32k_16_0.001_bicubic_0.0_5544_32.pt;
-python eval_plot.py --data_name nskt_32k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k --in_channels 3 --model subpixelCNN --upscale_factor 16 --model_path results/model_subpixelCNN_nskt_32k_16_0.001_bicubic_0.0_5544_618.pt;
-python eval_plot.py --data_name nskt_32k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k --in_channels 3 --model SwinIR --upscale_factor 16 --model_path results/model_SwinIR_nskt_32k_16_0.0001_bicubic_0.0_5544_6446.pt;
-python eval_FNO_plot.py --data_name nskt_32k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k --in_channels 3 --modes 12 --upscale_factor 16 --model_path results/model_FNO2D_nskt_32k_16_0.001_bicubic_0.0_5544_56.pt;
+# python eval_plot.py --data_name nskt_32k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k --in_channels 3 --model Bicubic --upscale_factor 16; 
+# python eval_plot.py --data_name nskt_32k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k --in_channels 3 --model WDSR --upscale_factor 16 --model_path results/model_WDSR_nskt_32k_16_0.0002_bicubic_0.0_5544_8497.pt; 
+# python eval_plot.py --data_name nskt_32k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k --in_channels 3 --model SRCNN --upscale_factor 16 --model_path results/model_SRCNN_nskt_32k_16_0.001_bicubic_0.0_5544_1735.pt;
+# python eval_plot.py --data_name nskt_32k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k --in_channels 3 --model EDSR --upscale_factor 16 --model_path results/model_EDSR_nskt_32k_16_0.001_bicubic_0.0_5544_32.pt;
+# python eval_plot.py --data_name nskt_32k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k --in_channels 3 --model subpixelCNN --upscale_factor 16 --model_path results/model_subpixelCNN_nskt_32k_16_0.001_bicubic_0.0_5544_618.pt;
+# python eval_plot.py --data_name nskt_32k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k --in_channels 3 --model SwinIR --upscale_factor 16 --model_path results/model_SwinIR_nskt_32k_16_0.0001_bicubic_0.0_5544_6446.pt;
+# python eval_FNO_plot.py --data_name nskt_32k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k --in_channels 3 --modes 12 --upscale_factor 16 --model_path results/model_FNO2D_nskt_32k_16_0.001_bicubic_0.0_5544_56.pt;
 python eval_FNO_plot.py --data_name nskt_32k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k --model FNO2D_patch --in_channels 3 --modes 12 --upscale_factor 16 --model_path results/model_FNO2D_nskt_32k_16_0.001_bicubic_0.0_5544_56.pt;
 
 ### NSKT 16k x8 SwinIR + Physics GridSearch
@@ -95,32 +95,32 @@ python eval_FNO_plot.py --data_name nskt_32k --data_path /pscratch/sd/j/junyi012
 
 
 ### NSKT 16k 32k + 0.001 Physics Loss
-python eval_plot.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --model SwinIR_p_001 --upscale_factor 8 --model_path results/model_SwinIR_nskt_16k_8_0.0001_bicubic_0.0_5544_0.001_6086.pt;
-python eval_plot.py --data_name nskt_32k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k --in_channels 3 --model SwinIR_p_001 --upscale_factor 8 --model_path results/model_SwinIR_nskt_32k_8_0.0001_bicubic_0.0_5544_0.001_9711.pt;
-python eval_plot.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --model SwinIR_p_001 --upscale_factor 16 --model_path results/model_SwinIR_nskt_16k_16_0.0001_bicubic_0.0_5544_0.001_3552.pt;
-python eval_plot.py --data_name nskt_32k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k --in_channels 3 --model SwinIR_p_001 --upscale_factor 16 --model_path results/model_SwinIR_nskt_32k_16_0.0001_bicubic_0.0_5544_0.001_3744.pt;
+# python eval_plot.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --model SwinIR_p_001 --upscale_factor 8 --model_path results/model_SwinIR_nskt_16k_8_0.0001_bicubic_0.0_5544_0.001_6086.pt;
+# python eval_plot.py --data_name nskt_32k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k --in_channels 3 --model SwinIR_p_001 --upscale_factor 8 --model_path results/model_SwinIR_nskt_32k_8_0.0001_bicubic_0.0_5544_0.001_9711.pt;
+# python eval_plot.py --data_name nskt_16k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k --in_channels 3 --model SwinIR_p_001 --upscale_factor 16 --model_path results/model_SwinIR_nskt_16k_16_0.0001_bicubic_0.0_5544_0.001_3552.pt;
+# python eval_plot.py --data_name nskt_32k --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k --in_channels 3 --model SwinIR_p_001 --upscale_factor 16 --model_path results/model_SwinIR_nskt_32k_16_0.0001_bicubic_0.0_5544_0.001_3744.pt;
 
 
 ## NSKT 16k LRSIM x4 x8 patches
-python eval_plot.py --data_name nskt_16k_sim_4_v8 --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k_sim_4_v7 --in_channels 3 --model Bicubic --upscale_factor 4;
-python eval_plot.py --data_name nskt_16k_sim_4_v8 --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k_sim_4_v7 --in_channels 3 --model WDSR --upscale_factor 4 --model_path results/model_WDSR_nskt_16k_sim_4_v7_4_0.0001_bicubic_0.0_5544_3656.pt;
-python eval_plot.py --data_name nskt_16k_sim_4_v8 --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k_sim_4_v7 --in_channels 3 --model SwinIR --upscale_factor 4 --model_path results/model_SwinIR_nskt_16k_sim_4_v7_4_0.0001_bicubic_0.0_5544_2359.pt;
-python eval_plot.py --data_name nskt_16k_sim_4_v8 --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k_sim_4_v7 --in_channels 3 --model EDSR --upscale_factor 4 --model_path results/model_EDSR_nskt_16k_sim_4_v7_4_0.001_bicubic_0.0_5544_5845.pt;
-python eval_plot.py --data_name nskt_16k_sim_4_v8 --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k_sim_4_v7 --in_channels 3 --model SRCNN --upscale_factor 4 --model_path results/model_SRCNN_nskt_16k_sim_4_v7_4_0.001_bicubic_0.0_5544_5653.pt;
-python eval_plot.py --data_name nskt_16k_sim_4_v8 --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k_sim_4_v7 --in_channels 3 --model subpixelCNN --upscale_factor 4 --model_path results/model_subpixelCNN_nskt_16k_sim_4_v7_4_0.001_bicubic_0.0_5544_594.pt;
-python eval_FNO_plot.py --data_name nskt_16k_sim_4_v8 --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k_sim_4_v7 --in_channels 3 --modes 12 --upscale_factor 4 --model_path results/model_FNO2D_nskt_16k_sim_4_v7_4_0.001_bicubic_0.0_5544_719.pt
+# python eval_plot.py --data_name nskt_16k_sim_4_v8 --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k_sim_4_v7 --in_channels 3 --model Bicubic --upscale_factor 4;
+# python eval_plot.py --data_name nskt_16k_sim_4_v8 --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k_sim_4_v7 --in_channels 3 --model WDSR --upscale_factor 4 --model_path results/model_WDSR_nskt_16k_sim_4_v7_4_0.0001_bicubic_0.0_5544_3656.pt;
+# python eval_plot.py --data_name nskt_16k_sim_4_v8 --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k_sim_4_v7 --in_channels 3 --model SwinIR --upscale_factor 4 --model_path results/model_SwinIR_nskt_16k_sim_4_v7_4_0.0001_bicubic_0.0_5544_2359.pt;
+# python eval_plot.py --data_name nskt_16k_sim_4_v8 --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k_sim_4_v7 --in_channels 3 --model EDSR --upscale_factor 4 --model_path results/model_EDSR_nskt_16k_sim_4_v7_4_0.001_bicubic_0.0_5544_5845.pt;
+# python eval_plot.py --data_name nskt_16k_sim_4_v8 --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k_sim_4_v7 --in_channels 3 --model SRCNN --upscale_factor 4 --model_path results/model_SRCNN_nskt_16k_sim_4_v7_4_0.001_bicubic_0.0_5544_5653.pt;
+# python eval_plot.py --data_name nskt_16k_sim_4_v8 --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k_sim_4_v7 --in_channels 3 --model subpixelCNN --upscale_factor 4 --model_path results/model_subpixelCNN_nskt_16k_sim_4_v7_4_0.001_bicubic_0.0_5544_594.pt;
+# python eval_FNO_plot.py --data_name nskt_16k_sim_4_v8 --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k_sim_4_v7 --in_channels 3 --modes 12 --upscale_factor 4 --model_path results/model_FNO2D_nskt_16k_sim_4_v7_4_0.001_bicubic_0.0_5544_719.pt
 python eval_FNO_plot.py --data_name nskt_16k_sim_4_v8 --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k_sim_4_v7 --in_channels 3 --modes 12 --upscale_factor 4 --model FNO2D_patch --model_path results/model_FNO2D_nskt_16k_sim_4_v7_4_0.001_bicubic_0.0_5544_719.pt;
-python eval_plot.py --data_name nskt_16k_sim_4_v8 --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_16k_sim_4_v7 --in_channels 3 --model SwinIR_p001 --upscale_factor 4 --model_path results/model_SwinIR_nskt_16k_sim_4_v7_4_0.0001_bicubic_0.0_5544_0.001_879.pt;
+
 
 ## NSKT 32k LRSIM x4 x8 patches
-python eval_plot.py --data_name nskt_32k_sim_4_v8 --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k_sim_4_v7 --in_channels 3 --model Bicubic --upscale_factor 4;
-python eval_plot.py --data_name nskt_32k_sim_4_v8 --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k_sim_4_v7 --in_channels 3 --model WDSR --upscale_factor 4 --model_path results/model_WDSR_nskt_32k_sim_4_v7_4_0.0001_bicubic_0.0_5544_5766.pt;
-python eval_plot.py --data_name nskt_32k_sim_4_v8 --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k_sim_4_v7 --in_channels 3 --model SwinIR --upscale_factor 4 --model_path results/model_SwinIR_nskt_32k_sim_4_v7_4_0.0001_bicubic_0.0_5544_318.pt;
-python eval_plot.py --data_name nskt_32k_sim_4_v8 --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k_sim_4_v7 --in_channels 3 --model SwinIR_p001 --upscale_factor 4 --model_path results/model_SwinIR_nskt_32k_sim_4_v7_4_0.0001_bicubic_0.0_5544_0.001_9338.pt;
-python eval_plot.py --data_name nskt_32k_sim_4_v8 --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k_sim_4_v7 --in_channels 3 --model EDSR --upscale_factor 4 --model_path results/model_EDSR_nskt_32k_sim_4_v7_4_0.001_bicubic_0.0_5544_6814.pt;
-python eval_plot.py --data_name nskt_32k_sim_4_v8 --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k_sim_4_v7 --in_channels 3 --model SRCNN --upscale_factor 4 --model_path results/model_SRCNN_nskt_32k_sim_4_v7_4_0.001_bicubic_0.0_5544_9857.pt;
-python eval_plot.py --data_name nskt_32k_sim_4_v8 --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k_sim_4_v7 --in_channels 3 --model subpixelCNN --upscale_factor 4 --model_path results/model_subpixelCNN_nskt_32k_sim_4_v7_4_0.001_bicubic_0.0_5544_1847.pt;
-python eval_FNO_plot.py --data_name nskt_32k_sim_4_v8 --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k_sim_4_v7 --in_channels 3 --modes 12 --upscale_factor 4 --model_path results/model_FNO2D_nskt_32k_sim_4_v7_4_0.001_bicubic_0.0_5544_239.pt;
+# python eval_plot.py --data_name nskt_32k_sim_4_v8 --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k_sim_4_v7 --in_channels 3 --model Bicubic --upscale_factor 4;
+# python eval_plot.py --data_name nskt_32k_sim_4_v8 --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k_sim_4_v7 --in_channels 3 --model WDSR --upscale_factor 4 --model_path results/model_WDSR_nskt_32k_sim_4_v7_4_0.0001_bicubic_0.0_5544_5766.pt;
+# python eval_plot.py --data_name nskt_32k_sim_4_v8 --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k_sim_4_v7 --in_channels 3 --model SwinIR --upscale_factor 4 --model_path results/model_SwinIR_nskt_32k_sim_4_v7_4_0.0001_bicubic_0.0_5544_318.pt;
+# python eval_plot.py --data_name nskt_32k_sim_4_v8 --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k_sim_4_v7 --in_channels 3 --model SwinIR_p001 --upscale_factor 4 --model_path results/model_SwinIR_nskt_32k_sim_4_v7_4_0.0001_bicubic_0.0_5544_0.001_9338.pt;
+# python eval_plot.py --data_name nskt_32k_sim_4_v8 --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k_sim_4_v7 --in_channels 3 --model EDSR --upscale_factor 4 --model_path results/model_EDSR_nskt_32k_sim_4_v7_4_0.001_bicubic_0.0_5544_6814.pt;
+# python eval_plot.py --data_name nskt_32k_sim_4_v8 --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k_sim_4_v7 --in_channels 3 --model SRCNN --upscale_factor 4 --model_path results/model_SRCNN_nskt_32k_sim_4_v7_4_0.001_bicubic_0.0_5544_9857.pt;
+# python eval_plot.py --data_name nskt_32k_sim_4_v8 --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k_sim_4_v7 --in_channels 3 --model subpixelCNN --upscale_factor 4 --model_path results/model_subpixelCNN_nskt_32k_sim_4_v7_4_0.001_bicubic_0.0_5544_1847.pt;
+# python eval_FNO_plot.py --data_name nskt_32k_sim_4_v8 --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k_sim_4_v7 --in_channels 3 --modes 12 --upscale_factor 4 --model_path results/model_FNO2D_nskt_32k_sim_4_v7_4_0.001_bicubic_0.0_5544_239.pt;
 python eval_FNO_plot.py --data_name nskt_32k_sim_4_v8 --data_path /pscratch/sd/j/junyi012/superbench_v2/nskt_32k_sim_4_v7 --in_channels 3 --modes 12 --upscale_factor 4 --model FNO2D_patch --model_path results/model_FNO2D_nskt_32k_sim_4_v7_4_0.001_bicubic_0.0_5544_239.pt;
 
 ### SwinIR + Noise 

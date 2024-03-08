@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import torch
 import os 
 
+PATH = "/pscratch/sd/j/junyi012/superbench_v2/eval_buffer/"
 def plot_acc(data_name = "era5",upscale_factor=16):
     fsize = 8
     model_saved_list = ['FNO2D','EDSR', 'WDSR','SwinIR', ]
@@ -12,7 +13,7 @@ def plot_acc(data_name = "era5",upscale_factor=16):
         if os.path.exists(f"acc_{data_name}_{upscale_factor}.npy"):
             acc = np.load(f"acc_{data_name}_{upscale_factor}_{name}.npy")
         else:
-            pred = np.load(f"/pscratch/sd/j/junyi012/superbench_v2/eval_buffer/{data_name}_{upscale_factor}_{name}_pred.npy")
+            pred = np.load(PATH+f"{data_name}_{upscale_factor}_{name}_pred.npy")
             hr = np.load(f"/pscratch/sd/j/junyi012/superbench_v2/eval_buffer/{data_name}_{upscale_factor}_hr.npy")
             acc = calculate_acc(pred[:120,0:1],hr[:120,0:1])
             np.save(f"acc_{data_name}_{upscale_factor}_{name}.npy",acc)
@@ -25,7 +26,7 @@ def plot_acc(data_name = "era5",upscale_factor=16):
     ax.yaxis.set_major_locator(MaxNLocator(nbins=5))
     # Adjust layout to make space for the legend below the plot
     plt.subplots_adjust(bottom=0.1)
-    plt.legend(*ax.get_legend_handles_labels(), loc='lower center',ncol=4,fontsize=fsize-1,bbox_to_anchor=(0.45, -0.2))
+    plt.legend(*ax.get_legend_handles_labels(), loc='lower center',ncol=4,fontsize=fsize-1,bbox_to_anchor=(0.45, -0.25))
     fig.tight_layout()
     fig.savefig(f"acc_{data_name}_{upscale_factor}.png",dpi=300)
 
@@ -40,6 +41,6 @@ def calculate_acc(pred,hr):
     return acc
 
 if __name__ == "__main__":
-    plot_acc()
+    plot_acc(upscale_factor=8)
     
 
