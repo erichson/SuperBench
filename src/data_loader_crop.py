@@ -73,9 +73,9 @@ class GetFluidDataset(Dataset):
         self.crop_transform = transforms.RandomCrop(crop_size)
         self.method = method
         if (train == True) and (method == "bicubic"):
-            self.bicubicDown_transform = transforms.Resize((int(self.crop_size/upscale_factor),int(self.crop_size/upscale_factor)),Image.BICUBIC)  # subsampling the image (half size)
+            self.bicubicDown_transform = transforms.Resize((int(self.crop_size/upscale_factor),int(self.crop_size/upscale_factor)),Image.BICUBIC, antialias=True)  # subsampling the image (half size)
         elif (train == False) and (method == "bicubic"):
-            self.bicubicDown_transform = transforms.Resize((int(self.img_shape_x/upscale_factor),int(self.img_shape_y/upscale_factor)),Image.BICUBIC)  # subsampling the image (half size)
+            self.bicubicDown_transform = transforms.Resize((int(self.img_shape_x/upscale_factor),int(self.img_shape_y/upscale_factor)),Image.BICUBIC, antialias=True)  # subsampling the image (half size)
 
 
     def _get_files_stats(self):
@@ -160,9 +160,9 @@ class GetClimateDataset(Dataset):
         self.crop_transform = transforms.RandomCrop(crop_size)
         # we will always crop the image into square patches
         if (self.train == True) and (method == "bicubic"):
-            self.bicubicDown_transform = transforms.Resize((int(self.crop_size/upscale_factor),int(self.crop_size/upscale_factor)),Image.BICUBIC)  # subsampling the image (half size)
+            self.bicubicDown_transform = transforms.Resize((int(self.crop_size/upscale_factor),int(self.crop_size/upscale_factor)),Image.BICUBIC, antialias=True)  # subsampling the image (half size)
         elif (self.train == False) and (method == "bicubic"):
-            self.bicubicDown_transform = transforms.Resize((int((self.img_shape_x-1)/upscale_factor),int(self.img_shape_y/upscale_factor)),Image.BICUBIC)  # subsampling the image (half size)
+            self.bicubicDown_transform = transforms.Resize((int((self.img_shape_x-1)/upscale_factor),int(self.img_shape_y/upscale_factor)),Image.BICUBIC, antialias=True)  # subsampling the image (half size)
 
     def _get_files_stats(self):
         self.files_paths = glob.glob(self.location + "/*.h5")
