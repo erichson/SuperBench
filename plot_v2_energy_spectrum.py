@@ -13,7 +13,7 @@ def plot_energy_spectrum_v2(
     data_name = "nskt_32k",
     upcale_factor=16, 
     snapshot_num=16, # this is a useless parameter (was used for debugging)
-    zoom_in_factor=1,
+    zoom_in_factor=4,
     power=0,
     ):
     
@@ -29,8 +29,10 @@ def plot_energy_spectrum_v2(
     # get data and data range
     path = "/pscratch/sd/j/junyi012/superbench_v2/eval_buffer/"
 
-    fig,ax = plt.subplots(figsize=(3.4,3),constrained_layout=True)
-    fontsize = 9
+    fig,ax = plt.subplots(figsize=(5.2,4.6),constrained_layout=True)
+    fontsize = 18
+    labelsize = 12
+
     axins = zoomed_inset_axes(ax,zoom_in_factor,loc='lower left') # [x0, y0, width, height]
     for i,model_name in enumerate(model_saved_list):
         if i ==len(model_saved_list)-1:
@@ -55,13 +57,15 @@ def plot_energy_spectrum_v2(
                 k = np.load(path+f"energy_spectrum_v2_k_{data_name}_{upcale_factor}_{model_name}_{snapshot_num}.npy")
         ax.loglog(k,en[1:len(k)+1]*k**power,label=title_list[i],color=cmap[i])
         axins.loglog(k,en[1:len(k)+1]*k**power,label=title_list[i],color=cmap[i])
-    ax.legend(fontsize=fontsize-2,bbox_to_anchor=(0.5, -0.45), loc='lower center',ncol=3)
+    ax.legend(fontsize=labelsize-1,bbox_to_anchor=(0.5, -0.45), loc='lower center',ncol=3)
+    # ax.legend(fontsize=labelsize-1, loc='lower right',ncol=2)
     ax.set_xlabel("Wavenumber k",fontsize=fontsize)
     ax.set_ylabel("Engergy Spectrum E(k)",fontsize=fontsize)
-    # plt.xticks(fontsize=fontsize-1)
-    # plt.yticks(fontsize=fontsize-1)
-    ax.set_xlim(1,200)
-    # plt.ylim(1e-12,1)
+    ax.set_title("NSKT (Re=32000)",fontsize=fontsize)
+    ax.tick_params(axis='x', labelsize=labelsize)
+    ax.tick_params(axis='y', labelsize=labelsize)
+    ax.set_xlim(1,300)
+    ax.set_ylim(1e-6,1)
     
     from matplotlib.ticker import LogLocator
     ax.yaxis.set_major_locator(LogLocator(numticks=5))
@@ -69,16 +73,12 @@ def plot_energy_spectrum_v2(
     _patch, pp1, pp2 = mark_inset(ax, axins, loc1=2, loc2=4, fc='none', ec='0.3', lw=1.0, color='k') 
     axins.xaxis.set_tick_params(labelbottom=False)
     axins.yaxis.set_tick_params(labelleft=False)
-    if power ==0:
-        axins.set_xlim(40,100)
-        axins.set_ylim(200,1000)
-    else:
-        axins.set_xlim(40,100)
-        axins.set_ylim(200,1000)
+    axins.set_xlim(40,100)
+    axins.set_ylim(1e-3,5e-3)
     axins.set_xticks([])
     axins.set_yticks([])
     axins.minorticks_off()
-    fig.savefig(f"energy_spectrum_v2_{data_name}_{upcale_factor}_snpt{snapshot_num}_{power}.png",dpi=300,bbox_inches='tight')
+    fig.savefig(f"energy_spectrum_v2_{data_name}_{upcale_factor}_snpt{snapshot_num}_{power}.png",dpi=300,bbox_inches='tight',transparent=True)
     fig.savefig(f"energy_spectrum_v2_{data_name}_{upcale_factor}_snpt{snapshot_num}.pdf",bbox_inches='tight')
     return True
 
@@ -255,6 +255,6 @@ def energy_spectrum_v2(u,v):
 
 if __name__ == "__main__":
     plot_energy_spectrum_v2(power=0)
-    plot_energy_spectrum_v2(power=3)
-    plot_energy_spectrum_v2(power=5)
+    # plot_energy_spectrum_v2(power=3)
+    # plot_energy_spectrum_v2(power=5)
     print("Done")

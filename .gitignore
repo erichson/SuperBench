@@ -13,3 +13,4 @@ result_analysis/frames/*.png
 result_analysis/LR_frames/*.png
 result_analysis/gifs/*.gif
 figures_v2_snapshots
+*.gif
