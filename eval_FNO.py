@@ -154,9 +154,15 @@ def validate_all_metrics(args, test1_loader, test2_loader, model, mean, std):
     def compute_psnr(true, pred):
         mse = torch.mean((true - pred) ** 2)
         if mse == 0:
-            return float(500)
+            raise ValueError("Mean squared error is zero, cannot compute PSNR.")
+            # mse = 1e-3
         max_value = torch.max(true)
-        return 20 * torch.log10(max_value / torch.sqrt(mse))
+        psnr = 20 * torch.log10(max_value / torch.sqrt(mse))
+        if np.isnan(psnr.cpu().numpy()) == True:
+            output= torch.zeros_like(psnr)
+        else:
+            output = psnr
+        return output
 
     with torch.no_grad():
         for loader, (rine_list, rfne_list, psnr_list, ssim_list,mse_list,mae_list) in zip([test1_loader, test2_loader],

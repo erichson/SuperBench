@@ -8,8 +8,10 @@ def plot_acc(data_name = "era5",upscale_factor=16):
     fsize = 18
     labelsize = 12
     model_saved_list = ['FNO2D','EDSR', 'WDSR','SwinIR', ]
+    model_name_list = ['FNO$^*$','EDSR', 'WDSR','SwinIR', ]
     title_list = ['Bicubic', 'SRCNN','FNO', 'subpixelCNN', 'EDSR', 'WDSR', 'SwinIR',]
     fig, ax = plt.subplots(figsize=(4.8,4.6),constrained_layout=True)
+    jj = 0
     for name in model_saved_list:
         if os.path.exists(f"acc_{data_name}_{upscale_factor}_{name}.npy"):
             print("loading acc")
@@ -20,7 +22,8 @@ def plot_acc(data_name = "era5",upscale_factor=16):
             hr = np.load(f"/pscratch/sd/j/junyi012/superbench_v2/eval_buffer/{data_name}_{upscale_factor}_hr.npy")
             acc = calculate_acc(pred[:120,0:1],hr[:120,0:1])
             np.save(f"acc_{data_name}_{upscale_factor}_{name}.npy",acc)
-        ax.plot(np.arange(0,acc.shape[0],7),acc[::7],label=name,marker='o',markersize=2,linewidth=0.7,alpha=0.7)
+        ax.plot(np.arange(0,acc.shape[0],7),acc[::7],label=model_name_list[jj],marker='o',markersize=2,linewidth=0.7,alpha=0.7)
+        jj+=1
     ax.set_ylabel("ACC",fontsize=fsize)    
     ax.set_xlabel("Time (Days)",fontsize=fsize)
     ax.tick_params(axis='x', labelsize=labelsize,)
