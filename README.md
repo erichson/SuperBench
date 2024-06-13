@@ -61,6 +61,9 @@ SuperBench is a benchmark dataset and evaluation framework for super-resolution 
 - WDSR
     - Paper: [Wide activation for efficient and accurate image super-resolution](https://arxiv.org/abs/1808.08718)
     - Venue: BMVC, 2019 (**NTIRE 2018 Super-Resolution Challenge winner**)
+- FNO
+    - Paper: [Fourier Neural Operator for Parametric Partial Differential Equations](https://arxiv.org/pdf/2010.08895)
+    - Venue: ICLR, 2021
 - SwinIR
     - Paper: [Swinir: Image restoration using swin transformer](https://arxiv.org/pdf/2108.10257.pdf)
     - venue: CVPR, 2021
@@ -78,6 +81,7 @@ To assess the performance of these methods, we employ three distinct types of me
     - structural similarity index measure (SSIM)
 - Domain-motivated error metrics:
     - physics errors (e.g., continuity loss)
+    - Energy Specturm
     - Anomaly Correlation Coefficient (ACC)
     - ...
 
