@@ -31,7 +31,7 @@ SuperBench is a benchmark dataset and evaluation framework for super-resolution 
 ## Datasets
 
 - **Navier-Stokes Kraichnan Turbulence**
-    - Two fluid flow datasets are simulated with Reynolds numbers of $Re=16000$ and $Re=32000$. The spatial resolution of this dataset is $1024\times1024$. 
+    - Two fluid flow datasets are simulated with Reynolds numbers of $Re=16000$ and $Re=32000$. The spatial resolution of this dataset is $2048\times2048$. 
     - Three variables are considered: two velocity variables in the $x$ and $y$ directions, as well as with the vorticity field.
 - **Cosmology Hydrodynamics**
     - The spatial resolution is $2048\times2048$. The temperature and baryon density are provided in log scale. 
