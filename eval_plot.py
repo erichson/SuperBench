@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import cmocean  
 import math
 import torch.nn.functional as F
-from src.data_loader_crop import getData
+from data_loader import getData
 from utils import *
 from src.models import *
 from mpl_toolkits.axes_grid1.inset_locator import zoomed_inset_axes

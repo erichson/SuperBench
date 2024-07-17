@@ -7,7 +7,7 @@ import argparse
 import matplotlib.pyplot as plt
 import cmocean  
 import math
-from src.data_loader_crop import getData
+from data_loader import getData
 from utils import *
 from src.models import *
 
