@@ -12,6 +12,7 @@ DATA_INFO = {"nskt_16k": ["/pscratch/sd/j/junyi012/superbench_v2/nskt_16k",3],
             "nskt_16k_sim_4_v7": ["/pscratch/sd/j/junyi012/superbench_v2/nskt_16k_sim_4_v7",3],
             "nskt_32k_sim_4_v7": ["/pscratch/sd/j/junyi012/superbench_v2/nskt_32k_sim_4_v7",3],
             "cosmo": ["/pscratch/sd/j/junyi012/superbench_v2/cosmo2048",2],
+            
               }
 
 MODEL_INFO = {"SRCNN": {"lr": 4e-3,"batch_size": 256,"epochs": 300},

@@ -10,14 +10,8 @@ import matplotlib.pyplot as plt
 from src.models import *
 from src.data_loader_crop import getData
 from utils import *
-import neptune
 import random
-id = random.randint(0,10000)
-run = neptune.init_run(
-    project="junyiICSI/superbenchRebuttal",
-    api_token="eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiI2NGIxYjI4YS0yNDljLTQwOWMtOWY4YS0wOGNhM2Q5Y2RlYzQifQ==",
-    tags = [str(id)],
-)
+
 # train the model with the given parameters and save the model with the best validation error
 def train(args, train_loader, val1_loader, val2_loader, model, optimizer, criterion):
     best_val = np.inf
