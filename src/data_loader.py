@@ -79,15 +79,10 @@ class GetFluidDataset(Dataset):
         self.crop_transform = transforms.RandomCrop(crop_size)
         self.method = method
         if (train == True) and (method == "bicubic"):
-<<<<<<< HEAD:src/data_loader_crop.py
             self.bicubicDown_transform = transforms.Resize((int(self.crop_size/upscale_factor),int(self.crop_size/upscale_factor)),Image.BICUBIC, antialias=True)  # subsampling the image (half size)
         elif (train == False) and (method == "bicubic"):
             self.bicubicDown_transform = transforms.Resize((int(self.img_shape_x/upscale_factor),int(self.img_shape_y/upscale_factor)),Image.BICUBIC, antialias=True)  # subsampling the image (half size)
-=======
-            self.bicubicDown_transform = transforms.Resize((int(self.crop_size/upscale_factor),int(self.crop_size/upscale_factor)),Image.BICUBIC,antialias=True)  # subsampling the image (half size)
-        elif (train == False) and (method == "bicubic"):
-            self.bicubicDown_transform = transforms.Resize((int(self.img_shape_x/upscale_factor),int(self.img_shape_y/upscale_factor)),Image.BICUBIC,antialias=True)  # subsampling the image (half size)
->>>>>>> 3352bb30a5775b68463fe1b87f96ddb0eb6de33e:src/data_loader.py
+
 
 
     def _get_files_stats(self):
