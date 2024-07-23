@@ -9,7 +9,7 @@ from PIL import Image, ImageFilter
 import torchvision.transforms.functional as F
 from torch.utils.data import Dataset, DataLoader, TensorDataset
 
-def getData(args, n_patches, std):  
+def getData(args, n_patches, std,patched_eval=False,test=False):  
     '''
     Loading data from four dataset folders: (a) nskt_16k; (b) nskt_32k; (c) cosmo; (d) era5.
     Each dataset contains: 
@@ -20,14 +20,18 @@ def getData(args, n_patches, std):
     ===
     std: the channel-wise standard deviation of each dataset, list: [#channels]
     '''
-
-    train_loader = get_data_loader(args, '/train', train=True, n_patches=n_patches, std=std)
-    val1_loader = get_data_loader(args, '/valid_1', train=True, n_patches=n_patches, std=std)        
-    val2_loader = get_data_loader(args, '/valid_2', train=True, n_patches=n_patches, std=std)         
-    test1_loader = get_data_loader(args, '/test_1', train=False, n_patches=n_patches, std=std)        
-    test2_loader = get_data_loader(args, '/test_2', train=False, n_patches=n_patches, std=std)
-        
-    return train_loader, val1_loader, val2_loader, test1_loader, test2_loader 
+    if test == True:
+        test1_loader = get_data_loader(args, '/test_1', train=patched_eval, n_patches=n_patches, std=std)        
+        test2_loader = get_data_loader(args, '/test_2', train=patched_eval, n_patches=n_patches, std=std)
+        return test1_loader, test2_loader
+    else:
+        train_loader = get_data_loader(args, '/train', train=True, n_patches=n_patches, std=std)
+        val1_loader = get_data_loader(args, '/valid_1', train=True, n_patches=n_patches, std=std)        
+        val2_loader = get_data_loader(args, '/valid_2', train=True, n_patches=n_patches, std=std)         
+        test1_loader = get_data_loader(args, '/test_1', train=patched_eval, n_patches=n_patches, std=std)        
+        test2_loader = get_data_loader(args, '/test_2', train=patched_eval, n_patches=n_patches, std=std)
+            
+        return train_loader, val1_loader, val2_loader, test1_loader, test2_loader 
 
 
 def get_data_loader(args, data_tag, train, n_patches, std):
@@ -43,13 +47,15 @@ def get_data_loader(args, data_tag, train, n_patches, std):
     elif args.data_name == 'cosmo_lres_sim':
         # print('Using low-resolution simulation degradation...')
         dataset = GetCosmoSimData(args.data_path+data_tag, data_tag, train, transform, args.crop_size, n_patches)
+    elif args.data_name.startswith("nskt_16k_sim") or args.data_name.startswith("nskt_32k_sim") or args.data_name.startswith("cosmo_sim"):
+        dataset = GetFluidDataset_LRsim(args.data_path+data_tag, train, transform, args.upscale_factor, args.noise_ratio, std, args.crop_size,n_patches,args.method) 
 
     else:
         raise ValueError('dataset {} not recognized'.format(args.data_name))
 
     dataloader = DataLoader(dataset,
                             batch_size = int(args.batch_size),
-                            num_workers = 4, # TODO: make a param
+                            num_workers = 2, # TODO: make a param
                             shuffle = (train == True), # TODO: now validation set will also shuffle. If need change here, a new variable validation shoud be added.   
                             sampler = None,
                             drop_last = False,
@@ -73,9 +79,15 @@ class GetFluidDataset(Dataset):
         self.crop_transform = transforms.RandomCrop(crop_size)
         self.method = method
         if (train == True) and (method == "bicubic"):
+<<<<<<< HEAD:src/data_loader_crop.py
             self.bicubicDown_transform = transforms.Resize((int(self.crop_size/upscale_factor),int(self.crop_size/upscale_factor)),Image.BICUBIC, antialias=True)  # subsampling the image (half size)
         elif (train == False) and (method == "bicubic"):
             self.bicubicDown_transform = transforms.Resize((int(self.img_shape_x/upscale_factor),int(self.img_shape_y/upscale_factor)),Image.BICUBIC, antialias=True)  # subsampling the image (half size)
+=======
+            self.bicubicDown_transform = transforms.Resize((int(self.crop_size/upscale_factor),int(self.crop_size/upscale_factor)),Image.BICUBIC,antialias=True)  # subsampling the image (half size)
+        elif (train == False) and (method == "bicubic"):
+            self.bicubicDown_transform = transforms.Resize((int(self.img_shape_x/upscale_factor),int(self.img_shape_y/upscale_factor)),Image.BICUBIC,antialias=True)  # subsampling the image (half size)
+>>>>>>> 3352bb30a5775b68463fe1b87f96ddb0eb6de33e:src/data_loader.py
 
 
     def _get_files_stats(self):
@@ -144,6 +156,86 @@ class GetFluidDataset(Dataset):
         return X
 
 
+
+class GetFluidDataset_LRsim(Dataset):
+    '''Dataloader class for NSKT and cosmo datasets'''
+    def __init__(self, location, train, transform, upscale_factor, noise_ratio, std,crop_size, n_patches, method):
+        self.location = location
+        self.upscale_factor = upscale_factor
+        self.train = train
+        self.noise_ratio = noise_ratio
+        self.std = torch.Tensor(std).view(len(std),1,1)
+        self.transform = transform
+        self._get_files_stats()
+        self.crop_size = crop_size
+        self.n_patches = n_patches
+        self.crop_transform = transforms.RandomCrop(crop_size)
+        self.method = method
+        if (train == True) and (method == "bicubic"):
+            self.bicubicDown_transform = transforms.Resize((int(self.crop_size/upscale_factor),int(self.crop_size/upscale_factor)),Image.BICUBIC,antialias=True)  # subsampling the image (half size)
+        elif (train == False) and (method == "bicubic"):
+            self.bicubicDown_transform = transforms.Resize((int(self.img_shape_x/upscale_factor),int(self.img_shape_y/upscale_factor)),Image.BICUBIC,antialias=True)  # subsampling the image (half size)
+
+
+    def _get_files_stats(self):
+        self.files_paths = glob.glob(self.location + "/*.h5")
+        self.files_paths.sort()
+        self.n_files = len(self.files_paths)
+        with h5py.File(self.files_paths[0], 'r') as _f:
+            print("Getting file stats from {}".format(self.files_paths[0]))
+            self.n_samples_per_file = _f['fields'].shape[0]
+            self.n_in_channels = _f['fields'].shape[1]
+            self.img_shape_x = _f['fields'].shape[2]
+            self.img_shape_y = _f['fields'].shape[3]
+            self.n_samples_per_file_LR = _f['LR_fields'].shape[0]
+            self.n_in_channels_LR = _f['LR_fields'].shape[1]
+            self.img_shape_x_LR = _f['LR_fields'].shape[2]
+            self.img_shape_y_LR = _f['LR_fields'].shape[3]
+        self.n_samples_total = self.n_files * self.n_samples_per_file
+        self.files = [None for _ in range(self.n_files)]
+        self.LR_files = [None for _ in range(self.n_files)]
+        print("Number of samples per file: {}".format(self.n_samples_per_file))
+        print("Found data at path {}. Number of examples: {}. Image Shape: {} x {} x {}".format(
+            self.location, self.n_samples_total, self.img_shape_x, self.img_shape_y, self.n_in_channels))
+        print("Found LR data at path {}. Number of examples: {}. Image Shape: {} x {} x {}".format(
+            self.location, self.n_samples_per_file_LR, self.img_shape_x_LR, self.img_shape_y_LR, self.n_in_channels_LR))
+
+    def _open_file(self, file_idx):
+        _file = h5py.File(self.files_paths[file_idx], 'r')
+        self.files[file_idx] = _file['fields']  
+        self.LR_files[file_idx] = _file['LR_fields']
+    def __len__(self):
+        if self.train == True:
+            return self.n_samples_total*self.n_patches
+        else:
+            return self.n_samples_total
+
+    def __getitem__(self, global_idx):
+        file_idx, local_idx = self.get_indices(global_idx) 
+        #open image file
+        if self.files[file_idx] is None:
+            self._open_file(file_idx)
+        # for NSKT and cosmo, the loaded high-res data are in numpy tensor, [channel, height, width]  
+        # Apply transform 
+        y = self.transform(self.files[file_idx][local_idx])
+        X = self.transform(self.LR_files[file_idx][local_idx])
+        if self.train:
+            # Random crop
+            i, j, h, w = transforms.RandomCrop.get_params(y, output_size=(self.crop_size, self.crop_size)) # i,j are the top left corner of the crop, h,w are the height and width of the crop
+            y = F.crop(y, i, j, h, w)
+            X = F.crop(X, i//self.upscale_factor, j//self.upscale_factor, h//self.upscale_factor, w//self.upscale_factor) # relative location on LR
+        return X, y
+
+    def get_indices(self, global_idx):
+        if self.train:
+            file_idx = int(global_idx/(self.n_samples_per_file*self.n_patches))  # which file we are on
+            local_idx = int((global_idx//self.n_patches) % self.n_samples_per_file)  # which sample in that file we are on 
+        else:
+            file_idx = int(global_idx/self.n_samples_per_file)  # which file we are on
+            local_idx = int(global_idx % self.n_samples_per_file)  # which sample in that file we are on 
+
+        return file_idx, local_idx
+
 class GetClimateDataset(Dataset):
     '''Dataloader class for climate datasets'''
     def __init__(self, location, train, transform, upscale_factor, noise_ratio, std, crop_size,n_patches,method):
@@ -163,6 +255,9 @@ class GetClimateDataset(Dataset):
             self.bicubicDown_transform = transforms.Resize((int(self.crop_size/upscale_factor),int(self.crop_size/upscale_factor)),Image.BICUBIC, antialias=True)  # subsampling the image (half size)
         elif (self.train == False) and (method == "bicubic"):
             self.bicubicDown_transform = transforms.Resize((int((self.img_shape_x-1)/upscale_factor),int(self.img_shape_y/upscale_factor)),Image.BICUBIC, antialias=True)  # subsampling the image (half size)
+            self.bicubicDown_transform = transforms.Resize((int(self.crop_size/upscale_factor),int(self.crop_size/upscale_factor)),Image.BICUBIC,antialias=False)  # subsampling the image (half size)
+        elif (self.train == False) and (method == "bicubic"):
+            self.bicubicDown_transform = transforms.Resize((int((self.img_shape_x-1)/upscale_factor),int(self.img_shape_y/upscale_factor)),Image.BICUBIC,antialias=False)  # subsampling the image (half size)
 
     def _get_files_stats(self):
         self.files_paths = glob.glob(self.location + "/*.h5")
@@ -230,7 +325,7 @@ class GetClimateDataset(Dataset):
 
         return X
 
-
+    
 def GetCosmoSimData(data_path, data_tag, train, transform, crop_size, n_patches):
 
     if data_tag == '/train':
@@ -310,9 +405,4 @@ def GetCosmoSimData(data_path, data_tag, train, transform, crop_size, n_patches)
     print('The shape of lres data samples: ', lres_dataset.shape)
 
     return TensorDataset(lres_dataset, hres_dataset)
-
-
-
-
-
 

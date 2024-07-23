@@ -63,13 +63,11 @@ class SRCNN(nn.Module):
             Super-Resolved image as tensor
 
         """
-        # CNN extracting features
-        x = self.shiftmean(x,"sub")
-
+        # CNN extracting featuresß
         # bicubic upsampling
         x = F.interpolate(x, scale_factor=[self.upsacle_factor,self.upsacle_factor], 
                                       mode='bicubic', align_corners=True)
-
+        x = self.shiftmean(x,"sub")
         x = self.model(x)
         x = self.shiftmean(x,"add")
         return x

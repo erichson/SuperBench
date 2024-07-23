@@ -31,7 +31,7 @@ SuperBench is a benchmark dataset and evaluation framework for super-resolution 
 ## Datasets
 
 - **Navier-Stokes Kraichnan Turbulence**
-    - Two fluid flow datasets are simulated with Reynolds numbers of $Re=16000$ and $Re=32000$. The spatial resolution of this dataset is $1024\times1024$. 
+    - Two fluid flow datasets are simulated with Reynolds numbers of $Re=16000$ and $Re=32000$. The spatial resolution of this dataset is $2048\times2048$. 
     - Three variables are considered: two velocity variables in the $x$ and $y$ directions, as well as with the vorticity field.
 - **Cosmology Hydrodynamics**
     - The spatial resolution is $2048\times2048$. The temperature and baryon density are provided in log scale. 
@@ -61,6 +61,9 @@ SuperBench is a benchmark dataset and evaluation framework for super-resolution 
 - WDSR
     - Paper: [Wide activation for efficient and accurate image super-resolution](https://arxiv.org/abs/1808.08718)
     - Venue: BMVC, 2019 (**NTIRE 2018 Super-Resolution Challenge winner**)
+- FNO
+    - Paper: [Fourier Neural Operator for Parametric Partial Differential Equations](https://arxiv.org/pdf/2010.08895)
+    - Venue: ICLR, 2021
 - SwinIR
     - Paper: [Swinir: Image restoration using swin transformer](https://arxiv.org/pdf/2108.10257.pdf)
     - venue: CVPR, 2021
@@ -78,6 +81,7 @@ To assess the performance of these methods, we employ three distinct types of me
     - structural similarity index measure (SSIM)
 - Domain-motivated error metrics:
     - physics errors (e.g., continuity loss)
+    - Energy Specturm
     - Anomaly Correlation Coefficient (ACC)
     - ...
 
@@ -150,44 +154,35 @@ wget https://portal.nersc.gov/project/dasrepo/superbench/superbench_v1.tar
 
 2. Run the baseline models on the datasets:
 
-    2.1. Generate ```.sh``` code in the ```make_file``` folder
-
+    2.1. Generate ```.sh``` code
     ```python
-    # if train all baseline models used in SuperBench paper
-    python generate_sh.py --gpus 0 1 2 3 --generate_all
-
-    # if train one specific model on one dataset
-    python generate_sh.py --model SRCNN --data nskt_16k --gpus 0
+    # train all baseline models used in SuperBench paper
+    python generate_sh.py 
     ```
 
     2.2. Run the ```.sh``` code
 
     ```shell
-    # if train all baseline models used in SuperBench paper
-    sh run_train_all.sh
+    # train all baseline models used in SuperBench paper
+    sh train_all.sh
 
-    # if train one specific model on one dataset
-    sh run_train_SRCNN_nskt_16k.sh
     ```
 
 3. Evaluate the model performance:
 
 ```shell
 # evaluate RFNE, IN, PSNR, SSIM and physics loss
-# one sample code is provided
-run_eval.sh 
+sh eval.sh 
+# Regarding plots 
+sh eval_plot.sh
 ```
 
 4. Visualize the SR results
 ```python
-# for bicubic down-sampling
-viz.py
+# for visualization in the paper
+python presentation/plot_snapshots.py
 
-# for uniform down-sampling and noise
-viz_noise.py
-
-# for low-res simulation data
-viz_lres_sim.py  
+# 
 ```
 
 For detailed model configurations, please refer to the the folder ```config```.

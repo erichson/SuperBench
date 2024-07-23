@@ -1,0 +1,5 @@
+
+sbatch make_file/nskt_16k_sim_4_WDSR_4.sbatch
+sbatch make_file/nskt_16k_sim_4_SwinIR_4.sbatch
+sbatch make_file/nskt_32k_sim_4_WDSR_4.sbatch
+sbatch make_file/nskt_32k_sim_4_SwinIR_4.sbatch

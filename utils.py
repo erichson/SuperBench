@@ -2,33 +2,32 @@ import numpy as np
 import torch
 from torch import nn
 
-
 def get_data_info(data_name):
-    if data_name == 'nskt_16k':
-        resol = [1024, 1024] 
+    if data_name.startswith('nskt_32k'):
+        resol = [2048, 2048] 
         n_fields = 3
-        n_train_samples = 1200
-        mean = [-0.0218,  0.0309,  0.1429] 
-        std = [0.6703, 0.6344, 8.3615]
+        n_train_samples = 1000
+        mean = [-1.44020306e-20,5.80499913e-20 ,-1.65496884e-15]
+        std = [ 0.67831907 ,0.68145471,10.75285724]
 
-    elif data_name == 'nskt_32k':
-        resol = [1024, 1024]
+    elif data_name.startswith('nskt_16k'):
+        resol = [2048, 2048]
         n_fields = 3
-        n_train_samples = 1200
-        mean = [ 0.0079,  0.0463, -0.0219] 
-        std = [0.6652, 0.6485, 8.9646]
+        n_train_samples = 1000
+        mean = [-9.48395660e-21, -7.88982956e-20 ,-2.07734654e-15]
+        std=[ 0.67100703 , 0.67113945 ,10.27907989]
 
     elif data_name == 'cosmo':
         resol = [2048, 2048] 
         n_fields = 2
-        n_train_samples = 1200
+        n_train_samples = 1000
         mean = [ 3.9017, -0.3575] # [ 3.8956, -0.3664] 
         std = [0.2266, 0.4048] # [0.2191, 0.3994]
 
-    elif data_name == 'cosmo_lres_sim':
-        resol = [4096, 4096] 
+    elif data_name == 'cosmo_lres_sim'or data_name.startswith('cosmo_sim'):
+        resol = [2048, 2048] 
         n_fields = 2
-        n_train_samples = 400
+        n_train_samples = 1200
         mean = [3.8990, -0.3613] 
         std = [0.2237, 0.4039]  
 
@@ -89,10 +88,11 @@ def loss_function(args):
         raise ValueError('Loss type {} not recognized'.format(args.loss_type))
     return criterion
 
-def save_checkpoint(model, save_path):
+def save_checkpoint(model, optimizer,save_path):
     '''save model and optimizer'''
     torch.save({
-        'model_state_dict': model.state_dict()
+        'model_state_dict': model.state_dict(),
+        'optimizer_state_dict': optimizer.state_dict()
         }, save_path)
 
 
